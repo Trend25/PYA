@@ -155,9 +155,182 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
+        .form-control.invalid {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+        
+        .form-control.valid {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+        }
+        
         textarea.form-control {
-            min-height: 100px;
-            max-height: 200px;
+            min-height: 120px;
+            max-height: 300px;
+        }
+        
+        .keyword-checker {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
+        .keyword-checker.good {
+            border-left: 4px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .keyword-checker.warning {
+            border-left: 4px solid #f39c12;
+            color: #f39c12;
+        }
+        
+        .keyword-checker.error {
+            border-left: 4px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .writing-speed-warning {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .consistency-check {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+        }
+        
+        .email-domain-warning {
+            background: #f39c12;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 5px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .quality-indicator {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .quality-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .quality-badge.active {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .free-area-tip {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 13px;
+            border-left: 4px solid #74b9ff;
+        }
+        
+        .free-text {
+            min-height: 150px;
+            background: #f8f9fa;
+            border: 2px dashed #bdc3c7;
+        }
+        
+        .free-text:focus {
+            background: white;
+            border-style: solid;
+            border-color: #3498db;
+        }
+        
+        .bonus-content {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .bonus-content h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .char-counter.warning {
+            color: #f39c12;
+        }
+        
+        .char-counter.error {
+            color: #e74c3c;
+        }
+        
+        .char-counter.success {
+            color: #27ae60;
+        }
+        
+        .validation-message {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        .validation-message.show {
+            display: block;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .progress-indicator {
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); width: 100%; }
+            100% { transform: translateX(100%); width: 100%; }
         }
         
         select.form-control {
@@ -312,6 +485,58 @@
                 padding: 20px;
                 margin: 10px;
             }
+        }
+
+        function checkContentQuality(text, fieldName) {
+            const words = text.toLowerCase().split(/\s+/);
+            const indicators = document.querySelector(`#${fieldName}`).parentElement.querySelector('.quality-indicator');
+            
+            if (!indicators) return;
+            
+            // Check PM terms
+            const pmTermCount = pmTerms.filter(term => text.toLowerCase().includes(term)).length;
+            const pmBadge = indicators.querySelector('[data-rule="pm-terms"]');
+            if (pmTermCount >= 3) {
+                pmBadge.className = 'quality-badge active';
+                pmBadge.textContent = `PM Terimleri ✓ (${pmTermCount})`;
+            } else {
+                pmBadge.className = 'quality-badge inactive';
+                pmBadge.textContent = `PM Terimleri (${pmTermCount}/3)`;
+            }
+            
+            // Check story structure
+            const storyCount = storyStructureWords.filter(word => text.toLowerCase().includes(word)).length;
+            const storyBadge = indicators.querySelector('[data-rule="story-structure"]');
+            if (storyCount >= 2) {
+                storyBadge.className = 'quality-badge active';
+                storyBadge.textContent = 'Hikaye Yapısı ✓';
+            } else {
+                storyBadge.className = 'quality-badge inactive';
+                storyBadge.textContent = 'Hikaye Yapısı';
+            }
+            
+            // Check past tense usage
+            const pastTenseCount = pastTenseWords.filter(word => text.toLowerCase().includes(word)).length;
+            const pastBadge = indicators.querySelector('[data-rule="past-tense"]');
+            if (pastTenseCount >= 2) {
+                pastBadge.className = 'quality-badge active';
+                pastBadge.textContent = 'Geçmiş Zaman ✓';
+            } else {
+                pastBadge.className = 'quality-badge inactive';
+                pastBadge.textContent = 'Geçmiş Zaman';
+            }
+            
+            // Check solution mention
+            const solutionWords = ['çözdüm', 'çözdük', 'çözüm', 'karar', 'yöntem', 'strateji', 'sonunda'];
+            const solutionCount = solutionWords.filter(word => text.toLowerCase().includes(word)).length;
+            const solutionBadge = indicators.querySelector('[data-rule="solution"]');
+            if (solutionCount >= 1) {
+                solutionBadge.className = 'quality-badge active';
+                solutionBadge.textContent = 'Çözüm ✓';
+            } else {
+                solutionBadge.className = 'quality-badge inactive';
+                solutionBadge.textContent = 'Çözüm';
+            }
             
             .header h1 {
                 font-size: 1.8em;
@@ -384,18 +609,30 @@
                     </div>
 
                     <div class="question-item">
-                        <label class="question-label">3. Yönettiğiniz ekip büyüklüğü genellikle kaç kişi?</label>
-                        <input type="text" class="form-control" name="team_size" placeholder="örn: 5-10 kişi, ortalama 7">
+                        <label class="question-label">3. Ekip büyüklüğü genellikle kaç kişi?</label>
+                        <input type="text" class="form-control" name="team_size" placeholder="örn: 5-10 kişi, ortalama 7" onInput="validateConsistency()">
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">4. Bugüne kadar kaç proje yönettiniz?</label>
-                        <input type="number" class="form-control" name="project_count" placeholder="Toplam proje sayısı">
+                        <input type="number" class="form-control" name="project_count" placeholder="Toplam proje sayısı" onInput="validateConsistency()">
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">5. En büyük bütçeli projenizin değeri neydi?</label>
-                        <input type="text" class="form-control" name="biggest_budget" placeholder="örn: 500.000 TL, 1M USD">
+                        <input type="text" class="form-control" name="biggest_budget" placeholder="örn: 500.000 TL, 1M USD" onInput="validateConsistency()">
+                    </div>
+                    
+                    <div class="question-item">
+                        <label class="question-label">6. İş email adresiniz (opsiyonel, doğrulama için)</label>
+                        <input type="email" class="form-control" name="work_email" placeholder="ornek@sirket.com" onInput="validateEmailDomain(this)">
+                        <div class="email-domain-warning" id="emailDomainWarning">
+                            💡 Kurumsal email adresi (@sirket.com) kullanırsanız yanıtlarınız daha güvenilir kabul edilir
+                        </div>
+                    </div>
+                    
+                    <div class="consistency-check" id="consistencyWarning">
+                        ⚠️ Girdiğiniz bilgilerde tutarsızlık var: <span id="consistencyDetails"></span>
                     </div>
                 </div>
             </div>
@@ -407,27 +644,40 @@
                     
                     <div class="question-item">
                         <label class="question-label">1. Projenizde yaşadığınız en büyük kriz neydi? Detaylarıyla anlatır mısınız?</label>
-                        <textarea class="form-control" name="biggest_crisis" placeholder="Krizi, sebeplerini, o anki hislerinizi ve nasıl çözdüğünüzü detaylarıyla anlatın..."></textarea>
+                        <textarea class="form-control story-required" name="biggest_crisis" placeholder="Krizi, sebeplerini, o anki hislerinizi ve nasıl çözdüğünüzü detaylarıyla anlatın... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" onFocus="startWritingTimer(this)" required></textarea>
+                        <div class="char-counter" id="biggest_crisis_counter">0/500 karakter (minimum)</div>
+                        <div class="keyword-checker" id="biggest_crisis_keywords">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman gibi detaylar ekleyin</div>
+                        <div class="writing-speed-warning" id="biggest_crisis_speed">⚠️ Çok hızlı yazıyorsunuz, gerçek deneyiminizi paylaştığınızdan emin misiniz?</div>
+                        <div class="quality-indicator">
+                            <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+                            <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+                            <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+                            <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+                        </div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">2. Deadline'a kaç gün kala "bu proje bitmeyecek" dediğiniz bir anınız var mı?</label>
-                        <textarea class="form-control" name="deadline_crisis" placeholder="O anki durumu, stres seviyesini, nasıl toparlandığınızı anlatın..."></textarea>
+                        <textarea class="form-control story-required" name="deadline_crisis" placeholder="O anki durumu, stres seviyesini, nasıl toparlandığınızı anlatın... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="deadline_crisis_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">3. Bütçe bittiği halde proje yarıda kaldığı bir durumunuz oldu mu?</label>
-                        <textarea class="form-control" name="budget_crisis" placeholder="Nasıl bir durumdu, kim sorumludu, nasıl çözdünüz?"></textarea>
+                        <textarea class="form-control story-required" name="budget_crisis" placeholder="Nasıl bir durumdu, kim sorumludu, nasıl çözdünüz? (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="budget_crisis_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">4. Teknoloji değişimi projenizi nasıl etkiledi? Konkret örnek verebilir misiniz?</label>
-                        <textarea class="form-control" name="tech_change" placeholder="Hangi teknoloji değişti, projeye etkisi ne oldu, nasıl adapte oldunuz?"></textarea>
+                        <textarea class="form-control story-required" name="tech_change" placeholder="Hangi teknoloji değişti, projeye etkisi ne oldu, nasıl adapte oldunuz? (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="tech_change_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">5. Kritik bir demo/sunum öncesi her şey bozulduğu bir anınız var mı?</label>
-                        <textarea class="form-control" name="demo_crisis" placeholder="Demo öncesi neler yaşandı, nasıl kurtarıldı?"></textarea>
+                        <textarea class="form-control story-required" name="demo_crisis" placeholder="Demo öncesi neler yaşandı, nasıl kurtarıldı? (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="demo_crisis_counter">0/500 karakter (minimum)</div>
                     </div>
                 </div>
             </div>
@@ -439,27 +689,32 @@
                     
                     <div class="question-item">
                         <label class="question-label">1. Kilit ekip üyeniz projeyi bıraktığında ne yaşadınız?</label>
-                        <textarea class="form-control" name="key_person_left" placeholder="Kim ayrıldı, neden ayrıldı, proje nasıl etkilendi, nasıl çözdünüz?"></textarea>
+                        <textarea class="form-control story-required" name="key_person_left" placeholder="Kim ayrıldı, neden ayrıldı, proje nasıl etkilendi, nasıl çözdünüz? (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="key_person_left_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">2. Ekipte çatışma çıktığında nasıl müdahale ediyorsunuz? Konkret örnek?</label>
-                        <textarea class="form-control" name="team_conflict" placeholder="Çatışmanın nedeni, taraflar, sizin müdahaleniz, sonuç..."></textarea>
+                        <textarea class="form-control story-required" name="team_conflict" placeholder="Çatışmanın nedeni, taraflar, sizin müdahaleniz, sonuç... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="team_conflict_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">3. Üst yönetimden gelen baskıları ekibe nasıl yansıtıyorsunuz?</label>
-                        <textarea class="form-control" name="management_pressure" placeholder="Nasıl baskılar geliyor, ekibe nasıl iletiyorsunuz, dengeler nasıl kuruyorsunuz?"></textarea>
+                        <textarea class="form-control story-required" name="management_pressure" placeholder="Nasıl baskılar geliyor, ekibe nasıl iletiyorsunuz, dengeler nasıl kuruyorsunuz? (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="management_pressure_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">4. Uzaktan çalışan ekiple yaşadığınız en büyük sorun neydi?</label>
-                        <textarea class="form-control" name="remote_issues" placeholder="İletişim, koordinasyon, motivasyon sorunları ve çözümleri..."></textarea>
+                        <textarea class="form-control story-required" name="remote_issues" placeholder="İletişim, koordinasyon, motivasyon sorunları ve çözümleri... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="remote_issues_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">5. Müşteri temsilcisiyle yaşadığınız en zor durum neydi?</label>
-                        <textarea class="form-control" name="client_issues" placeholder="Müşteri ile yaşanan zorluklar, iletişim problemleri, çözüm yolları..."></textarea>
+                        <textarea class="form-control story-required" name="client_issues" placeholder="Müşteri ile yaşanan zorluklar, iletişim problemleri, çözüm yolları... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="client_issues_counter">0/500 karakter (minimum)</div>
                     </div>
                 </div>
             </div>
@@ -471,41 +726,125 @@
                     
                     <div class="question-item">
                         <label class="question-label">1. Sektörünüze özel yaşadığınız en büyük zorluk neydi?</label>
-                        <textarea class="form-control" name="sector_challenge" placeholder="Sektörünüze özgü teknik, yasal, rekabet vb. zorluklar..."></textarea>
+                        <textarea class="form-control story-required" name="sector_challenge" placeholder="Sektörünüze özgü teknik, yasal, rekabet vb. zorluklar... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="sector_challenge_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">2. Regulasyon/compliance konularında yaşadığınız zorluklar?</label>
-                        <textarea class="form-control" name="compliance_issues" placeholder="Yasal düzenlemeler, audit'ler, compliance zorlukları..."></textarea>
+                        <textarea class="form-control story-required" name="compliance_issues" placeholder="Yasal düzenlemeler, audit'ler, compliance zorlukları... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="compliance_issues_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">3. Sektörünüzde güvenlik/gizlilik nasıl proje yönetiminizi etkiliyor?</label>
-                        <textarea class="form-control" name="security_impact" placeholder="Güvenlik protokolleri, gizlilik anlaşmaları, erişim kısıtlamaları..."></textarea>
+                        <textarea class="form-control story-required" name="security_impact" placeholder="Güvenlik protokolleri, gizlilik anlaşmaları, erişim kısıtlamaları... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="security_impact_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">4. Pazardaki ani değişiklikler (crash, güncelleme, yeni teknoloji) projelerinizi nasıl etkiledi?</label>
-                        <textarea class="form-control" name="market_changes" placeholder="Piyasa değişiklikleri, teknoloji güncellemeleri, rekabet durumu..."></textarea>
+                        <textarea class="form-control story-required" name="market_changes" placeholder="Piyasa değişiklikleri, teknoloji güncellemeleri, rekabet durumu... (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" required></textarea>
+                        <div class="char-counter" id="market_changes_counter">0/500 karakter (minimum)</div>
                     </div>
 
                     <div class="question-item">
                         <label class="question-label">5. Başarı hikayeleri: En gurur duyduğunuz proje ve nedenleri?</label>
-                        <textarea class="form-control" name="success_story" placeholder="Hangi proje, neden başarılı oldu, sizin katkınız ne oldu?"></textarea>
+                        <textarea class="form-control story-required" name="success_story" placeholder="Hangi proje, neden başarılı oldu, sizin katkınız ne oldu? (Minimum 500 karakter)" onInput="updateCharCount(this, 500)" onFocus="startWritingTimer(this)" required></textarea>
+                        <div class="char-counter" id="success_story_counter">0/500 karakter (minimum)</div>
+                        <div class="keyword-checker" id="success_story_keywords">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman gibi detaylar ekleyin</div>
+                        <div class="writing-speed-warning" id="success_story_speed">⚠️ Çok hızlı yazıyorsunuz, gerçek deneyiminizi paylaştığınızdan emin misiniz?</div>
+                        <div class="quality-indicator">
+                            <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+                            <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+                            <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+                            <span class="quality-badge inactive" data-rule="solution">Sonuç</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-group">
+                    <h3>🎨 Serbest Alan - Ek Deneyimleriniz</h3>
+                    
+                    <div class="question-item">
+                        <label class="question-label">💭 Bu formda yer almayan ama paylaşmak istediğiniz başka deneyimleriniz var mı?</label>
+                        <textarea class="form-control free-text" name="additional_experiences" placeholder="🌟 Örneğin:
+• Yaşadığınız ilginç/sıradışı proje hikayeleri
+• Sektörünüze özel durumlar 
+• Uluslararası projeler, farklı kültürlerle çalışma
+• Teknoloji geçişleri, dijital dönüşüm hikayeleri
+• COVID döneminde yaşananlar
+• Başarısızlık hikayelerinden çıkardığınız dersler
+• Proje yöneticiliği kariyerinizde dönüm noktaları
+• Tavsiyeleriniz, gelecek PM'lere mesajınız
+
+(Bu alan zorunlu değil, ancak paylaşımlarınız kitap için çok değerli!)" onInput="updateFreeTextCount(this)" onFocus="startWritingTimer(this)"></textarea>
+                        <div class="char-counter" id="additional_experiences_counter">0 karakter (serbest alan)</div>
+                        <div class="keyword-checker free-area-tip">
+                            💡 <strong>İpuçları:</strong> Bu alanda şunları paylaşabilirsiniz:<br>
+                            • Formdaki hiçbir kategoriye uymayan özel deneyimler<br>
+                            • Çok etkileyici/dramatik hikayeler<br>
+                            • Sektörünüze özel durumlar<br>
+                            • Gelecek proje yöneticilerine tavsiyeler<br>
+                            • İlham verici başarı hikayeleri
+                        </div>
+                        <div class="quality-indicator">
+                            <span class="quality-badge inactive" data-rule="unique-content">Özgün İçerik</span>
+                            <span class="quality-badge inactive" data-rule="detailed">Detaylı</span>
+                            <span class="quality-badge inactive" data-rule="valuable">Değerli</span>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label class="question-label">🎯 Bu kitap hangi konulara odaklanmalı? Proje yöneticilerinin en çok ihtiyaç duyduğu bilgiler neler?</label>
+                        <textarea class="form-control free-text" name="book_suggestions" placeholder="📚 Kitapta görmek istediğiniz konular:
+• Hangi durumların daha detayına inilmeli?
+• Eksik kaldığını düşündüğünüz alanlar
+• Pratik araçlar, şablonlar, metodolojiler
+• Sektörel özel yaklaşımlar
+• Yeni PM'ler için temel bilgiler vs deneyimli PM'ler için ileri konular
+
+Bu görüşleriniz kitabın içeriğini şekillendirmede çok değerli!" onInput="updateFreeTextCount(this)"></textarea>
+                        <div class="char-counter" id="book_suggestions_counter">0 karakter (önerileriniz)</div>
+                    </div>
+
+                    <div class="question-item">
+                        <label class="question-label">📧 Kitap yayınlandığında haberdar olmak ister misiniz? (İletişim bilgileri)</label>
+                        <textarea class="form-control" name="contact_info" placeholder="📮 Opsiyonel:
+• Email adresiniz
+• LinkedIn profiliniz
+• Kitapta isminin geçmesini ister misiniz? (anonim de kalabilir)
+• Teşekkür bölümünde bahsedilmek ister misiniz?
+
+Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updateFreeTextCount(this)"></textarea>
+                        <div class="char-counter" id="contact_info_counter">0 karakter (iletişim)</div>
                     </div>
                 </div>
             </div>
 
             <div class="form-actions">
+                <div class="validation-message" id="validationMessage">
+                    ⚠️ Lütfen tüm hikaye sorularını minimum 500 karakter ile doldurun. Eksik/yetersiz alanlar: <span id="missingFields"></span>
+                </div>
                 <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousSection()">← Önceki</button>
                 <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextSection()">Sonraki →</button>
-                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">Formu Gönder</button>
+                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">📚 Hikayelerimi Gönder</button>
             </div>
         </form>
 
         <div class="completion-message" id="completionMessage">
-            <h2>🎉 Teşekkürler!</h2>
-            <p>Değerli katkılarınız proje yönetimi kitabının zengin içeriğine büyük katkı sağlayacak. Yanıtlarınız güvenli bir şekilde kaydedildi.</p>
+            <h2>🎉 Harika! Kapsamlı Yanıtlarınız Alındı</h2>
+            <p><strong>📊 Zorunlu hikayeler:</strong> 500+ karakter kuralını karşılayan değerli deneyimleriniz</p>
+            <p><strong>🌟 Serbest alan katkıları:</strong> Formda yer almayan ek bilgileriniz</p>
+            <p><strong>💡 Kitap önerileriniz:</strong> İçerik yönlendirmeleriniz</p>
+            <p style="margin-top: 15px;"><strong>Verileriniz güvenli şekilde kaydedildi ve size iletildi.</strong></p>
+            
+            <div class="bonus-content">
+                <h4>🎁 Bonus</h4>
+                <p>Serbest alanda paylaştığınız ek deneyimler kitabın en değerli bölümlerinden biri olabilir!</p>
+            </div>
+            
+            <p style="opacity: 0.8;">📚 Kitap yayınlandığında mutlaka haber vereceğiz!</p>
         </div>
     </div>
 
@@ -513,6 +852,265 @@
         let currentSection = 0;
         const sections = ['personal', 'crisis', 'human', 'sector'];
         const progressSteps = [25, 50, 75, 100];
+        let writingTimers = {}; // Track writing speed for bot detection
+
+        // Project Management Terms for quality checking
+        const pmTerms = ['proje', 'ekip', 'takım', 'deadline', 'sprint', 'stakeholder', 'bütçe', 'planlama', 'koordinasyon', 'yönetim', 'çözüm', 'problem', 'risk', 'kaynak', 'timeline', 'milestone', 'deliverable', 'scope', 'requirement'];
+        const storyStructureWords = ['önce', 'sonra', 'ardından', 'daha sonra', 'o zaman', 'bu durumda', 'sonuç', 'çözüm', 'karar'];
+        const pastTenseWords = ['yaptım', 'yaşadım', 'gördüm', 'düşündüm', 'karar verdim', 'çözdüm', 'başladım', 'tamamladım', 'karşılaştım'];
+
+        function startWritingTimer(textarea) {
+            const fieldName = textarea.name;
+            writingTimers[fieldName] = {
+                startTime: Date.now(),
+                initialLength: textarea.value.length,
+                keystrokes: 0
+            };
+        }
+
+        function checkWritingSpeed(textarea) {
+            const fieldName = textarea.name;
+            const timer = writingTimers[fieldName];
+            
+            if (!timer) return true;
+            
+            const currentTime = Date.now();
+            const elapsed = (currentTime - timer.startTime) / 1000; // seconds
+            const currentLength = textarea.value.length;
+            const charsAdded = currentLength - timer.initialLength;
+            
+            // If writing faster than 10 chars per second, might be copy-paste
+            if (elapsed > 2 && charsAdded / elapsed > 10) {
+                const warningDiv = document.getElementById(fieldName + '_speed');
+                if (warningDiv) {
+                    warningDiv.style.display = 'block';
+                    setTimeout(() => {
+                        warningDiv.style.display = 'none';
+                    }, 3000);
+                }
+                return false;
+            }
+            return true;
+        }
+
+        function updateFreeTextCount(textarea) {
+            const currentLength = textarea.value.length;
+            const counterId = textarea.name + '_counter';
+            const counter = document.getElementById(counterId);
+            
+            if (counter) {
+                if (textarea.name === 'additional_experiences') {
+                    counter.textContent = `${currentLength} karakter (serbest alan)`;
+                } else if (textarea.name === 'book_suggestions') {
+                    counter.textContent = `${currentLength} karakter (önerileriniz)`;
+                } else if (textarea.name === 'contact_info') {
+                    counter.textContent = `${currentLength} karakter (iletişim)`;
+                }
+                
+                // Color coding for free text areas
+                if (currentLength === 0) {
+                    counter.className = 'char-counter';
+                } else if (currentLength < 100) {
+                    counter.className = 'char-counter warning';
+                } else {
+                    counter.className = 'char-counter success';
+                }
+            }
+            
+            // Check quality for additional experiences
+            if (textarea.name === 'additional_experiences' && currentLength > 50) {
+                checkFreeTextQuality(textarea.value, textarea.name);
+            }
+            
+            // Check writing speed for bot detection
+            checkWritingSpeed(textarea);
+        }
+
+        function checkFreeTextQuality(text, fieldName) {
+            const indicators = document.querySelector(`#${fieldName}`).parentElement.querySelector('.quality-indicator');
+            
+            if (!indicators) return;
+            
+            const words = text.toLowerCase().split(/\s+/);
+            const wordCount = words.length;
+            
+            // Check unique content (not just repeating form answers)
+            const uniqueWords = ['covid', 'uluslararası', 'kültür', 'dijital', 'dönüşüm', 'gelecek', 'tavsiye', 'ders', 'deneyim'];
+            const uniqueCount = uniqueWords.filter(word => text.toLowerCase().includes(word)).length;
+            const uniqueBadge = indicators.querySelector('[data-rule="unique-content"]');
+            if (uniqueCount >= 1) {
+                uniqueBadge.className = 'quality-badge active';
+                uniqueBadge.textContent = 'Özgün İçerik ✓';
+            } else {
+                uniqueBadge.className = 'quality-badge inactive';
+                uniqueBadge.textContent = 'Özgün İçerik';
+            }
+            
+            // Check if detailed (decent length)
+            const detailedBadge = indicators.querySelector('[data-rule="detailed"]');
+            if (text.length >= 200) {
+                detailedBadge.className = 'quality-badge active';
+                detailedBadge.textContent = 'Detaylı ✓';
+            } else {
+                detailedBadge.className = 'quality-badge inactive';
+                detailedBadge.textContent = 'Detaylı';
+            }
+            
+            // Check if valuable (contains insights, lessons, advice)
+            const valuableWords = ['öğrendim', 'tavsiye', 'öneririm', 'dikkat', 'önemli', 'keşfettim', 'anladım', 'ders'];
+            const valuableCount = valuableWords.filter(word => text.toLowerCase().includes(word)).length;
+            const valuableBadge = indicators.querySelector('[data-rule="valuable"]');
+            if (valuableCount >= 1) {
+                valuableBadge.className = 'quality-badge active';
+                valuableBadge.textContent = 'Değerli ✓';
+            } else {
+                valuableBadge.className = 'quality-badge inactive';
+                valuableBadge.textContent = 'Değerli';
+            }
+        }
+
+        function updateCharCount(textarea, minChars) {
+            const currentLength = textarea.value.length;
+            const counterId = textarea.name + '_counter';
+            const counter = document.getElementById(counterId);
+            
+            if (counter) {
+                counter.textContent = `${currentLength}/${minChars} karakter (minimum)`;
+                
+                // Update styles based on character count
+                if (currentLength < minChars * 0.3) {
+                    counter.className = 'char-counter error';
+                    textarea.className = 'form-control story-required invalid';
+                } else if (currentLength < minChars) {
+                    counter.className = 'char-counter warning';
+                    textarea.className = 'form-control story-required';
+                } else {
+                    counter.className = 'char-counter success';
+                    textarea.className = 'form-control story-required valid';
+                }
+            }
+            
+            // Check writing speed (bot detection)
+            checkWritingSpeed(textarea);
+            
+            // Check content quality if text is long enough
+            if (currentLength > 100) {
+                checkContentQuality(textarea.value, textarea.name);
+            }
+            
+            updateProgressBasedOnCompletion();
+        }
+
+        function validateEmailDomain(emailInput) {
+            const email = emailInput.value;
+            const warningDiv = document.getElementById('emailDomainWarning');
+            
+            if (!email) {
+                warningDiv.style.display = 'none';
+                return;
+            }
+            
+            const domain = email.split('@')[1];
+            const commonDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
+            
+            if (commonDomains.includes(domain)) {
+                warningDiv.style.display = 'block';
+                warningDiv.innerHTML = '💡 Kurumsal email adresi (@sirket.com) kullanırsanız yanıtlarınız daha güvenilir kabul edilir';
+                warningDiv.style.background = '#f39c12';
+            } else if (domain) {
+                warningDiv.style.display = 'block';
+                warningDiv.innerHTML = '✅ Kurumsal email adresi tespit edildi - teşekkürler!';
+                warningDiv.style.background = '#27ae60';
+            } else {
+                warningDiv.style.display = 'none';
+            }
+        }
+
+        function validateConsistency() {
+            const experience = document.querySelector('[name="experience"]').value;
+            const projectCount = parseInt(document.querySelector('[name="project_count"]').value);
+            const teamSize = document.querySelector('[name="team_size"]').value;
+            const budget = document.querySelector('[name="biggest_budget"]').value;
+            
+            const warningDiv = document.getElementById('consistencyWarning');
+            const detailsSpan = document.getElementById('consistencyDetails');
+            let warnings = [];
+            
+            // Experience vs Project Count consistency
+            if (experience && projectCount) {
+                if (experience === '0-2' && projectCount > 10) {
+                    warnings.push('2 yıl deneyim ama 10+ proje');
+                }
+                if (experience === '10+' && projectCount < 5) {
+                    warnings.push('10+ yıl deneyim ama az proje');
+                }
+            }
+            
+            // Team size vs Budget consistency (rough check)
+            if (teamSize && budget) {
+                const hasLargeBudget = budget.toLowerCase().includes('m') || 
+                                     budget.includes('milyon') || 
+                                     parseInt(budget.replace(/\D/g, '')) > 1000000;
+                const hasSmallTeam = teamSize.includes('1-') || teamSize.includes('2-');
+                
+                if (hasLargeBudget && hasSmallTeam) {
+                    warnings.push('Büyük bütçe ama küçük ekip');
+                }
+            }
+            
+            if (warnings.length > 0) {
+                detailsSpan.textContent = warnings.join(', ');
+                warningDiv.style.display = 'block';
+            } else {
+                warningDiv.style.display = 'none';
+            }
+        }
+
+        function validateStoryFields() {
+            const storyFields = document.querySelectorAll('.story-required');
+            const missingFields = [];
+            
+            storyFields.forEach(field => {
+                if (field.value.length < 500) {
+                    const label = field.closest('.question-item').querySelector('.question-label').textContent;
+                    missingFields.push(label.split('.')[0] + '.');
+                }
+            });
+            
+            return missingFields;
+        }
+
+        function showValidationMessage(missingFields) {
+            const validationMsg = document.getElementById('validationMessage');
+            const missingFieldsSpan = document.getElementById('missingFields');
+            
+            if (missingFields.length > 0) {
+                missingFieldsSpan.textContent = missingFields.join(', ');
+                validationMsg.classList.add('show');
+                
+                // Auto hide after 5 seconds
+                setTimeout(() => {
+                    validationMsg.classList.remove('show');
+                }, 5000);
+                
+                return false;
+            } else {
+                validationMsg.classList.remove('show');
+                return true;
+            }
+        }
+
+        function updateProgressBasedOnCompletion() {
+            const totalFields = document.querySelectorAll('.story-required').length;
+            const completedFields = document.querySelectorAll('.story-required.valid').length;
+            const completionRate = (completedFields / totalFields) * 100;
+            
+            // Update progress bar with completion rate
+            const progressBar = document.getElementById('progressBar');
+            const baseProgress = progressSteps[currentSection];
+            const adjustedProgress = Math.min(baseProgress + (completionRate * 0.2), 100);
+            progressBar.style.width = adjustedProgress + '%';
+        }
 
         function showSection(sectionId, buttonElement) {
             // Hide all sections
@@ -536,6 +1134,25 @@
         }
 
         function nextSection() {
+            // Validate current section if it contains story fields
+            const currentSectionElement = document.getElementById(sections[currentSection]);
+            const currentStoryFields = currentSectionElement.querySelectorAll('.story-required');
+            
+            if (currentStoryFields.length > 0) {
+                const missingFields = [];
+                currentStoryFields.forEach(field => {
+                    if (field.value.length < 500) {
+                        const label = field.closest('.question-item').querySelector('.question-label').textContent;
+                        missingFields.push(label.split('.')[0] + '.');
+                    }
+                });
+                
+                if (missingFields.length > 0) {
+                    showValidationMessage(missingFields);
+                    return; // Don't proceed to next section
+                }
+            }
+            
             if (currentSection < sections.length - 1) {
                 currentSection++;
                 const nextSectionId = sections[currentSection];
@@ -568,9 +1185,15 @@
             submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
         }
 
-        // Form submission handler
+        // Form submission handler with validation
         document.getElementById('researchForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Final validation
+            const missingFields = validateStoryFields();
+            if (!showValidationMessage(missingFields)) {
+                return; // Don't submit if validation fails
+            }
             
             // Collect form data
             const formData = new FormData(this);
@@ -580,19 +1203,20 @@
                 responses[key] = value;
             }
             
-            // Add timestamp
+            // Add timestamp and quality metrics
             responses.submission_date = new Date().toLocaleString('tr-TR');
+            responses.total_chars = calculateTotalCharacters(responses);
+            responses.story_quality_score = calculateQualityScore(responses);
+            responses.consistency_warnings = getConsistencyWarnings();
+            responses.quality_indicators = getQualityIndicators();
             
-            // Option 1: Email (opens email client)
+            // Email functionality
             const emailBody = formatResponsesForEmail(responses);
-            const emailSubject = 'Proje Yönetimi Araştırması - Yanıtlar';
-            const emailUrl = `mailto:serdarbahar09@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            const emailSubject = 'Proje Yönetimi Araştırması - Değerli Hikayeler';
+            const emailUrl = `mailto:sizin.email@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
             
-            // Option 2: Download as text file
+            // Download functionality
             downloadResponsesAsFile(responses);
-            
-            // Option 3: Send to Google Sheets (requires setup)
-            // sendToGoogleSheets(responses);
             
             console.log('Form responses:', responses);
             
@@ -604,37 +1228,86 @@
             localStorage.setItem('researchResponses', JSON.stringify(responses));
         });
 
+        function getConsistencyWarnings() {
+            const warningDiv = document.getElementById('consistencyWarning');
+            if (warningDiv.style.display === 'block') {
+                return document.getElementById('consistencyDetails').textContent;
+            }
+            return 'Tutarlı';
+        }
+
+        function getQualityIndicators() {
+            const indicators = document.querySelectorAll('.quality-badge.active');
+            return Array.from(indicators).map(badge => badge.textContent).join(', ');
+        }
+
+        function calculateTotalCharacters(responses) {
+            const storyFields = ['biggest_crisis', 'deadline_crisis', 'budget_crisis', 'tech_change', 'demo_crisis', 
+                               'key_person_left', 'team_conflict', 'management_pressure', 'remote_issues', 'client_issues',
+                               'sector_challenge', 'compliance_issues', 'security_impact', 'market_changes', 'success_story'];
+            
+            return storyFields.reduce((total, field) => {
+                return total + (responses[field] ? responses[field].length : 0);
+            }, 0);
+        }
+
+        function calculateQualityScore(responses) {
+            const storyFields = ['biggest_crisis', 'deadline_crisis', 'budget_crisis', 'tech_change', 'demo_crisis', 
+                               'key_person_left', 'team_conflict', 'management_pressure', 'remote_issues', 'client_issues',
+                               'sector_challenge', 'compliance_issues', 'security_impact', 'market_changes', 'success_story'];
+            
+            let qualityScore = 0;
+            storyFields.forEach(field => {
+                const length = responses[field] ? responses[field].length : 0;
+                if (length >= 1000) qualityScore += 3; // Excellent
+                else if (length >= 750) qualityScore += 2; // Good
+                else if (length >= 500) qualityScore += 1; // Acceptable
+            });
+            
+            return `${qualityScore}/${storyFields.length * 3} (${Math.round((qualityScore/(storyFields.length * 3)) * 100)}%)`;
+        }
+
         function formatResponsesForEmail(responses) {
-            let text = `PROJE YÖNETİMİ ARAŞTIRMASI YANITLARI\n`;
-            text += `Gönderim Tarihi: ${responses.submission_date}\n\n`;
+            let text = `🎯 PROJE YÖNETİMİ ARAŞTIRMASI - YENİ KATILIMCI\n`;
+            text += `📅 Gönderim Tarihi: ${responses.submission_date}\n`;
+            text += `📊 Toplam Karakter: ${responses.total_chars}\n`;
+            text += `⭐ Kalite Skoru: ${responses.story_quality_score}\n`;
+            text += `✅ Kalite Göstergeleri: ${responses.quality_indicators}\n`;
+            text += `⚠️ Tutarlılık: ${responses.consistency_warnings}\n\n`;
             
             text += `=== KİŞİSEL BİLGİLER ===\n`;
             text += `Sektör: ${responses.sector || 'Belirtilmemiş'}\n`;
             text += `Deneyim: ${responses.experience || 'Belirtilmemiş'}\n`;
             text += `Ekip Büyüklüğü: ${responses.team_size || 'Belirtilmemiş'}\n`;
             text += `Proje Sayısı: ${responses.project_count || 'Belirtilmemiş'}\n`;
-            text += `En Büyük Bütçe: ${responses.biggest_budget || 'Belirtilmemiş'}\n\n`;
+            text += `En Büyük Bütçe: ${responses.biggest_budget || 'Belirtilmemiş'}\n`;
+            text += `İş Email: ${responses.work_email || 'Belirtilmemiş'}\n\n`;
             
             text += `=== KRİZ HİKAYELERİ ===\n`;
-            text += `En Büyük Kriz:\n${responses.biggest_crisis || 'Belirtilmemiş'}\n\n`;
-            text += `Deadline Krizi:\n${responses.deadline_crisis || 'Belirtilmemiş'}\n\n`;
-            text += `Bütçe Krizi:\n${responses.budget_crisis || 'Belirtilmemiş'}\n\n`;
-            text += `Teknoloji Değişimi:\n${responses.tech_change || 'Belirtilmemiş'}\n\n`;
-            text += `Demo Krizi:\n${responses.demo_crisis || 'Belirtilmemiş'}\n\n`;
+            text += `1. En Büyük Kriz (${responses.biggest_crisis?.length || 0} karakter):\n${responses.biggest_crisis || 'Belirtilmemiş'}\n\n`;
+            text += `2. Deadline Krizi (${responses.deadline_crisis?.length || 0} karakter):\n${responses.deadline_crisis || 'Belirtilmemiş'}\n\n`;
+            text += `3. Bütçe Krizi (${responses.budget_crisis?.length || 0} karakter):\n${responses.budget_crisis || 'Belirtilmemiş'}\n\n`;
+            text += `4. Teknoloji Değişimi (${responses.tech_change?.length || 0} karakter):\n${responses.tech_change || 'Belirtilmemiş'}\n\n`;
+            text += `5. Demo Krizi (${responses.demo_crisis?.length || 0} karakter):\n${responses.demo_crisis || 'Belirtilmemiş'}\n\n`;
             
             text += `=== İNSAN DİNAMİKLERİ ===\n`;
-            text += `Kilit Kişi Ayrılması:\n${responses.key_person_left || 'Belirtilmemiş'}\n\n`;
-            text += `Ekip Çatışması:\n${responses.team_conflict || 'Belirtilmemiş'}\n\n`;
-            text += `Yönetim Baskısı:\n${responses.management_pressure || 'Belirtilmemiş'}\n\n`;
-            text += `Uzaktan Çalışma Sorunları:\n${responses.remote_issues || 'Belirtilmemiş'}\n\n`;
-            text += `Müşteri Sorunları:\n${responses.client_issues || 'Belirtilmemiş'}\n\n`;
+            text += `1. Kilit Kişi Ayrılması (${responses.key_person_left?.length || 0} karakter):\n${responses.key_person_left || 'Belirtilmemiş'}\n\n`;
+            text += `2. Ekip Çatışması (${responses.team_conflict?.length || 0} karakter):\n${responses.team_conflict || 'Belirtilmemiş'}\n\n`;
+            text += `3. Yönetim Baskısı (${responses.management_pressure?.length || 0} karakter):\n${responses.management_pressure || 'Belirtilmemiş'}\n\n`;
+            text += `4. Uzaktan Çalışma Sorunları (${responses.remote_issues?.length || 0} karakter):\n${responses.remote_issues || 'Belirtilmemiş'}\n\n`;
+            text += `5. Müşteri Sorunları (${responses.client_issues?.length || 0} karakter):\n${responses.client_issues || 'Belirtilmemiş'}\n\n`;
             
             text += `=== SEKTÖREL DENEYİM ===\n`;
-            text += `Sektörel Zorluk:\n${responses.sector_challenge || 'Belirtilmemiş'}\n\n`;
-            text += `Compliance Sorunları:\n${responses.compliance_issues || 'Belirtilmemiş'}\n\n`;
-            text += `Güvenlik Etkisi:\n${responses.security_impact || 'Belirtilmemiş'}\n\n`;
-            text += `Pazar Değişiklikleri:\n${responses.market_changes || 'Belirtilmemiş'}\n\n`;
-            text += `Başarı Hikayesi:\n${responses.success_story || 'Belirtilmemiş'}\n\n`;
+            text += `1. Sektörel Zorluk (${responses.sector_challenge?.length || 0} karakter):\n${responses.sector_challenge || 'Belirtilmemiş'}\n\n`;
+            text += `2. Compliance Sorunları (${responses.compliance_issues?.length || 0} karakter):\n${responses.compliance_issues || 'Belirtilmemiş'}\n\n`;
+            text += `3. Güvenlik Etkisi (${responses.security_impact?.length || 0} karakter):\n${responses.security_impact || 'Belirtilmemiş'}\n\n`;
+            text += `4. Pazar Değişiklikleri (${responses.market_changes?.length || 0} karakter):\n${responses.market_changes || 'Belirtilmemiş'}\n\n`;
+            text += `5. Başarı Hikayesi (${responses.success_story?.length || 0} karakter):\n${responses.success_story || 'Belirtilmemiş'}\n\n`;
+            
+            text += `=== 🌟 SERBEST ALAN - EK DENEYİMLER ===\n`;
+            text += `Ek Deneyimler (${responses.additional_experiences?.length || 0} karakter):\n${responses.additional_experiences || 'Belirtilmemiş'}\n\n`;
+            text += `Kitap Önerileri (${responses.book_suggestions?.length || 0} karakter):\n${responses.book_suggestions || 'Belirtilmemiş'}\n\n`;
+            text += `İletişim Tercihi (${responses.contact_info?.length || 0} karakter):\n${responses.contact_info || 'Belirtilmemiş'}\n\n`;
             
             return text;
         }
@@ -645,7 +1318,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `proje_yonetimi_yanıtları_${new Date().toISOString().split('T')[0]}.txt`;
+            a.download = `proje_yonetimi_hikayeleri_${new Date().toISOString().split('T')[0]}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -655,6 +1328,16 @@
         // Initialize the form
         updateButtons();
         updateProgress();
+        
+        // Auto-save functionality
+        setInterval(() => {
+            const formData = new FormData(document.getElementById('researchForm'));
+            const responses = {};
+            for (let [key, value] of formData.entries()) {
+                responses[key] = value;
+            }
+            localStorage.setItem('tempFormData', JSON.stringify(responses));
+        }, 30000); // Save every 30 seconds
     </script>
 </body>
 </html>
