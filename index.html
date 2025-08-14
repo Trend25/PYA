@@ -1214,12 +1214,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
         }
 
         function nextSection() {
-            // Sadece son bölümde full validasyon yap
-            if (currentSection === sections.length - 1) {
-                return; // Son bölümdeyiz, submit ile kontrol edilecek
-            }
-            
-            // Diğer bölümlerde serbest geçiş
+            // Sonraki bölüme geçiş
             if (currentSection < sections.length - 1) {
                 currentSection++;
                 const nextSectionId = sections[currentSection];
