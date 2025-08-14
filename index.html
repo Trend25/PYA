@@ -378,6 +378,8 @@
             margin-bottom: 10px;
             font-size: 1.2em;
         }
+
+
         
         @media (max-width: 768px) {
             .container {
@@ -425,6 +427,8 @@
             <button class="nav-button" onclick="showSection('human', this)">İnsan Dinamikleri</button>
             <button class="nav-button" onclick="showSection('sector', this)">Sektörel Deneyim</button>
         </div>
+
+
 
         <form id="researchForm">
             <!-- Personal Information Section -->
@@ -905,6 +909,8 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                         warningDiv.style.display = 'none';
                     }, 3000);
                 }
+                                
+                debugLog(`Validasyon hatası: ${missingFields.join(', ')}`);
                 return false;
             }
             return true;
@@ -1155,6 +1161,8 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 }
             });
             
+            debugLog(`Validasyon kontrolü: ${missingFields.length} eksik alan`);
+                        
             return missingFields;
         }
 
@@ -1206,36 +1214,12 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
         }
 
         function nextSection() {
-            const currentSectionElement = document.getElementById(sections[currentSection]);
-            const currentStoryFields = currentSectionElement.querySelectorAll('.story-required');
-            
-            // İlk bölümde (personal) zorunlu story field yok, geçişe izin ver
-            if (currentSection === 0) {
-                if (currentSection < sections.length - 1) {
-                    currentSection++;
-                    const nextSectionId = sections[currentSection];
-                    const nextButton = document.querySelectorAll('.nav-button')[currentSection];
-                    showSection(nextSectionId, nextButton);
-                }
-                return;
+            // Sadece son bölümde full validasyon yap
+            if (currentSection === sections.length - 1) {
+                return; // Son bölümdeyiz, submit ile kontrol edilecek
             }
             
-            // Diğer bölümlerde story field kontrolü
-            if (currentStoryFields.length > 0) {
-                const missingFields = [];
-                currentStoryFields.forEach(field => {
-                    if (field.value.length < 500) {
-                        const label = field.closest('.question-item').querySelector('.question-label').textContent;
-                        missingFields.push(label.split('.')[0] + '.');
-                    }
-                });
-                
-                if (missingFields.length > 0) {
-                    showValidationMessage(missingFields);
-                    return;
-                }
-            }
-            
+            // Diğer bölümlerde serbest geçiş
             if (currentSection < sections.length - 1) {
                 currentSection++;
                 const nextSectionId = sections[currentSection];
@@ -1308,7 +1292,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 localStorage.setItem('researchResponses', JSON.stringify(responses));
                 
             } catch (error) {
-                console.error('Backup hatası:', error);
+                console.error('Backup yöntemlerinde hata:', error.message);
             }
             
             // Google Sheets'e göndermeyi dene
@@ -1324,7 +1308,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             }).then(() => {
                 console.log('Google Sheets gönderimi tamamlandı');
             }).catch(error => {
-                console.error('Google Sheets hatası:', error);
+                console.error('Google Sheets hatası:', error.message);
             }).finally(() => {
                 // Her durumda completion mesajını göster
                 setTimeout(() => {
@@ -1442,7 +1426,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             } catch (error) {
-                console.error('Dosya indirme hatası:', error);
+                console.error('Dosya indirme hatası:', error.message);
             }
         }
 
@@ -1468,7 +1452,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                         }
                     });
                 } catch (error) {
-                    console.error('localStorage veri yükleme hatası:', error);
+                    console.error('localStorage veri yükleme hatası:', error.message);
                 }
             }
         });
@@ -1483,7 +1467,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 }
                 localStorage.setItem('tempFormData', JSON.stringify(responses));
             } catch (error) {
-                console.error('Otomatik kayıt hatası:', error);
+                console.error('Otomatik kayıt hatası:', error.message);
             }
         }, 30000);
 
