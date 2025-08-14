@@ -378,8 +378,6 @@
             margin-bottom: 10px;
             font-size: 1.2em;
         }
-
-
         
         @media (max-width: 768px) {
             .container {
@@ -427,8 +425,6 @@
             <button class="nav-button" onclick="showSection('human', this)">İnsan Dinamikleri</button>
             <button class="nav-button" onclick="showSection('sector', this)">Sektörel Deneyim</button>
         </div>
-
-
 
         <form id="researchForm">
             <!-- Personal Information Section -->
@@ -918,8 +914,6 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                         warningDiv.style.display = 'none';
                     }, 3000);
                 }
-                                
-                debugLog(`Validasyon hatası: ${missingFields.join(', ')}`);
                 return false;
             }
             return true;
@@ -1170,8 +1164,6 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 }
             });
             
-            debugLog(`Validasyon kontrolü: ${missingFields.length} eksik alan`);
-                        
             return missingFields;
         }
 
@@ -1256,7 +1248,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
         }
 
-        // Improved Form submission handler
+        // Form submission handler
         document.getElementById('researchForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1287,7 +1279,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             submitBtn.textContent = '📤 Gönderiliyor...';
             submitBtn.disabled = true;
             
-            // Backup yöntemleri (email hariç)
+            // Backup yöntemleri
             try {
                 // Dosya indir
                 downloadResponsesAsFile(responses);
@@ -1505,10 +1497,6 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             }
         });
 
-        // Initialize
-        updateButtons();
-        updateProgress();
-
         // Yeni cevap gir fonksiyonu
         function startNewResponse() {
             // Confirmation dialog
@@ -1575,3 +1563,10 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 console.log('Form başarıyla sıfırlandı');
             }
         }
+
+        // Initialize
+        updateButtons();
+        updateProgress();
+    </script>
+</body>
+</html>
