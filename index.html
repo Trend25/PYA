@@ -851,7 +851,18 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 • LinkedIn'i paylaştıysanız profesyonel ağımıza katılabilirsiniz</p>
             </div>
             
-            <p style="opacity: 0.8;">🙏 Değerli katkılarınız için teşekkürler!</p>
+            <div class="bonus-content" style="background: linear-gradient(135deg, #00b894, #00cec9); margin-top: 20px;">
+                <h4>💬 Bizimle İletişim</h4>
+                <p><strong>📧 Email:</strong> serdarbahar09@gmail.com</p>
+                <p><strong>🔗 Ek Katkı:</strong> Başka deneyimleriniz varsa email atabilirsiniz</p>
+                <p><strong>📚 Kitap Haberleri:</strong> Yayın sürecinden haberdar olmak için yazın</p>
+                <p style="font-size: 0.9em; opacity: 0.8; margin-top: 10px;">
+                    Bu araştırma Türkiye'deki proje yöneticilerinin deneyimlerini 
+                    literatüre kazandırmayı hedefliyor. Katkılarınız çok değerli!
+                </p>
+            </div>
+            
+            <p style="opacity: 0.8; margin-top: 15px;">🙏 Değerli vaktinizi ayırdığınız için teşekkürler!</p>
         </div>
     </div>
 
@@ -1304,7 +1315,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 const emailSubject = 'Proje Yönetimi Araştırması - Yeni Yanıt';
                 
                 // Open email client
-                //window.open(`mailto:serdarbahar09@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`);
+                window.open(`mailto:serdarbahar09@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`);
                 
                 // Download backup file
                 downloadResponsesAsFile(responses);
