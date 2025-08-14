@@ -378,6 +378,21 @@
             margin-bottom: 10px;
             font-size: 1.2em;
         }
+
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 12px;
+            display: none;
+        }
+
+        .debug-info.show {
+            display: block;
+        }
         
         @media (max-width: 768px) {
             .container {
@@ -424,6 +439,12 @@
             <button class="nav-button" onclick="showSection('crisis', this)">Kriz Hikayeleri</button>
             <button class="nav-button" onclick="showSection('human', this)">İnsan Dinamikleri</button>
             <button class="nav-button" onclick="showSection('sector', this)">Sektörel Deneyim</button>
+        </div>
+
+        <!-- Debug Information -->
+        <div class="debug-info" id="debugInfo">
+            <strong>Debug Bilgileri:</strong><br>
+            <span id="debugText">Form yüklenmeyi bekliyor...</span>
         </div>
 
         <form id="researchForm">
@@ -833,6 +854,9 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousSection()">← Önceki</button>
                 <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextSection()">Sonraki →</button>
                 <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">📚 Hikayelerimi Gönder</button>
+                
+                <!-- Debug button -->
+                <button type="button" class="btn" style="background: #9b59b6; color: white;" onclick="toggleDebug()">🔧 Debug</button>
             </div>
         </form>
 
@@ -871,11 +895,33 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
         const sections = ['personal', 'crisis', 'human', 'sector'];
         const progressSteps = [25, 50, 75, 100];
         let writingTimers = {};
+        let debugMode = false;
 
         // PM Terms and keywords for quality checking
         const pmTerms = ['proje', 'ekip', 'takım', 'deadline', 'sprint', 'stakeholder', 'bütçe', 'planlama', 'koordinasyon', 'yönetim', 'çözüm', 'problem', 'risk', 'kaynak', 'timeline', 'milestone', 'deliverable', 'scope', 'requirement'];
         const storyStructureWords = ['önce', 'sonra', 'ardından', 'daha sonra', 'o zaman', 'bu durumda', 'sonuç', 'çözüm', 'karar'];
         const pastTenseWords = ['yaptım', 'yaşadım', 'gördüm', 'düşündüm', 'karar verdim', 'çözdüm', 'başladım', 'tamamladım', 'karşılaştım'];
+
+        function debugLog(message) {
+            if (debugMode) {
+                const debugDiv = document.getElementById('debugInfo');
+                const debugText = document.getElementById('debugText');
+                debugText.innerHTML += '<br>' + new Date().toLocaleTimeString() + ': ' + message;
+                debugDiv.scrollTop = debugDiv.scrollHeight;
+                console.log('[DEBUG]', message);
+            }
+        }
+
+        function toggleDebug() {
+            debugMode = !debugMode;
+            const debugDiv = document.getElementById('debugInfo');
+            if (debugMode) {
+                debugDiv.classList.add('show');
+                debugLog('Debug modu aktif');
+            } else {
+                debugDiv.classList.remove('show');
+            }
+        }
 
         function startWritingTimer(textarea) {
             const fieldName = textarea.name;
@@ -884,6 +930,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 initialLength: textarea.value.length,
                 keystrokes: 0
             };
+            debugLog(`Yazma timer başlatıldı: ${fieldName}`);
         }
 
         function checkWritingSpeed(textarea) {
@@ -905,6 +952,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                         warningDiv.style.display = 'none';
                     }, 3000);
                 }
+                debugLog(`Hızlı yazma tespit edildi: ${fieldName}, ${charsAdded} karakter ${elapsed} saniyede`);
                 return false;
             }
             return true;
@@ -1155,6 +1203,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 }
             });
             
+            debugLog(`Validasyon kontrolü: ${missingFields.length} eksik alan`);
             return missingFields;
         }
 
@@ -1170,6 +1219,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                     validationMsg.classList.remove('show');
                 }, 5000);
                 
+                debugLog(`Validasyon hatası: ${missingFields.join(', ')}`);
                 return false;
             } else {
                 validationMsg.classList.remove('show');
@@ -1203,6 +1253,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             currentSection = sections.indexOf(sectionId);
             updateProgress();
             updateButtons();
+            debugLog(`Bölüm değiştirildi: ${sectionId}`);
         }
 
         function nextSection() {
@@ -1256,15 +1307,21 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
         }
 
-        // Form submission handler with simplified approach
+        // Improved Form submission handler
         document.getElementById('researchForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            debugLog('Form gönderme işlemi başlatıldı');
             
+            // Validasyon kontrolü
             const missingFields = validateStoryFields();
             if (!showValidationMessage(missingFields)) {
+                debugLog('Validasyon başarısız, form gönderimi durduruldu');
                 return;
             }
             
+            debugLog('Validasyon başarılı, veri toplama başlatıldı');
+            
+            // Form verilerini topla
             const formData = new FormData(this);
             const responses = {};
             
@@ -1272,183 +1329,68 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 responses[key] = value;
             }
             
+            // Ek meta veriler
             responses.submission_date = new Date().toLocaleString('tr-TR');
             responses.total_chars = calculateTotalCharacters(responses);
             responses.story_quality_score = calculateQualityScore(responses);
             responses.consistency_warnings = getConsistencyWarnings();
             responses.quality_indicators = getQualityIndicators();
             
-            // Show loading state
+            debugLog(`Toplam karakter: ${responses.total_chars}`);
+            debugLog(`Kalite skoru: ${responses.story_quality_score}`);
+            
+            // Buton durumunu güncelle
             const submitBtn = document.getElementById('submitBtn');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = '📤 Gönderiliyor...';
             submitBtn.disabled = true;
             
-            // Try multiple methods
-            const methods = [];
+            debugLog('Veri gönderme yöntemleri başlatılıyor');
             
-            // Method 1: Try Google Sheets via Apps Script (if URL provided)
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
-            if (GOOGLE_SCRIPT_URL.includes('YOUR_') === false) {
-                methods.push(sendToGoogleSheets(responses));
-            }
-            
-            // Method 2: Try Zapier webhook (if URL provided)
-            const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/YOUR_ZAPIER_ID/YOUR_HOOK_ID/';
-            if (ZAPIER_WEBHOOK.includes('YOUR_') === false) {
-                methods.push(sendToZapier(responses));
-            }
-            
-            // Method 3: Try Airtable (if credentials provided)
-            const AIRTABLE_API_KEY = 'YOUR_AIRTABLE_API_KEY';
-            const AIRTABLE_BASE_ID = 'YOUR_BASE_ID';
-            if (AIRTABLE_API_KEY.includes('YOUR_') === false) {
-                methods.push(sendToAirtable(responses));
-            }
-            
-            // Method 4: Always do email + download backup
-            methods.push(Promise.resolve()); // Always succeed for backup methods
-            
-            Promise.allSettled(methods).then(() => {
-                // Always do email and download backup regardless of database status
-                const emailBody = formatResponsesForEmail(responses);
-                const emailSubject = 'Proje Yönetimi Araştırması - Yeni Yanıt';
-                
-                // Open email client
-                window.open(`mailto:serdarbahar09@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`);
-                
-                // Download backup file
+            // Backup yöntemleri (email hariç)
+            try {
+                // Dosya indir
                 downloadResponsesAsFile(responses);
+                debugLog('Backup dosyası indirildi');
                 
-                // Save locally
+                // Local storage'da sakla
                 localStorage.setItem('researchResponses', JSON.stringify(responses));
+                debugLog('Local storage\'a kaydedildi');
                 
-                // Show completion message
-                document.querySelector('.container').style.display = 'none';
-                document.getElementById('completionMessage').style.display = 'block';
-                
-                console.log('Form submitted successfully');
+            } catch (error) {
+                debugLog(`Backup yöntemlerinde hata: ${error.message}`);
+            }
+            
+            // Google Sheets'e göndermeyi dene
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
+            
+            debugLog('Google Sheets\'e gönderiliyor');
+            
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(responses)
+            }).then(() => {
+                debugLog('Google Sheets gönderimi tamamlandı (no-cors)');
+            }).catch(error => {
+                debugLog(`Google Sheets hatası: ${error.message}`);
             }).finally(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                // Her durumda completion mesajını göster
+                setTimeout(() => {
+                    debugLog('Tamamlanma mesajı gösteriliyor');
+                    document.querySelector('.container').style.display = 'none';
+                    document.getElementById('completionMessage').style.display = 'block';
+                    
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    
+                    debugLog('Form gönderimi başarıyla tamamlandı');
+                }, 1000);
             });
         });
-
-        // Zapier webhook integration (simplest)
-        async function sendToZapier(data) {
-            const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/YOUR_ZAPIER_ID/YOUR_HOOK_ID/';
-            
-            try {
-                const response = await fetch(ZAPIER_WEBHOOK, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                if (response.ok) {
-                    console.log('Data sent to Zapier successfully');
-                    return response;
-                } else {
-                    throw new Error('Zapier webhook failed');
-                }
-            } catch (error) {
-                console.error('Zapier error:', error);
-                throw error;
-            }
-        }
-
-        // Google Sheets Integration via Apps Script
-        async function sendToGoogleSheets(data) {
-            // ✅ GÜNCEL APPS SCRIPT URL'NİZ
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
-            
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                console.log('Data sent to Google Sheets successfully');
-                return response;
-            } catch (error) {
-                console.error('Google Sheets error:', error);
-                throw error;
-            }
-        }
-
-        // Airtable Integration  
-        async function sendToAirtable(data) {
-            const AIRTABLE_API_KEY = 'YOUR_AIRTABLE_API_KEY';
-            const AIRTABLE_BASE_ID = 'YOUR_BASE_ID';
-            const AIRTABLE_TABLE_NAME = 'Responses';
-            
-            try {
-                const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        records: [{
-                            fields: {
-                                'Submission_Date': data.submission_date,
-                                'Full_Name': data.full_name || '',
-                                'Email': data.email_address || '',
-                                'Company': data.company_name || '',
-                                'Job_Title': data.job_title || '',
-                                'LinkedIn': data.linkedin_profile || '',
-                                'Privacy_Preference': data.privacy_preference || '',
-                                'Sector': data.sector || '',
-                                'Experience': data.experience || '',
-                                'Team_Size': data.team_size || '',
-                                'Project_Count': data.project_count || '',
-                                'Biggest_Budget': data.biggest_budget || '',
-                                'Work_Email': data.work_email || '',
-                                'Biggest_Crisis': data.biggest_crisis || '',
-                                'Deadline_Crisis': data.deadline_crisis || '',
-                                'Budget_Crisis': data.budget_crisis || '',
-                                'Tech_Change': data.tech_change || '',
-                                'Demo_Crisis': data.demo_crisis || '',
-                                'Key_Person_Left': data.key_person_left || '',
-                                'Team_Conflict': data.team_conflict || '',
-                                'Management_Pressure': data.management_pressure || '',
-                                'Remote_Issues': data.remote_issues || '',
-                                'Client_Issues': data.client_issues || '',
-                                'Sector_Challenge': data.sector_challenge || '',
-                                'Compliance_Issues': data.compliance_issues || '',
-                                'Security_Impact': data.security_impact || '',
-                                'Market_Changes': data.market_changes || '',
-                                'Success_Story': data.success_story || '',
-                                'Additional_Experiences': data.additional_experiences || '',
-                                'Book_Suggestions': data.book_suggestions || '',
-                                'Contact_Info': data.contact_info || '',
-                                'Total_Characters': data.total_chars,
-                                'Quality_Score': data.story_quality_score,
-                                'Quality_Indicators': data.quality_indicators,
-                                'Consistency_Warnings': data.consistency_warnings
-                            }
-                        }]
-                    })
-                });
-                
-                if (response.ok) {
-                    console.log('Data sent to Airtable successfully');
-                    return response;
-                } else {
-                    throw new Error('Airtable submission failed');
-                }
-            } catch (error) {
-                console.error('Airtable error:', error);
-                throw error;
-            }
-        }
 
         function getConsistencyWarnings() {
             const warningDiv = document.getElementById('consistencyWarning');
@@ -1543,31 +1485,101 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
         }
 
         function downloadResponsesAsFile(responses) {
-            const text = formatResponsesForEmail(responses);
-            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `proje_yonetimi_hikayeleri_${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            try {
+                const text = formatResponsesForEmail(responses);
+                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `proje_yonetimi_hikayeleri_${new Date().toISOString().split('T')[0]}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                debugLog('Backup dosyası başarıyla indirildi');
+            } catch (error) {
+                debugLog(`Dosya indirme hatası: ${error.message}`);
+            }
         }
+
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', function() {
+            debugLog('Form başlatıldı');
+            updateButtons();
+            updateProgress();
+            
+            // Load from localStorage if available
+            const savedData = localStorage.getItem('tempFormData');
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    Object.keys(data).forEach(key => {
+                        const field = document.querySelector(`[name="${key}"]`);
+                        if (field) {
+                            field.value = data[key];
+                            if (field.classList.contains('story-required')) {
+                                updateCharCount(field, 500);
+                            } else if (field.classList.contains('free-text')) {
+                                updateFreeTextCount(field);
+                            }
+                        }
+                    });
+                    debugLog('Kaydedilmiş form verileri yüklendi');
+                } catch (error) {
+                    debugLog(`localStorage veri yükleme hatası: ${error.message}`);
+                }
+            }
+        });
+        
+        // Auto-save every 30 seconds
+        setInterval(() => {
+            try {
+                const formData = new FormData(document.getElementById('researchForm'));
+                const responses = {};
+                for (let [key, value] of formData.entries()) {
+                    responses[key] = value;
+                }
+                localStorage.setItem('tempFormData', JSON.stringify(responses));
+                debugLog('Otomatik kayıt yapıldı');
+            } catch (error) {
+                debugLog(`Otomatik kayıt hatası: ${error.message}`);
+            }
+        }, 30000);
+
+        // Key event listeners for better UX
+        document.addEventListener('keydown', function(e) {
+            // Alt + Arrow keys for navigation
+            if (e.altKey && e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSection();
+                debugLog('Klavye kısayolu: Sonraki bölüm');
+            } else if (e.altKey && e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSection();
+                debugLog('Klavye kısayolu: Önceki bölüm');
+            }
+            
+            // Ctrl + S for manual save
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                const formData = new FormData(document.getElementById('researchForm'));
+                const responses = {};
+                for (let [key, value] of formData.entries()) {
+                    responses[key] = value;
+                }
+                localStorage.setItem('manualSave', JSON.stringify(responses));
+                debugLog('Manuel kayıt yapıldı (Ctrl+S)');
+                
+                // Show save confirmation
+                const saveMsg = document.createElement('div');
+                saveMsg.style.cssText = 'position:fixed;top:20px;right:20px;background:#27ae60;color:white;padding:10px 20px;border-radius:8px;z-index:1000;';
+                saveMsg.textContent = '💾 Kaydedildi!';
+                document.body.appendChild(saveMsg);
+                setTimeout(() => document.body.removeChild(saveMsg), 2000);
+            }
+        });
 
         // Initialize
         updateButtons();
         updateProgress();
-        
-        // Auto-save every 30 seconds
-        setInterval(() => {
-            const formData = new FormData(document.getElementById('researchForm'));
-            const responses = {};
-            for (let [key, value] of formData.entries()) {
-                responses[key] = value;
-            }
-            localStorage.setItem('tempFormData', JSON.stringify(responses));
-        }, 30000);
-    </script>
-</body>
-</html>
+        debugLog('JavaScript başlatma tamamlandı');
