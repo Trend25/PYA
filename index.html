@@ -866,7 +866,16 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 </p>
             </div>
             
-            <p style="opacity: 0.8; margin-top: 15px;">🙏 Değerli vaktinizi ayırdığınız için teşekkürler!</p>
+            <div class="bonus-content" style="background: linear-gradient(135deg, #e74c3c, #c0392b); margin-top: 20px;">
+                <h4>📮 Son Söz</h4>
+                <p><strong>🙏 Vakit ayırdığınız için teşekkür ederim.</strong></p>
+                <p><strong>📧 İletişim için:</strong> serdarbahar09@gmail.com mesaj atabilirsiniz</p>
+                <button type="button" class="btn" style="background: white; color: #e74c3c; margin-top: 15px; font-weight: bold;" onclick="startNewResponse()">
+                    🔄 Yeni Cevap Gir
+                </button>
+            </div>
+            
+            <p style="opacity: 0.8; margin-top: 15px;">🚀 Proje yönetimi deneyimleriniz literatüre katkı sağlayacak!</p>
         </div>
     </div>
 
@@ -1499,3 +1508,70 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
         // Initialize
         updateButtons();
         updateProgress();
+
+        // Yeni cevap gir fonksiyonu
+        function startNewResponse() {
+            // Confirmation dialog
+            if (confirm('Yeni bir cevap girmek için formu sıfırlamak istediğinizden emin misiniz?')) {
+                // Formu sıfırla
+                document.getElementById('researchForm').reset();
+                
+                // LocalStorage'ı temizle
+                localStorage.removeItem('tempFormData');
+                localStorage.removeItem('researchResponses');
+                localStorage.removeItem('manualSave');
+                
+                // İlk bölüme dön
+                currentSection = 0;
+                showSection('personal', document.querySelectorAll('.nav-button')[0]);
+                
+                // Completion mesajını gizle, container'ı göster
+                document.getElementById('completionMessage').style.display = 'none';
+                document.querySelector('.container').style.display = 'block';
+                
+                // Sayfa başına scroll
+                window.scrollTo(0, 0);
+                
+                // Tüm karakter sayaçlarını sıfırla
+                document.querySelectorAll('.char-counter').forEach(counter => {
+                    if (counter.id.includes('_counter')) {
+                        const fieldName = counter.id.replace('_counter', '');
+                        if (fieldName.includes('additional_experiences')) {
+                            counter.textContent = '0 karakter (serbest alan)';
+                        } else if (fieldName.includes('book_suggestions')) {
+                            counter.textContent = '0 karakter (önerileriniz)';
+                        } else if (fieldName.includes('contact_info')) {
+                            counter.textContent = '0 karakter (iletişim)';
+                        } else {
+                            counter.textContent = '0/500 karakter (minimum)';
+                        }
+                        counter.className = 'char-counter';
+                    }
+                });
+                
+                // Tüm quality badge'leri sıfırla
+                document.querySelectorAll('.quality-badge').forEach(badge => {
+                    badge.className = 'quality-badge inactive';
+                    const rule = badge.getAttribute('data-rule');
+                    if (rule === 'pm-terms') badge.textContent = 'PM Terimleri';
+                    else if (rule === 'story-structure') badge.textContent = 'Hikaye Yapısı';
+                    else if (rule === 'past-tense') badge.textContent = 'Geçmiş Zaman';
+                    else if (rule === 'solution') badge.textContent = 'Çözüm';
+                    else if (rule === 'unique-content') badge.textContent = 'Özgün İçerik';
+                    else if (rule === 'detailed') badge.textContent = 'Detaylı';
+                    else if (rule === 'valuable') badge.textContent = 'Değerli';
+                });
+                
+                // Form kontrollerini sıfırla
+                document.querySelectorAll('.form-control').forEach(field => {
+                    field.className = 'form-control' + (field.classList.contains('story-required') ? ' story-required' : '') + (field.classList.contains('free-text') ? ' free-text' : '');
+                });
+                
+                // Uyarı mesajlarını gizle
+                document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check').forEach(warning => {
+                    warning.style.display = 'none';
+                });
+                
+                console.log('Form başarıyla sıfırlandı');
+            }
+        }
