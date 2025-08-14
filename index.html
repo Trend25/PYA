@@ -1,15 +1,3 @@
-haklısın; üç hatayı da net biçimde düzelttim:
-
-* \#1 Aşırı ortalama: Bitiş sayfasını artık ekranın tam ortasına “kilitlemiyorum”. Üstten dengeli boşlukla, kart genişliği sınırlı ve mobilde nefes alıyor.
-* \#2 Son sayfada üstte yazı kalması: Bitiş ekranına geçerken **tüm form kabını (`#formContainer`) gizliyorum**. Böylece header/nav/progress dâhil en üstte hiçbir yazı kalmıyor.
-* \#3 “Bitiş mesajları” form sayfalarında görünmesi: CSS’teki hatayı (aynı kural içinde iki farklı `display`) kaldırdım; `#completionWrapper` başlangıçta **tamamen gizli**. Yalnızca gönderimden sonra gösteriliyor.
-* Bonus: “Soruları değiştirebilme” için en altta **`FORM_TEXTS`** adında basit bir yapı ekledim; buradan içerikleri kolayca değiştirebilirsiniz (ör: `FORM_TEXTS.biggest_crisis.label = '...';`).
-
-Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çalıştırmıyorum; ama sorunların kökü CSS/JS görünürlük akışıydı. `#formContainer`’ı tamamen gizleyip `#completionWrapper`’ı yalnızca submit sonrası göstermemiz ve `display` çakışmasını kaldırmamız bu davranışları kesin olarak çözüyor.)
-
----
-
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -25,7 +13,7 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
       min-height:100vh;padding:20px;
     }
 
-    /* FORM GENEL */
+    /* FORM */
     .container{
       max-width:900px;margin:0 auto;background:rgba(255,255,255,.95);
       backdrop-filter:blur(10px);border-radius:20px;padding:40px;
@@ -43,20 +31,19 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
     .nav-button:hover{background:#d5dbdb;color:#2c3e50}
     .nav-button.active{background:#3498db;color:#fff;box-shadow:0 4px 8px rgba(52,152,219,.3)}
 
-    .form-section{display:none;animation:fadeIn .5s ease-in-out}
+    .form-section{display:none;animation:fadeIn .4s ease}
     .form-section.active{display:block}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
     .question-group{background:#f8f9fa;border-radius:12px;padding:25px;margin-bottom:25px;border-left:5px solid #e74c3c}
-    .question-group h3{color:#c0392b;margin-bottom:20px;font-size:1.3em;display:flex;align-items:center}
-    .question-item{background:#fff;padding:20px;border-radius:10px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .3s ease}
-    .question-item:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+    .question-group h3{color:#c0392b;margin-bottom:20px;font-size:1.2em}
+    .question-item{background:#fff;padding:20px;border-radius:10px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 
-    .question-label{display:block;font-weight:600;color:#2980b9;margin-bottom:12px;font-size:1.05em}
-    .form-control{width:100%;padding:12px 15px;border:2px solid #ecf0f1;border-radius:8px;font-size:14px;transition:all .3s ease;font-family:inherit;resize:vertical}
+    .question-label{display:block;font-weight:600;color:#2980b9;margin-bottom:12px;font-size:1.02em}
+    .form-control{width:100%;padding:12px 15px;border:2px solid #ecf0f1;border-radius:8px;font-size:14px;transition:all .2s ease;font-family:inherit;resize:vertical}
     .form-control:focus{outline:none;border-color:#3498db;box-shadow:0 0 0 3px rgba(52,152,219,.1)}
-    .form-control.invalid{border-color:#e74c3c;box-shadow:0 0 0 3px rgba(231,76,60,.1)}
-    .form-control.valid{border-color:#27ae60;box-shadow:0 0 0 3px rgba(39,174,96,.1)}
+    .form-control.invalid{border-color:#e74c3c;box-shadow:0 0 0 3px rgba(231,76,60,.08)}
+    .form-control.valid{border-color:#27ae60;box-shadow:0 0 0 3px rgba(39,174,96,.08)}
     textarea.form-control{min-height:120px;max-height:300px}
     .free-text{min-height:150px;background:#f8f9fa;border:2px dashed #bdc3c7}
     .free-text:focus{background:#fff;border-style:solid;border-color:#3498db}
@@ -66,9 +53,8 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
     .char-counter.error{color:#e74c3c}
     .char-counter.success{color:#27ae60}
 
-    .validation-message{background:#e74c3c;color:#fff;padding:10px 15px;border-radius:8px;margin:10px 0;display:none;animation:shake .5s ease-in-out}
+    .validation-message{background:#e74c3c;color:#fff;padding:10px 15px;border-radius:8px;margin:10px 0;display:none}
     .validation-message.show{display:block}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
     .quality-indicator{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
     .quality-badge{padding:4px 8px;border-radius:12px;font-size:11px;font-weight:bold}
@@ -81,50 +67,42 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
     .email-domain-warning{background:#f39c12;color:#fff;padding:8px 12px;border-radius:6px;margin-top:5px;font-size:12px;display:none}
 
     .form-actions{display:flex;gap:15px;justify-content:center;margin-top:30px;flex-wrap:wrap}
-    .btn{padding:12px 25px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s ease;text-transform:uppercase;letter-spacing:.5px}
+    .btn{padding:12px 25px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s ease;text-transform:uppercase;letter-spacing:.5px}
     .btn-primary{background:linear-gradient(45deg,#3498db,#2980b9);color:#fff}
-    .btn-primary:hover{background:linear-gradient(45deg,#2980b9,#1f618d);transform:translateY(-2px);box-shadow:0 4px 12px rgba(52,152,219,.3)}
+    .btn-primary:hover{transform:translateY(-1px)}
     .btn-secondary{background:#95a5a6;color:#fff}
-    .btn-secondary:hover{background:#7f8c8d;transform:translateY(-2px)}
     .btn-success{background:linear-gradient(45deg,#27ae60,#2ecc71);color:#fff}
-    .btn-success:hover{background:linear-gradient(45deg,#229954,#27ae60);transform:translateY(-2px);box-shadow:0 4px 12px rgba(39,174,96,.3)}
 
-    /* BİTİŞ SAYFASI – SADE VE ÜSTTEN DENGELİ */
-    #completionWrapper{
-      display:none;            /* başlangıçta tamamen gizli */
-      max-width:900px;
-      margin:24px auto;
-    }
+    /* BİTİŞ SAYFASI – sade, aşırı ortalama yok */
+    .completion-wrapper{display:none}
     .completion-card{
-      width:100%;background:rgba(255,255,255,.98);
+      max-width:720px;margin:48px auto 24px;background:rgba(255,255,255,.98);
       border-radius:16px;padding:28px 24px;text-align:center;
-      box-shadow:0 10px 30px rgba(0,0,0,.20)
+      box-shadow:0 10px 30px rgba(0,0,0,.18)
     }
-    .completion-card h2{font-size:1.6em;margin-bottom:10px}
+    .completion-card h2{font-size:1.6em;margin-bottom:8px}
     .completion-card p{font-size:1.05em;margin-bottom:8px}
     .completion-card .accent{font-weight:bold}
     .completion-card .cta{margin-top:14px}
-    .completion-card .btn-red{background:#e74c3c;color:#fff;border-radius:10px;padding:12px 22px;font-size:1.0em;font-weight:700}
+    .completion-card .btn-red{background:#e74c3c;color:#fff;border-radius:10px;padding:12px 24px;font-size:1.02em;font-weight:700}
     .completion-card .foot{opacity:.95;margin-top:12px}
 
     @media (max-width:768px){
       .container{padding:20px;margin:10px}
       .header h1{font-size:1.8em}
       .form-navigation{flex-direction:column}
-      .nav-button{width:100%;text-align:center}
-      .form-actions{flex-direction:column}
-      .btn{width:100%}
-      .completion-card{padding:22px 18px}
+      .nav-button,.btn{width:100%}
+      .completion-card{margin:28px 12px;padding:20px}
       .completion-card h2{font-size:1.35em}
     }
   </style>
 </head>
 <body>
-  <!-- FORM -->
-  <div class="container" id="formContainer">
+  <!-- FORM KISMI -->
+  <div class="container" id="formContainer" aria-live="polite">
     <div class="header">
-      <h1>Proje Yönetimi Araştırması</h1>
-      <p>Gerçek hikayelerinizi paylaşarak proje yönetimi literatürüne katkıda bulunun</p>
+      <h1 id="title">Proje Yönetimi Araştırması</h1>
+      <p id="subtitle">Gerçek hikayelerinizi paylaşarak proje yönetimi literatürüne katkıda bulunun</p>
     </div>
 
     <div class="progress-indicator">
@@ -132,58 +110,58 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
     </div>
 
     <div class="form-navigation">
-      <button class="nav-button active" onclick="showSection('personal', this)">Kişisel Bilgiler</button>
-      <button class="nav-button" onclick="showSection('crisis', this)">Kriz Hikayeleri</button>
-      <button class="nav-button" onclick="showSection('human', this)">İnsan Dinamikleri</button>
-      <button class="nav-button" onclick="showSection('sector', this)">Sektörel Deneyim</button>
+      <button class="nav-button active" onclick="showSection('personal', this)" id="tab-personal">Kişisel Bilgiler</button>
+      <button class="nav-button" onclick="showSection('crisis', this)"  id="tab-crisis">Kriz Hikayeleri</button>
+      <button class="nav-button" onclick="showSection('human', this)"   id="tab-human">İnsan Dinamikleri</button>
+      <button class="nav-button" onclick="showSection('sector', this)"  id="tab-sector">Sektörel Deneyim</button>
     </div>
 
-    <form id="researchForm">
+    <form id="researchForm" novalidate>
       <!-- Kişisel -->
       <div id="personal" class="form-section active">
         <div class="question-group">
-          <h3>👤 Kişisel ve İletişim Bilgileri</h3>
+          <h3 id="personalHeader">👤 Kişisel ve İletişim Bilgileri</h3>
 
           <div class="question-item">
-            <label class="question-label">Adınız Soyadınız (opsiyonel)</label>
-            <input type="text" class="form-control" name="full_name" placeholder="örn: Mehmet Yılmaz (kitapta teşekkür bölümünde yer alabilir)">
+            <label class="question-label" id="lbl_full_name">Adınız Soyadınız (opsiyonel)</label>
+            <input type="text" class="form-control" name="full_name" id="full_name" placeholder="örn: Mehmet Yılmaz (kitapta teşekkür bölümünde yer alabilir)">
             <div class="email-domain-warning" style="background:#3498db;display:block;margin-top:5px;">
               💡 İsminizi paylaşırsanız kitabın teşekkür bölümünde yer alabilirsiniz
             </div>
           </div>
 
           <div class="question-item">
-            <label class="question-label">📧 Email Adresiniz (opsiyonel ama önerilen)</label>
-            <input type="email" class="form-control" name="email_address" placeholder="ornek@sirket.com" oninput="validatePrimaryEmail(this)">
+            <label class="question-label" id="lbl_email">📧 Email Adresiniz (opsiyonel ama önerilen)</label>
+            <input type="email" class="form-control" name="email_address" id="email_address" placeholder="ornek@sirket.com" oninput="validatePrimaryEmail(this)">
             <div class="email-domain-warning" id="primaryEmailWarning">
               ✅ Email adresiniz kaydedildi - kitap haberleri için kullanılacak
             </div>
           </div>
 
           <div class="question-item">
-            <label class="question-label">🏢 Şirket/Kurum Adınız (opsiyonel)</label>
-            <input type="text" class="form-control" name="company_name" placeholder="örn: ABC Teknoloji A.Ş. (anonimleştirilebilir)">
+            <label class="question-label" id="lbl_company">🏢 Şirket/Kurum Adınız (opsiyonel)</label>
+            <input type="text" class="form-control" name="company_name" id="company_name" placeholder="örn: ABC Teknoloji A.Ş. (anonimleştirilebilir)">
             <div class="email-domain-warning" style="background:#27ae60;display:block;margin-top:5px;">
               💼 Şirket adı kitapta "Büyük teknoloji şirketi" olarak anonimleştirilebilir
             </div>
           </div>
 
           <div class="question-item">
-            <label class="question-label">💼 Pozisyonunuz/Ünvanınız (opsiyonel)</label>
-            <input type="text" class="form-control" name="job_title" placeholder="örn: Senior Project Manager, Tech Lead, Product Owner">
+            <label class="question-label" id="lbl_job">💼 Pozisyonunuz/Ünvanınız (opsiyonel)</label>
+            <input type="text" class="form-control" name="job_title" id="job_title" placeholder="örn: Senior Project Manager, Tech Lead, Product Owner">
           </div>
 
           <div class="question-item">
-            <label class="question-label">🌐 LinkedIn Profiliniz (opsiyonel)</label>
-            <input type="url" class="form-control" name="linkedin_profile" placeholder="https://linkedin.com/in/kullaniciadi">
+            <label class="question-label" id="lbl_linkedin">🌐 LinkedIn Profiliniz (opsiyonel)</label>
+            <input type="url" class="form-control" name="linkedin_profile" id="linkedin_profile" placeholder="https://linkedin.com/in/kullaniciadi">
             <div class="email-domain-warning" style="background:#0077b5;display:block;margin-top:5px;">
               🔗 Networking ve kitap tanıtımı için kullanılabilir
             </div>
           </div>
 
           <div class="question-item">
-            <label class="question-label">🎯 Tercihiniz</label>
-            <select class="form-control" name="privacy_preference">
+            <label class="question-label" id="lbl_privacy">🎯 Tercihiniz</label>
+            <select class="form-control" name="privacy_preference" id="privacy_preference">
               <option value="">Nasıl yer almak istersiniz?</option>
               <option value="anonymous">Tamamen anonim</option>
               <option value="first-name-only">Sadece ad</option>
@@ -195,11 +173,11 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
         </div>
 
         <div class="question-group">
-          <h3>📊 Profesyonel Bilgiler</h3>
+          <h3 id="professionalHeader">📊 Profesyonel Bilgiler</h3>
 
           <div class="question-item">
-            <label class="question-label">Hangi sektörde çalışıyorsunuz?</label>
-            <select class="form-control" name="sector" required>
+            <label class="question-label" id="lbl_sector">Hangi sektörde çalışıyorsunuz?</label>
+            <select class="form-control" name="sector" id="sectorSelect" required>
               <option value="">Sektör seçiniz...</option>
               <option value="mobile">Mobil Uygulama Geliştirme</option>
               <option value="ai">Yapay Zeka / Machine Learning</option>
@@ -210,8 +188,8 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
           </div>
 
           <div class="question-item">
-            <label class="question-label">Proje yöneticiliği deneyiminiz kaç yıl?</label>
-            <select class="form-control" name="experience" required>
+            <label class="question-label" id="lbl_exp">Proje yöneticiliği deneyiminiz kaç yıl?</label>
+            <select class="form-control" name="experience" id="experience" required>
               <option value="">Deneyim seçiniz...</option>
               <option value="0-2">0-2 yıl</option>
               <option value="3-5">3-5 yıl</option>
@@ -221,26 +199,26 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
           </div>
 
           <div class="question-item">
-            <label class="question-label">Ekip büyüklüğü genellikle kaç kişi?</label>
-            <input type="text" class="form-control" name="team_size" placeholder="örn: 5-10 kişi, ortalama 7" oninput="validateConsistency()">
+            <label class="question-label" id="lbl_team_size">Ekip büyüklüğü genellikle kaç kişi?</label>
+            <input type="text" class="form-control" name="team_size" id="team_size" placeholder="örn: 5-10 kişi, ortalama 7" oninput="validateConsistency()">
           </div>
 
           <div class="question-item">
-            <label class="question-label">Bugüne kadar kaç proje yönettiniz?</label>
-            <input type="number" class="form-control" name="project_count" placeholder="Toplam proje sayısı" oninput="validateConsistency()">
+            <label class="question-label" id="lbl_project_count">Bugüne kadar kaç proje yönettiniz?</label>
+            <input type="number" class="form-control" name="project_count" id="project_count" placeholder="Toplam proje sayısı" oninput="validateConsistency()">
           </div>
 
           <div class="question-item">
-            <label class="question-label">En büyük bütçeli projenizin değeri neydi? (TL)</label>
-            <input type="text" class="form-control" name="biggest_budget" placeholder="örn: 500000 TL, 1500000 TL (sadece rakam girin)" oninput="formatBudget(this); validateConsistency()">
+            <label class="question-label" id="lbl_budget">En büyük bütçeli projenizin değeri neydi? (TL)</label>
+            <input type="text" class="form-control" name="biggest_budget" id="biggest_budget" placeholder="örn: 500000 TL, 1500000 TL (sadece rakam girin)" oninput="formatBudget(this); validateConsistency()">
             <div class="email-domain-warning" style="background:#3498db;display:block;margin-top:5px;">
               💰 Bütçeyi TL cinsinden giriniz. Örnek: 500000 veya 1500000
             </div>
           </div>
 
           <div class="question-item">
-            <label class="question-label">İş email adresiniz (opsiyonel, doğrulama için)</label>
-            <input type="email" class="form-control" name="work_email" placeholder="ornek@sirket.com" oninput="validateEmailDomain(this)">
+            <label class="question-label" id="lbl_work_email">İş email adresiniz (opsiyonel, doğrulama için)</label>
+            <input type="email" class="form-control" name="work_email" id="work_email" placeholder="ornek@sirket.com" oninput="validateEmailDomain(this)">
             <div class="email-domain-warning" id="emailDomainWarning">
               💡 Kurumsal email adresi (@sirket.com) kullanırsanız yanıtlarınız daha güvenilir kabul edilir
             </div>
@@ -255,5 +233,643 @@ Aşağıda tek dosya, güncel ve sade kod var. (Not: Bu ortamda tarayıcı çal�
       <!-- Kriz -->
       <div id="crisis" class="form-section">
         <div class="question-group">
-          <h3
-```
+          <h3 id="crisisHeader">🔥 Kriz Anları ve Çözümler</h3>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_biggest_crisis">1. En büyük kriziniz neydi?</label>
+            <textarea class="form-control story-required" name="biggest_crisis" id="biggest_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="biggest_crisis_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="biggest_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_deadline_crisis">2. Deadline krizi yaşadığınız bir an?</label>
+            <textarea class="form-control story-required" name="deadline_crisis" id="deadline_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="deadline_crisis_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="deadline_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_budget_crisis">3. Bütçe bittiğinde ne oldu?</label>
+            <textarea class="form-control story-required" name="budget_crisis" id="budget_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="budget_crisis_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="budget_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_tech_change">4. Teknoloji değişimi etkisi?</label>
+            <textarea class="form-control story-required" name="tech_change" id="tech_change" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="tech_change_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="tech_change_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_demo_crisis">5. Demo/sunum öncesi kriz?</label>
+            <textarea class="form-control story-required" name="demo_crisis" id="demo_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="demo_crisis_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="demo_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- İnsan -->
+      <div id="human" class="form-section">
+        <div class="question-group">
+          <h3 id="humanHeader">👥 İnsan Dinamikleri ve İlişkiler</h3>
+          <div class="question-item">
+            <label class="question-label" id="lbl_key_person_left">1. Kilit ekip üyesi ayrıldığında?</label>
+            <textarea class="form-control story-required" name="key_person_left" id="key_person_left" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="key_person_left_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="key_person_left_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_team_conflict">2. Ekip içi çatışma?</label>
+            <textarea class="form-control story-required" name="team_conflict" id="team_conflict" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="team_conflict_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="team_conflict_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_management_pressure">3. Üst yönetim baskısını ekibe yansıtma?</label>
+            <textarea class="form-control story-required" name="management_pressure" id="management_pressure" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="management_pressure_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="management_pressure_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_remote_issues">4. Uzaktan ekip sorunları?</label>
+            <textarea class="form-control story-required" name="remote_issues" id="remote_issues" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="remote_issues_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="remote_issues_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_client_issues">5. Müşteri temsilcisiyle zor an?</label>
+            <textarea class="form-control story-required" name="client_issues" id="client_issues" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="client_issues_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="client_issues_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sektör -->
+      <div id="sector" class="form-section">
+        <div class="question-group">
+          <h3 id="sectorHeader">🏢 Sektörel Deneyimler</h3>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_sector_challenge">1. Sektöre özgü zorluk?</label>
+            <textarea class="form-control story-required" name="sector_challenge" id="sector_challenge" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="sector_challenge_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="sector_challenge_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_compliance_issues">2. Regulasyon/compliance zorlukları?</label>
+            <textarea class="form-control story-required" name="compliance_issues" id="compliance_issues" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="compliance_issues_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="compliance_issues_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_security_impact">3. Güvenlik/gizlilik etkisi?</label>
+            <textarea class="form-control story-required" name="security_impact" id="security_impact" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="security_impact_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="security_impact_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_market_changes">4. Pazar/teknoloji değişimleri?</label>
+            <textarea class="form-control story-required" name="market_changes" id="market_changes" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="market_changes_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="market_changes_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_success_story">5. Başarı hikayeniz?</label>
+            <textarea class="form-control story-required" name="success_story" id="success_story" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="success_story_counter">0/500 karakter (minimum)</div>
+            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
+            <div class="writing-speed-warning" id="success_story_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
+              <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
+              <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
+              <span class="quality-badge inactive" data-rule="solution">Sonuç</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-group">
+          <h3 id="freeHeader">🎨 Serbest Alan - Ek Deneyimleriniz</h3>
+          <div class="question-item">
+            <label class="question-label" id="lbl_additional">💭 Eklemek istedikleriniz?</label>
+            <textarea class="form-control free-text" name="additional_experiences" id="additional_experiences" placeholder="(Opsiyonel)" oninput="updateFreeTextCount(this)" onfocus="startWritingTimer(this)"></textarea>
+            <div class="char-counter" id="additional_experiences_counter">0 karakter (serbest alan)</div>
+            <div class="quality-indicator">
+              <span class="quality-badge inactive" data-rule="unique-content">Özgün İçerik</span>
+              <span class="quality-badge inactive" data-rule="detailed">Detaylı</span>
+              <span class="quality-badge inactive" data-rule="valuable">Değerli</span>
+            </div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_book_suggestions">🎯 Kitap odak önerileri?</label>
+            <textarea class="form-control free-text" name="book_suggestions" id="book_suggestions" placeholder="(Opsiyonel)" oninput="updateFreeTextCount(this)"></textarea>
+            <div class="char-counter" id="book_suggestions_counter">0 karakter (önerileriniz)</div>
+          </div>
+
+          <div class="question-item">
+            <label class="question-label" id="lbl_contact_info">📧 Yayın haberi için iletişim?</label>
+            <textarea class="form-control free-text" name="contact_info" id="contact_info" placeholder="(Opsiyonel)" oninput="updateFreeTextCount(this)"></textarea>
+            <div class="char-counter" id="contact_info_counter">0 karakter (iletişim)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <div class="validation-message" id="validationMessage">
+          ⚠️ Lütfen tüm hikaye sorularını minimum 500 karakter ile doldurun. Eksik/yetersiz alanlar: <span id="missingFields"></span>
+        </div>
+        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousSection()">← Önceki</button>
+        <button type="button" class="btn btn-primary"  id="nextBtn" onclick="nextSection()">Sonraki →</button>
+        <button type="submit" class="btn btn-success"  id="submitBtn" style="display:none;">📚 Hikayelerimi Gönder</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- BİTİŞ SAYFASI – sadece istenen metinler -->
+  <div class="completion-wrapper" id="completionWrapper" aria-live="polite">
+    <div class="completion-card" id="completionMessage" tabindex="-1">
+      <h2>🙏 Vakit ayırdığınız için teşekkür ederim.</h2>
+      <p>📧 İletişim için: <span class="accent">serdarbahar09@gmail.com</span> mesaj atabilirsiniz.</p>
+      <div class="cta">
+        <button type="button" class="btn btn-red" onclick="startNewResponse()">🔄 Yeni Cevap Gir</button>
+      </div>
+      <p class="foot">🚀 Proje yönetimi deneyimleriniz literatüre katkı sağlayacak! 📧 Verileriniz güvenli şekilde kaydedildi.</p>
+    </div>
+  </div>
+
+  <script>
+    /* ====== 1) Soruları tek yerden yönetmek için metin yapılandırması ====== */
+    const FORM_TEXTS = {
+      title: "Proje Yönetimi Araştırması",
+      subtitle: "Gerçek hikayelerinizi paylaşarak proje yönetimi literatürüne katkıda bulunun",
+      tabs: {
+        personal: "Kişisel Bilgiler",
+        crisis:   "Kriz Hikayeleri",
+        human:    "İnsan Dinamikleri",
+        sector:   "Sektörel Deneyim",
+      },
+      headers: {
+        personalHeader: "👤 Kişisel ve İletişim Bilgileri",
+        professionalHeader: "📊 Profesyonel Bilgiler",
+        crisisHeader: "🔥 Kriz Anları ve Çözümler",
+        humanHeader: "👥 İnsan Dinamikleri ve İlişkiler",
+        sectorHeader: "🏢 Sektörel Deneyimler",
+        freeHeader: "🎨 Serbest Alan - Ek Deneyimleriniz"
+      },
+      fields: {
+        biggest_crisis: { label: "1. En büyük kriziniz neydi?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        deadline_crisis:{ label: "2. Deadline krizi yaşadığınız bir an?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        budget_crisis:  { label: "3. Bütçe bittiğinde ne oldu?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        tech_change:    { label: "4. Teknoloji değişimi etkisi?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        demo_crisis:    { label: "5. Demo/sunum öncesi kriz?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+
+        key_person_left:{ label: "1. Kilit ekip üyesi ayrıldığında?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        team_conflict:  { label: "2. Ekip içi çatışma?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        management_pressure:{ label: "3. Üst yönetim baskısını ekibe yansıtma?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        remote_issues:  { label: "4. Uzaktan ekip sorunları?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        client_issues:  { label: "5. Müşteri temsilcisiyle zor an?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+
+        sector_challenge:{ label: "1. Sektöre özgü zorluk?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        compliance_issues:{ label: "2. Regulasyon/compliance zorlukları?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        security_impact: { label: "3. Güvenlik/gizlilik etkisi?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        market_changes:  { label: "4. Pazar/teknoloji değişimleri?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
+        success_story:   { label: "5. Başarı hikayeniz?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" }
+      }
+    };
+
+    /* ====== 2) Form davranışları ====== */
+    let currentSection = 0;
+    const sections = ['personal','crisis','human','sector'];
+    const progressSteps = [25,50,75,100];
+    let writingTimers = {};
+
+    const pmTerms = ['proje','ekip','takım','deadline','sprint','stakeholder','bütçe','planlama','koordinasyon','yönetim','çözüm','problem','risk','kaynak','timeline','milestone','deliverable','scope','requirement'];
+    const storyStructureWords = ['önce','sonra','ardından','daha sonra','o zaman','bu durumda','sonuç','çözüm','karar'];
+    const pastTenseWords = ['yaptım','yaşadım','gördüm','düşündüm','karar verdim','çözdüm','başladım','tamamladım','karşılaştım'];
+
+    function applyFormTexts(){
+      document.getElementById('title').innerText = FORM_TEXTS.title;
+      document.getElementById('subtitle').innerText = FORM_TEXTS.subtitle;
+
+      document.getElementById('tab-personal').innerText = FORM_TEXTS.tabs.personal;
+      document.getElementById('tab-crisis').innerText   = FORM_TEXTS.tabs.crisis;
+      document.getElementById('tab-human').innerText    = FORM_TEXTS.tabs.human;
+      document.getElementById('tab-sector').innerText   = FORM_TEXTS.tabs.sector;
+
+      const H = FORM_TEXTS.headers;
+      document.getElementById('personalHeader').innerText = H.personalHeader;
+      document.getElementById('professionalHeader').innerText = H.professionalHeader;
+      document.getElementById('crisisHeader').innerText = H.crisisHeader;
+      document.getElementById('humanHeader').innerText = H.humanHeader;
+      document.getElementById('sectorHeader').innerText = H.sectorHeader;
+      document.getElementById('freeHeader').innerText = H.freeHeader;
+
+      const F = FORM_TEXTS.fields;
+      const map = [
+        ['lbl_biggest_crisis','biggest_crisis'],
+        ['lbl_deadline_crisis','deadline_crisis'],
+        ['lbl_budget_crisis','budget_crisis'],
+        ['lbl_tech_change','tech_change'],
+        ['lbl_demo_crisis','demo_crisis'],
+        ['lbl_key_person_left','key_person_left'],
+        ['lbl_team_conflict','team_conflict'],
+        ['lbl_management_pressure','management_pressure'],
+        ['lbl_remote_issues','remote_issues'],
+        ['lbl_client_issues','client_issues'],
+        ['lbl_sector_challenge','sector_challenge'],
+        ['lbl_compliance_issues','compliance_issues'],
+        ['lbl_security_impact','security_impact'],
+        ['lbl_market_changes','market_changes'],
+        ['lbl_success_story','success_story'],
+      ];
+      map.forEach(([lbl, key])=>{
+        document.getElementById(lbl).innerText = F[key].label;
+        const ta = document.getElementById(key);
+        if (ta) ta.placeholder = F[key].placeholder;
+      });
+    }
+
+    function clearAllFormData(){
+      try{ localStorage.clear(); }catch(e){}
+      const form = document.getElementById('researchForm');
+      form.reset();
+
+      document.querySelectorAll('textarea').forEach(t=>{ t.value=''; t.textContent=''; });
+      document.querySelectorAll('input').forEach(i=>{
+        i.value='';
+        if (i.classList.contains('story-required')) i.className='form-control story-required';
+        else if (i.classList.contains('free-text')) i.className='form-control free-text';
+        else i.className='form-control';
+      });
+      document.querySelectorAll('select').forEach(s=>{ s.selectedIndex=0; });
+
+      document.querySelectorAll('.char-counter').forEach(c=>{
+        if (c.id.includes('_counter')){
+          const id=c.id.replace('_counter','');
+          if (id.includes('additional_experiences')) c.textContent='0 karakter (serbest alan)';
+          else if (id.includes('book_suggestions')) c.textContent='0 karakter (önerileriniz)';
+          else if (id.includes('contact_info')) c.textContent='0 karakter (iletişim)';
+          else c.textContent='0/500 karakter (minimum)';
+          c.className='char-counter';
+        }
+      });
+
+      document.querySelectorAll('.quality-badge').forEach(b=>{
+        b.className='quality-badge inactive';
+        const rule=b.getAttribute('data-rule');
+        const defaults = {
+          'pm-terms':'PM Terimleri',
+          'story-structure':'Hikaye Yapısı',
+          'past-tense':'Geçmiş Zaman',
+          'solution':'Çözüm',
+          'unique-content':'Özgün İçerik',
+          'detailed':'Detaylı',
+          'valuable':'Değerli'
+        };
+        b.textContent = defaults[rule] || b.textContent;
+      });
+
+      document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check, .validation-message')
+        .forEach(el=>{ el.style.display='none'; el.classList.remove('show'); });
+    }
+
+    function formatBudget(input){
+      let value=input.value.replace(/\D/g,'');
+      if (value){ value=parseInt(value,10).toLocaleString('tr-TR'); input.value=value+' TL'; }
+    }
+    function startWritingTimer(textarea){
+      const field=textarea.name;
+      writingTimers[field]={startTime:Date.now(),initialLength:textarea.value.length};
+    }
+    function checkWritingSpeed(textarea){
+      const field=textarea.name; const t=writingTimers[field]; if (!t) return true;
+      const elapsed=(Date.now()-t.startTime)/1000; const charsAdded=textarea.value.length-t.initialLength;
+      if (elapsed>2 && charsAdded/elapsed>10){
+        const w=document.getElementById(field+'_speed'); if (w){ w.style.display='block'; setTimeout(()=>w.style.display='none',2500); }
+        return false;
+      }
+      return true;
+    }
+    function checkContentQuality(text, fieldName){
+      const indicators=document.querySelector(`textarea[name="${fieldName}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!indicators) return;
+      const pmTermCount=pmTerms.filter(t=>text.toLowerCase().includes(t)).length;
+      const pmBadge=indicators.querySelector('[data-rule="pm-terms"]');
+      if (pmBadge){ pmBadge.className = pmTermCount>=3?'quality-badge active':'quality-badge inactive'; pmBadge.textContent = pmTermCount>=3?`PM Terimleri ✓ (${pmTermCount})`:`PM Terimleri (${pmTermCount}/3)`; }
+      const storyCount=storyStructureWords.filter(t=>text.toLowerCase().includes(t)).length;
+      const storyBadge=indicators.querySelector('[data-rule="story-structure"]');
+      if (storyBadge){ storyBadge.className = storyCount>=2?'quality-badge active':'quality-badge inactive'; storyBadge.textContent = storyCount>=2?'Hikaye Yapısı ✓':'Hikaye Yapısı'; }
+      const pastCount=pastTenseWords.filter(t=>text.toLowerCase().includes(t)).length;
+      const pastBadge=indicators.querySelector('[data-rule="past-tense"]');
+      if (pastBadge){ pastBadge.className = pastCount>=2?'quality-badge active':'quality-badge inactive'; pastBadge.textContent = pastCount>=2?'Geçmiş Zaman ✓':'Geçmiş Zaman'; }
+      const solutionWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
+      const solCount=solutionWords.filter(w=>text.toLowerCase().includes(w)).length;
+      const solBadge=indicators.querySelector('[data-rule="solution"]');
+      if (solBadge){ solBadge.className = solCount>=1?'quality-badge active':'quality-badge inactive'; solBadge.textContent = solCount>=1?'Çözüm ✓':'Çözüm'; }
+    }
+    function checkFreeTextQuality(text, fieldName){
+      const indicators=document.querySelector(`textarea[name="${fieldName}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!indicators) return;
+      const uniqueWords=['covid','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim'];
+      const uniqueBadge=indicators.querySelector('[data-rule="unique-content"]');
+      if (uniqueBadge){ const ok=uniqueWords.some(w=>text.toLowerCase().includes(w)); uniqueBadge.className=ok?'quality-badge active':'quality-badge inactive'; uniqueBadge.textContent=ok?'Özgün İçerik ✓':'Özgün İçerik'; }
+      const detailed=indicators.querySelector('[data-rule="detailed"]');
+      if (detailed){ const ok=text.length>=200; detailed.className=ok?'quality-badge active':'quality-badge inactive'; detailed.textContent=ok?'Detaylı ✓':'Detaylı'; }
+      const valuableWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
+      const valBadge=indicators.querySelector('[data-rule="valuable"]');
+      if (valBadge){ const ok=valuableWords.some(w=>text.toLowerCase().includes(w)); valBadge.className=ok?'quality-badge active':'quality-badge inactive'; valBadge.textContent=ok?'Değerli ✓':'Değerli'; }
+    }
+    function updateCharCount(textarea,minChars){
+      const len=textarea.value.length; const counter=document.getElementById(textarea.name+'_counter');
+      if (counter){
+        counter.textContent = `${len}/${minChars} karakter (minimum)`;
+        if (len<minChars*0.3){ counter.className='char-counter error'; textarea.className='form-control story-required invalid'; }
+        else if (len<minChars){ counter.className='char-counter warning'; textarea.className='form-control story-required'; }
+        else { counter.className='char-counter success'; textarea.className='form-control story-required valid'; }
+      }
+      checkWritingSpeed(textarea);
+      if (len>100) checkContentQuality(textarea.value, textarea.name);
+      updateProgressBasedOnCompletion();
+    }
+    function updateFreeTextCount(textarea){
+      const len=textarea.value.length; const counter=document.getElementById(textarea.name+'_counter');
+      if (counter){
+        const label = textarea.name==='additional_experiences'?'serbest alan':textarea.name==='book_suggestions'?'önerileriniz':'iletişim';
+        counter.textContent = `${len} karakter (${label})`;
+        counter.className = len===0?'char-counter':(len<100?'char-counter warning':'char-counter success');
+      }
+      if (textarea.name==='additional_experiences' && len>50) checkFreeTextQuality(textarea.value, textarea.name);
+      checkWritingSpeed(textarea);
+    }
+    function validatePrimaryEmail(el){
+      const email=el.value; const warn=document.getElementById('primaryEmailWarning');
+      if (!email){ warn.style.display='none'; return; }
+      const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      warn.style.display='block';
+      if (ok){ warn.innerHTML='✅ Email adresiniz kaydedildi - kitap haberleri için kullanılacak'; warn.style.background='#27ae60'; }
+      else { warn.innerHTML='⚠️ Geçerli bir email adresi giriniz'; warn.style.background='#e74c3c'; }
+    }
+    function validateEmailDomain(el){
+      const email=el.value; const warn=document.getElementById('emailDomainWarning');
+      if (!email){ warn.style.display='none'; return; }
+      const domain=email.split('@')[1]; const common=['gmail.com','yahoo.com','hotmail.com','outlook.com'];
+      warn.style.display='block';
+      if (common.includes(domain)){ warn.innerHTML='💡 Kurumsal email adresi (@sirket.com) kullanırsanız yanıtlarınız daha güvenilir kabul edilir'; warn.style.background='#f39c12'; }
+      else if (domain){ warn.innerHTML='✅ Kurumsal email adresi tespit edildi - teşekkürler!'; warn.style.background='#27ae60'; }
+      else { warn.style.display='none'; }
+    }
+    function validateConsistency(){
+      const experience=document.getElementById('experience').value;
+      const projectCount=parseInt(document.getElementById('project_count').value);
+      const teamSize=document.getElementById('team_size').value||'';
+      const budget=document.getElementById('biggest_budget').value||'';
+      const warnDiv=document.getElementById('consistencyWarning');
+      const details=document.getElementById('consistencyDetails');
+      const warns=[];
+      if (experience && projectCount){
+        if (experience==='0-2' && projectCount>10) warns.push('2 yıl deneyim ama 10+ proje');
+        if (experience==='10+' && projectCount<5) warns.push('10+ yıl deneyim ama az proje');
+      }
+      if (teamSize && budget){
+        const n=parseInt(budget.replace(/\D/g,''))||0;
+        const large=n>1000000; const small=/^(1-|2-)/.test(teamSize.trim());
+        if (large && small) warns.push('Büyük bütçe ama küçük ekip');
+      }
+      if (warns.length){ details.textContent=warns.join(', '); warnDiv.style.display='block'; }
+      else { warnDiv.style.display='none'; }
+    }
+    function validateStoryFields(){
+      const storyFields=document.querySelectorAll('.story-required'); const missing=[];
+      storyFields.forEach(f=>{
+        if (f.value.length<500){
+          const label=f.closest('.question-item').querySelector('.question-label').textContent;
+          missing.push(label.split('.')[0]+'.');
+        }
+      });
+      return missing;
+    }
+    function showValidationMessage(missing){
+      const v=document.getElementById('validationMessage');
+      const s=document.getElementById('missingFields');
+      if (missing.length){ s.textContent=missing.join(', '); v.classList.add('show'); setTimeout(()=>v.classList.remove('show'),4500); return false; }
+      v.classList.remove('show'); return true;
+    }
+    function updateProgressBasedOnCompletion(){
+      const total=document.querySelectorAll('.story-required').length;
+      const done=document.querySelectorAll('.story-required.valid').length;
+      const rate=(done/total)*100;
+      const base=progressSteps[currentSection];
+      document.getElementById('progressBar').style.width=Math.min(base+(rate*0.2),100)+'%';
+    }
+    function showSection(id,btn){
+      document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));
+      document.querySelectorAll('.nav-button').forEach(b=>b.classList.remove('active'));
+      document.getElementById(id).classList.add('active'); btn.classList.add('active');
+      currentSection=sections.indexOf(id); updateProgress(); updateButtons();
+    }
+    function nextSection(){
+      if (currentSection<sections.length-1){ currentSection++; showSection(sections[currentSection], document.querySelectorAll('.nav-button')[currentSection]); }
+    }
+    function previousSection(){
+      if (currentSection>0){ currentSection--; showSection(sections[currentSection], document.querySelectorAll('.nav-button')[currentSection]); }
+    }
+    function updateProgress(){ document.getElementById('progressBar').style.width=progressSteps[currentSection]+'%'; }
+    function updateButtons(){
+      const prevBtn=document.getElementById('prevBtn');
+      const nextBtn=document.getElementById('nextBtn');
+      const submitBtn=document.getElementById('submitBtn');
+      prevBtn.style.display=currentSection===0?'none':'inline-block';
+      nextBtn.style.display=currentSection===sections.length-1?'none':'inline-block';
+      submitBtn.style.display=currentSection===sections.length-1?'inline-block':'none';
+    }
+
+    // Submit -> sade bitiş sayfası, form tamamen gizleniyor
+    document.getElementById('researchForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const missing=validateStoryFields();
+      if (missing.length){ showValidationMessage(missing); return; }
+
+      const formData=new FormData(this);
+      const responses={};
+      for (let [k,v] of formData.entries()){ responses[k]=v; }
+      responses.submission_date=new Date().toLocaleString('tr-TR');
+
+      const submitBtn=document.getElementById('submitBtn');
+      submitBtn.textContent='📤 Gönderiliyor...'; submitBtn.disabled=true;
+
+      try{ localStorage.setItem('researchResponses', JSON.stringify(responses)); }catch(e){}
+
+      // (Opsiyonel) Google Apps Script
+      const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
+      fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(responses)}).catch(()=>{});
+
+      // Görünürlük değişimi
+      setTimeout(()=>{
+        clearAllFormData();
+
+        // *** TÜM FORM KABINI GİZLE ***
+        const formContainer = document.getElementById('formContainer');
+        formContainer.style.display='none';
+
+        // *** SADE BİTİŞ EKRANINI GÖSTER ***
+        const wrap=document.getElementById('completionWrapper');
+        const card=document.getElementById('completionMessage');
+        wrap.style.display='block';
+        card.style.display='block';
+        if (card.focus) card.focus();
+
+        submitBtn.textContent='📚 Hikayelerimi Gönder'; submitBtn.disabled=false;
+        window.scrollTo(0,0);
+      }, 400);
+    });
+
+    function startNewResponse(){
+      clearAllFormData();
+
+      // Bitiş sayfasını gizle
+      document.getElementById('completionWrapper').style.display='none';
+      document.getElementById('completionMessage').style.display='none';
+
+      // Tüm form kabını geri getir
+      const formContainer = document.getElementById('formContainer');
+      formContainer.style.display='block';
+
+      // İlk sekmeye dön ve UI güncelle
+      currentSection=0;
+      showSection('personal', document.querySelectorAll('.nav-button')[0]);
+      updateButtons(); updateProgress();
+      window.scrollTo(0,0);
+    }
+
+    // Kısayollar & başlangıç
+    document.addEventListener('keydown', function(e){
+      if (e.altKey && e.key==='ArrowRight'){ e.preventDefault(); nextSection(); }
+      else if (e.altKey && e.key==='ArrowLeft'){ e.preventDefault(); previousSection(); }
+      if (e.ctrlKey && e.key==='s'){
+        e.preventDefault();
+        const msg=document.createElement('div');
+        msg.style.cssText='position:fixed;top:20px;right:20px;background:#3498db;color:#fff;padding:10px 20px;border-radius:8px;z-index:1000;';
+        msg.textContent='💡 Veriler form gönderildiğinde kaydedilir!';
+        document.body.appendChild(msg);
+        setTimeout(()=>document.body.removeChild(msg),1800);
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function(){
+      applyFormTexts();           // << soruları/başlıkları tek yerden uygula
+      clearAllFormData();
+      updateButtons(); updateProgress();
+    });
+  </script>
+</body>
+</html>
