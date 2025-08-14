@@ -1,4 +1,65 @@
-<!DOCTYPE html>
+// Form verilerini tamamen temizle - GÜÇLENDİRİLMİŞ
+        function clearAllFormData() {
+            console.log('Form verileri temizleniyor...');
+            
+            // LocalStorage'ı tamamen temizle
+            localStorage.clear();
+            
+            // Formu sıfırla
+            const form = document.getElementById('researchForm');
+            form.reset();
+            
+            // Tüm input ve textarea alanlarını manuel olarak temizle
+            document.querySelectorAll('input, textarea, select').forEach(field => {
+                field.value = '';
+                // CSS sınıflarını sıfırla
+                if (field.classList.contains('story-required')) {
+                    field.className = 'form-control story-required';
+                } else if (field.classList.contains('free-text')) {
+                    field.className = 'form-control free-text';
+                } else {
+                    field.className = 'form-control';
+                }
+            });
+            
+            // Tüm karakter sayaçlarını sıfırla
+            document.querySelectorAll('.char-counter').forEach(counter => {
+                if (counter.id.includes('_counter')) {
+                    const fieldName = counter.id.replace('_counter', '');
+                    if (fieldName.includes('additional_experiences')) {
+                        counter.textContent = '0 karakter (serbest alan)';
+                    } else if (fieldName.includes('book_suggestions')) {
+                        counter.textContent = '0 karakter (önerileriniz)';
+                    } else if (fieldName.includes('contact_info')) {
+                        counter.textContent = '0 karakter (iletişim)';
+                    } else {
+                        counter.textContent = '0/500 karakter (minimum)';
+                    }
+                    counter.className = 'char-counter';
+                }
+            });
+            
+            // Tüm quality badge'leri sıfırla
+            document.querySelectorAll('.quality-badge').forEach(badge => {
+                badge.className = 'quality-badge inactive';
+                const rule = badge.getAttribute('data-rule');
+                if (rule === 'pm-terms') badge.textContent = 'PM Terimleri';
+                else if (rule === 'story-structure') badge.textContent = 'Hikaye Yapısı';
+                else if (rule === 'past-tense') badge.textContent = 'Geçmiş Zaman';
+                else if (rule === 'solution') badge.textContent = 'Çözüm';
+                else if (rule === 'unique-content') badge.textContent = 'Özgün İçerik';
+                else if (rule === 'detailed') badge.textContent = 'Detaylı';
+                else if (rule === 'valuable') badge.textContent = 'Değerli';
+            });
+            
+            // Tüm uyarı mesajlarını gizle
+            document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check, .validation-message').forEach(warning => {
+                warning.style.display = 'none';
+                warning.classList.remove('show');
+            });
+            
+            console.log('Form tamamen temizlendi');
+        }<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -354,6 +415,9 @@
             border-radius: 15px;
             margin-top: 30px;
             display: none;
+            position: relative;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         
         .completion-message h2 {
@@ -1172,6 +1236,7 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             const missingFieldsSpan = document.getElementById('missingFields');
             
             if (missingFields.length > 0) {
+                console.log('Validasyon hatası:', missingFields);
                 missingFieldsSpan.textContent = missingFields.join(', ');
                 validationMsg.classList.add('show');
                 
@@ -1248,15 +1313,18 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
         }
 
-        // Form submission handler
+        // Form submission handler - BASİTLEŞTİRİLMİŞ
         document.getElementById('researchForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form submit başladı');
             
             // Validasyon kontrolü
             const missingFields = validateStoryFields();
-            if (!showValidationMessage(missingFields)) {
+            if (missingFields.length > 0) {
+                showValidationMessage(missingFields);
                 return;
             }
+            console.log('Validasyon geçti');
             
             // Form verilerini topla
             const formData = new FormData(this);
@@ -1273,22 +1341,22 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
             responses.consistency_warnings = getConsistencyWarnings();
             responses.quality_indicators = getQualityIndicators();
             
+            console.log('Veriler toplandı:', responses);
+            
             // Buton durumunu güncelle
             const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.textContent;
             submitBtn.textContent = '📤 Gönderiliyor...';
             submitBtn.disabled = true;
             
-            // Backup yöntemleri (sadece local storage)
+            // Local storage'da sakla
             try {
-                // Local storage'da sakla
                 localStorage.setItem('researchResponses', JSON.stringify(responses));
-                
+                console.log('LocalStorage\'a kaydedildi');
             } catch (error) {
-                console.error('Backup yöntemlerinde hata:', error.message);
+                console.error('LocalStorage hatası:', error);
             }
             
-            // Google Sheets'e göndermeyi dene
+            // Google Sheets'e gönder
             const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
             
             fetch(GOOGLE_SCRIPT_URL, {
@@ -1299,19 +1367,42 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 },
                 body: JSON.stringify(responses)
             }).then(() => {
-                console.log('Google Sheets gönderimi tamamlandı');
+                console.log('Google Sheets\'e gönderildi');
             }).catch(error => {
-                console.error('Google Sheets hatası:', error.message);
-            }).finally(() => {
-                // Her durumda completion mesajını göster
-                setTimeout(() => {
-                    document.querySelector('.container').style.display = 'none';
-                    document.getElementById('completionMessage').style.display = 'block';
-                    
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                }, 1000);
+                console.log('Google Sheets hatası (normal):', error);
             });
+            
+            // 2 saniye sonra completion sayfasını göster
+            setTimeout(() => {
+                console.log('Completion sayfası gösteriliyor');
+                
+                // Form verilerini temizle
+                clearAllFormData();
+                
+                // Sayfaları değiştir - DEBUG
+                const container = document.querySelector('.container');
+                const completion = document.getElementById('completionMessage');
+                
+                console.log('Container element:', container);
+                console.log('Completion element:', completion);
+                
+                if (container && completion) {
+                    container.style.display = 'none';
+                    completion.style.display = 'block';
+                    console.log('Sayfa değişimi başarılı');
+                } else {
+                    console.error('Container veya completion elementi bulunamadı!');
+                }
+                
+                // Buton durumunu geri getir
+                submitBtn.textContent = '📚 Hikayelerimi Gönder';
+                submitBtn.disabled = false;
+                
+                // Sayfa başına scroll
+                window.scrollTo(0, 0);
+                
+            }, 2000);
+        });
         });
 
         function getConsistencyWarnings() {
@@ -1357,46 +1448,20 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
 
 
 
-        // Initialize the form
+        // Initialize the form - TEMİZ BAŞLANGIÇ
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Sayfa yüklendi, form başlatılıyor');
+            
+            // Tüm eski verileri temizle
+            localStorage.clear();
+            
+            // Buton ve progress'i güncelle
             updateButtons();
             updateProgress();
             
-            // Load from localStorage if available
-            const savedData = localStorage.getItem('tempFormData');
-            if (savedData) {
-                try {
-                    const data = JSON.parse(savedData);
-                    Object.keys(data).forEach(key => {
-                        const field = document.querySelector(`[name="${key}"]`);
-                        if (field) {
-                            field.value = data[key];
-                            if (field.classList.contains('story-required')) {
-                                updateCharCount(field, 500);
-                            } else if (field.classList.contains('free-text')) {
-                                updateFreeTextCount(field);
-                            }
-                        }
-                    });
-                } catch (error) {
-                    console.error('localStorage veri yükleme hatası:', error.message);
-                }
-            }
+            console.log('Form temiz şekilde başlatıldı');
         });
-        
-        // Auto-save every 30 seconds
-        setInterval(() => {
-            try {
-                const formData = new FormData(document.getElementById('researchForm'));
-                const responses = {};
-                for (let [key, value] of formData.entries()) {
-                    responses[key] = value;
-                }
-                localStorage.setItem('tempFormData', JSON.stringify(responses));
-            } catch (error) {
-                console.error('Otomatik kayıt hatası:', error.message);
-            }
-        }, 30000);
+
 
         // Key event listeners for better UX
         document.addEventListener('keydown', function(e) {
@@ -1409,36 +1474,28 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 previousSection();
             }
             
-            // Ctrl + S for manual save
+            // Ctrl + S devre dışı (artık otomatik kayıt yok)
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
-                const formData = new FormData(document.getElementById('researchForm'));
-                const responses = {};
-                for (let [key, value] of formData.entries()) {
-                    responses[key] = value;
-                }
-                localStorage.setItem('manualSave', JSON.stringify(responses));
-                
-                // Show save confirmation
+                // Show info message
                 const saveMsg = document.createElement('div');
-                saveMsg.style.cssText = 'position:fixed;top:20px;right:20px;background:#27ae60;color:white;padding:10px 20px;border-radius:8px;z-index:1000;';
-                saveMsg.textContent = '💾 Kaydedildi!';
+                saveMsg.style.cssText = 'position:fixed;top:20px;right:20px;background:#3498db;color:white;padding:10px 20px;border-radius:8px;z-index:1000;';
+                saveMsg.textContent = '💡 Veriler form gönderildiğinde kaydedilir!';
                 document.body.appendChild(saveMsg);
                 setTimeout(() => document.body.removeChild(saveMsg), 2000);
             }
         });
 
-        // Yeni cevap gir fonksiyonu
+        // Yeni cevap gir fonksiyonu - BASİTLEŞTİRİLMİŞ
         function startNewResponse() {
+            console.log('Yeni cevap gir başlatıldı');
+            
             // Confirmation dialog
             if (confirm('Yeni bir cevap girmek için formu sıfırlamak istediğinizden emin misiniz?')) {
-                // Formu sıfırla
-                document.getElementById('researchForm').reset();
+                console.log('Kullanıcı onayladı, form sıfırlanıyor');
                 
-                // LocalStorage'ı temizle
-                localStorage.removeItem('tempFormData');
-                localStorage.removeItem('researchResponses');
-                localStorage.removeItem('manualSave');
+                // Tüm form verilerini temizle
+                clearAllFormData();
                 
                 // İlk bölüme dön
                 currentSection = 0;
@@ -1451,47 +1508,9 @@ Bu bilgiler sadece sizinle iletişim kurmak için kullanılacak." onInput="updat
                 // Sayfa başına scroll
                 window.scrollTo(0, 0);
                 
-                // Tüm karakter sayaçlarını sıfırla
-                document.querySelectorAll('.char-counter').forEach(counter => {
-                    if (counter.id.includes('_counter')) {
-                        const fieldName = counter.id.replace('_counter', '');
-                        if (fieldName.includes('additional_experiences')) {
-                            counter.textContent = '0 karakter (serbest alan)';
-                        } else if (fieldName.includes('book_suggestions')) {
-                            counter.textContent = '0 karakter (önerileriniz)';
-                        } else if (fieldName.includes('contact_info')) {
-                            counter.textContent = '0 karakter (iletişim)';
-                        } else {
-                            counter.textContent = '0/500 karakter (minimum)';
-                        }
-                        counter.className = 'char-counter';
-                    }
-                });
-                
-                // Tüm quality badge'leri sıfırla
-                document.querySelectorAll('.quality-badge').forEach(badge => {
-                    badge.className = 'quality-badge inactive';
-                    const rule = badge.getAttribute('data-rule');
-                    if (rule === 'pm-terms') badge.textContent = 'PM Terimleri';
-                    else if (rule === 'story-structure') badge.textContent = 'Hikaye Yapısı';
-                    else if (rule === 'past-tense') badge.textContent = 'Geçmiş Zaman';
-                    else if (rule === 'solution') badge.textContent = 'Çözüm';
-                    else if (rule === 'unique-content') badge.textContent = 'Özgün İçerik';
-                    else if (rule === 'detailed') badge.textContent = 'Detaylı';
-                    else if (rule === 'valuable') badge.textContent = 'Değerli';
-                });
-                
-                // Form kontrollerini sıfırla
-                document.querySelectorAll('.form-control').forEach(field => {
-                    field.className = 'form-control' + (field.classList.contains('story-required') ? ' story-required' : '') + (field.classList.contains('free-text') ? ' free-text' : '');
-                });
-                
-                // Uyarı mesajlarını gizle
-                document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check').forEach(warning => {
-                    warning.style.display = 'none';
-                });
-                
-                console.log('Form başarıyla sıfırlandı');
+                console.log('Form başarıyla sıfırlandı ve ilk bölüme dönüldü');
+            } else {
+                console.log('Kullanıcı iptal etti');
             }
         }
 
