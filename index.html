@@ -1,3 +1,6 @@
+al sana **tam güncellenmiş tek dosya** (puan hesaplama + payload’a ekleme dâhil). direkt `.html` olarak kaydedip açabilirsin.
+
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -559,6 +562,13 @@
     const storyStructureWords = ['önce','sonra','ardından','daha sonra','o zaman','bu durumda','sonuç','çözüm','karar'];
     const pastTenseWords = ['yaptım','yaşadım','gördüm','düşündüm','karar verdim','çözdüm','başladım','tamamladım','karşılaştım'];
 
+    /* ====== 2.1 Zorunlu hikaye anahtarları ====== */
+    const STORY_KEYS = [
+      'biggest_crisis','deadline_crisis','budget_crisis','tech_change','demo_crisis',
+      'key_person_left','team_conflict','management_pressure','remote_issues','client_issues',
+      'sector_challenge','compliance_issues','security_impact','market_changes','success_story'
+    ];
+
     function applyFormTexts(){
       document.getElementById('title').innerText = FORM_TEXTS.title;
       document.getElementById('subtitle').innerText = FORM_TEXTS.subtitle;
@@ -793,6 +803,65 @@
       submitBtn.style.display=currentSection===sections.length-1?'inline-block':'none';
     }
 
+    /* ====== 3) PUANLAMA & METRİKLER ====== */
+    function getConsistencyWarnings(){
+      const box = document.getElementById('consistencyWarning');
+      if (box && box.style.display === 'block') {
+        return document.getElementById('consistencyDetails')?.textContent || 'Uyarı var';
+      }
+      return 'Tutarlı';
+    }
+    function getActiveQualityIndicators(){
+      return Array.from(document.querySelectorAll('.quality-badge.active'))
+        .map(b=>b.textContent).join(', ');
+    }
+    function calculateTotalCharacters(res){
+      return STORY_KEYS.reduce((sum,k)=>sum + ((res[k]||'').length), 0);
+    }
+    function computeQualityScore(res){
+      let A=0, B=0, C=0, D=0;
+      const perField = {};
+      const solutionWords = ['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
+
+      STORY_KEYS.forEach(k=>{
+        const t = (res[k]||'').toLowerCase();
+        const len = t.length;
+
+        // A) uzunluk
+        let a=0; if (len>=1000) a=3; else if (len>=750) a=2; else if (len>=500) a=1;
+        A += a;
+
+        // B) içerik rozetleri
+        const pmCnt     = pmTerms.filter(w=>t.includes(w)).length;
+        const storyCnt  = storyStructureWords.filter(w=>t.includes(w)).length;
+        const pastCnt   = pastTenseWords.filter(w=>t.includes(w)).length;
+        const solCnt    = solutionWords.filter(w=>t.includes(w)).length;
+        const b = (pmCnt>=3) + (storyCnt>=2) + (pastCnt>=2) + (solCnt>=1);
+        B += b;
+
+        perField[k] = {len, aScore:a, pmCnt, storyCnt, pastCnt, solCnt, bScore:b, total:a+b};
+      });
+
+      // C) serbest alan bonusu
+      const add = (res['additional_experiences']||'').toLowerCase();
+      const uniqueWords  = ['covid','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim'];
+      const valuableWords= ['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
+      if (uniqueWords.some(w=>add.includes(w))) C += 1;
+      if (add.length >= 200)                   C += 1;
+      if (valuableWords.some(w=>add.includes(w))) C += 1;
+
+      // D) cezalar
+      const cw = getConsistencyWarnings();
+      if (cw !== 'Tutarlı') {
+        const triggers = cw.split(',').filter(s=>s.trim()).length || 1;
+        D -= Math.min(triggers, 2);
+      }
+
+      const raw  = A + B + C + D;
+      const norm = Math.max(0, Math.min(100, Math.round((raw/108)*100)));
+      return { raw, norm, components:{A,B,C,D}, perField };
+    }
+
     // Submit -> sade bitiş sayfası, form tamamen gizleniyor
     document.getElementById('researchForm').addEventListener('submit', function(e){
       e.preventDefault();
@@ -803,6 +872,19 @@
       const responses={};
       for (let [k,v] of formData.entries()){ responses[k]=v; }
       responses.submission_date=new Date().toLocaleString('tr-TR');
+
+      // >>> PUAN & METRİKLERİ EKLE <<<
+      responses.total_chars = calculateTotalCharacters(responses);
+      const q = computeQualityScore(responses);
+      responses.quality_ckp  = q.norm;        // 0–100
+      responses.quality_raw  = q.raw;
+      responses.quality_A    = q.components.A;
+      responses.quality_B    = q.components.B;
+      responses.quality_C    = q.components.C;
+      responses.quality_D    = q.components.D;
+      responses.quality_per_field = JSON.stringify(q.perField);
+      responses.consistency_warnings = getConsistencyWarnings();
+      responses.quality_indicators  = getActiveQualityIndicators();
 
       const submitBtn=document.getElementById('submitBtn');
       submitBtn.textContent='📤 Gönderiliyor...'; submitBtn.disabled=true;
@@ -873,3 +955,4 @@
   </script>
 </body>
 </html>
+```
