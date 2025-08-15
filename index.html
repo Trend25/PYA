@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -13,8 +12,6 @@
       background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
       min-height:100vh;padding:20px;
     }
-
-    /* FORM */
     .container{
       max-width:900px;margin:0 auto;background:rgba(255,255,255,.95);
       backdrop-filter:blur(10px);border-radius:20px;padding:40px;
@@ -23,23 +20,18 @@
     .header{text-align:center;margin-bottom:40px;padding-bottom:20px;border-bottom:3px solid #3498db}
     .header h1{color:#2c3e50;font-size:2.2em;margin-bottom:10px;font-weight:700}
     .header p{color:#7f8c8d;font-size:1.1em;font-weight:300}
-
     .progress-indicator{background:#ecf0f1;height:8px;border-radius:4px;margin-bottom:20px;overflow:hidden}
     .progress-bar{background:linear-gradient(90deg,#3498db,#2ecc71);height:100%;border-radius:4px;transition:width .5s ease}
-
     .form-navigation{display:flex;gap:10px;margin-bottom:30px;flex-wrap:wrap;justify-content:center}
     .nav-button{background:#ecf0f1;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-weight:500;transition:all .3s ease;color:#7f8c8d;font-size:.9em}
     .nav-button:hover{background:#d5dbdb;color:#2c3e50}
     .nav-button.active{background:#3498db;color:#fff;box-shadow:0 4px 8px rgba(52,152,219,.3)}
-
     .form-section{display:none;animation:fadeIn .4s ease}
     .form-section.active{display:block}
     @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
     .question-group{background:#f8f9fa;border-radius:12px;padding:25px;margin-bottom:25px;border-left:5px solid #e74c3c}
     .question-group h3{color:#c0392b;margin-bottom:20px;font-size:1.2em}
     .question-item{background:#fff;padding:20px;border-radius:10px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-
     .question-label{display:block;font-weight:600;color:#2980b9;margin-bottom:12px;font-size:1.02em}
     .form-control{width:100%;padding:12px 15px;border:2px solid #ecf0f1;border-radius:8px;font-size:14px;transition:all .2s ease;font-family:inherit;resize:vertical}
     .form-control:focus{outline:none;border-color:#3498db;box-shadow:0 0 0 3px rgba(52,152,219,.1)}
@@ -48,33 +40,26 @@
     textarea.form-control{min-height:120px;max-height:300px}
     .free-text{min-height:150px;background:#f8f9fa;border:2px dashed #bdc3c7}
     .free-text:focus{background:#fff;border-style:solid;border-color:#3498db}
-
     .char-counter{font-size:12px;color:#7f8c8d;text-align:right;margin-top:5px}
     .char-counter.warning{color:#f39c12}
     .char-counter.error{color:#e74c3c}
     .char-counter.success{color:#27ae60}
-
     .validation-message{background:#e74c3c;color:#fff;padding:10px 15px;border-radius:8px;margin:10px 0;display:none}
     .validation-message.show{display:block}
-
     .quality-indicator{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
     .quality-badge{padding:4px 8px;border-radius:12px;font-size:11px;font-weight:bold}
     .quality-badge.active{background:#27ae60;color:#fff}
     .quality-badge.inactive{background:#ecf0f1;color:#95a5a6}
-
     .keyword-checker{background:#f8f9fa;border-radius:8px;padding:10px;margin-top:10px;font-size:12px;border-left:4px solid #3498db;color:#3498db}
     .writing-speed-warning{background:#e74c3c;color:#fff;padding:8px 12px;border-radius:6px;margin-top:10px;font-size:12px;display:none}
     .consistency-check{background:#3498db;color:#fff;padding:10px 15px;border-radius:8px;margin:15px 0;display:none}
     .email-domain-warning{background:#f39c12;color:#fff;padding:8px 12px;border-radius:6px;margin-top:5px;font-size:12px;display:none}
-
     .form-actions{display:flex;gap:15px;justify-content:center;margin-top:30px;flex-wrap:wrap}
     .btn{padding:12px 25px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s ease;text-transform:uppercase;letter-spacing:.5px}
     .btn-primary{background:linear-gradient(45deg,#3498db,#2980b9);color:#fff}
     .btn-primary:hover{transform:translateY(-1px)}
     .btn-secondary{background:#95a5a6;color:#fff}
     .btn-success{background:linear-gradient(45deg,#27ae60,#2ecc71);color:#fff}
-
-    /* BİTİŞ SAYFASI – sade, aşırı ortalama yok */
     .completion-wrapper{display:none}
     .completion-card{
       max-width:720px;margin:48px auto 24px;background:rgba(255,255,255,.98);
@@ -87,7 +72,6 @@
     .completion-card .cta{margin-top:14px}
     .completion-card .btn-red{background:#e74c3c;color:#fff;border-radius:10px;padding:12px 24px;font-size:1.02em;font-weight:700}
     .completion-card .foot{opacity:.95;margin-top:12px}
-
     @media (max-width:768px){
       .container{padding:20px;margin:10px}
       .header h1{font-size:1.8em}
@@ -99,7 +83,6 @@
   </style>
 </head>
 <body>
-  <!-- FORM KISMI -->
   <div class="container" id="formContainer" aria-live="polite">
     <div class="header">
       <h1 id="title">Proje Yönetimi Araştırması</h1>
@@ -498,11 +481,11 @@
     </form>
   </div>
 
-  <!-- BİTİŞ SAYFASI – sadece istenen metinler -->
+  <!-- Bitiş ekranı: sadece istenen metinler -->
   <div class="completion-wrapper" id="completionWrapper" aria-live="polite">
     <div class="completion-card" id="completionMessage" tabindex="-1">
       <h2>🙏 Vakit ayırdığınız için teşekkür ederim.</h2>
-      <p>📧 İletişim için: <span class="accent">projegercegi@gmail.com</span> mesaj atabilirsiniz.</p>
+      <p>📧 İletişim için: <span class="accent">serdarbahar09@gmail.com</span> mesaj atabilirsiniz.</p>
       <div class="cta">
         <button type="button" class="btn btn-red" onclick="startNewResponse()">🔄 Yeni Cevap Gir</button>
       </div>
@@ -511,46 +494,22 @@
   </div>
 
   <script>
-    /* ====== 1) Soruları tek yerden yönetmek için metin yapılandırması ====== */
+    /* 1) Metin yapılandırması */
     const FORM_TEXTS = {
       title: "Proje Yönetimi Araştırması",
       subtitle: "Gerçek hikayelerinizi paylaşarak proje yönetimi literatürüne katkıda bulunun",
-      tabs: {
-        personal: "Kişisel Bilgiler",
-        crisis:   "Kriz Hikayeleri",
-        human:    "İnsan Dinamikleri",
-        sector:   "Sektörel Deneyim",
-      },
+      tabs: { personal:"Kişisel Bilgiler", crisis:"Kriz Hikayeleri", human:"İnsan Dinamikleri", sector:"Sektörel Deneyim" },
       headers: {
-        personalHeader: "👤 Kişisel ve İletişim Bilgileri",
-        professionalHeader: "📊 Profesyonel Bilgiler",
-        crisisHeader: "🔥 Kriz Anları ve Çözümler",
-        humanHeader: "👥 İnsan Dinamikleri ve İlişkiler",
-        sectorHeader: "🏢 Sektörel Deneyimler",
-        freeHeader: "🎨 Serbest Alan - Ek Deneyimleriniz"
-      },
-      fields: {
-        biggest_crisis: { label: "1. En büyük kriziniz neydi?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        deadline_crisis:{ label: "2. Deadline krizi yaşadığınız bir an?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        budget_crisis:  { label: "3. Bütçe bittiğinde ne oldu?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        tech_change:    { label: "4. Teknoloji değişimi etkisi?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        demo_crisis:    { label: "5. Demo/sunum öncesi kriz?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-
-        key_person_left:{ label: "1. Kilit ekip üyesi ayrıldığında?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        team_conflict:  { label: "2. Ekip içi çatışma?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        management_pressure:{ label: "3. Üst yönetim baskısını ekibe yansıtma?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        remote_issues:  { label: "4. Uzaktan ekip sorunları?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        client_issues:  { label: "5. Müşteri temsilcisiyle zor an?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-
-        sector_challenge:{ label: "1. Sektöre özgü zorluk?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        compliance_issues:{ label: "2. Regulasyon/compliance zorlukları?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        security_impact: { label: "3. Güvenlik/gizlilik etkisi?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        market_changes:  { label: "4. Pazar/teknoloji değişimleri?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" },
-        success_story:   { label: "5. Başarı hikayeniz?", placeholder: "Detaylı anlatın... (Minimum 500 karakter)" }
+        personalHeader:"👤 Kişisel ve İletişim Bilgileri",
+        professionalHeader:"📊 Profesyonel Bilgiler",
+        crisisHeader:"🔥 Kriz Anları ve Çözümler",
+        humanHeader:"👥 İnsan Dinamikleri ve İlişkiler",
+        sectorHeader:"🏢 Sektörel Deneyimler",
+        freeHeader:"🎨 Serbest Alan - Ek Deneyimleriniz"
       }
     };
 
-    /* ====== 2) Form davranışları ====== */
+    /* 2) Davranış değişkenleri */
     let currentSection = 0;
     const sections = ['personal','crisis','human','sector'];
     const progressSteps = [25,50,75,100];
@@ -560,7 +519,6 @@
     const storyStructureWords = ['önce','sonra','ardından','daha sonra','o zaman','bu durumda','sonuç','çözüm','karar'];
     const pastTenseWords = ['yaptım','yaşadım','gördüm','düşündüm','karar verdim','çözdüm','başladım','tamamladım','karşılaştım'];
 
-    /* ====== 2.1 Zorunlu hikaye anahtarları ====== */
     const STORY_KEYS = [
       'biggest_crisis','deadline_crisis','budget_crisis','tech_change','demo_crisis',
       'key_person_left','team_conflict','management_pressure','remote_issues','client_issues',
@@ -570,50 +528,22 @@
     function applyFormTexts(){
       document.getElementById('title').innerText = FORM_TEXTS.title;
       document.getElementById('subtitle').innerText = FORM_TEXTS.subtitle;
-
       document.getElementById('tab-personal').innerText = FORM_TEXTS.tabs.personal;
       document.getElementById('tab-crisis').innerText   = FORM_TEXTS.tabs.crisis;
       document.getElementById('tab-human').innerText    = FORM_TEXTS.tabs.human;
       document.getElementById('tab-sector').innerText   = FORM_TEXTS.tabs.sector;
-
-      const H = FORM_TEXTS.headers;
-      document.getElementById('personalHeader').innerText = H.personalHeader;
-      document.getElementById('professionalHeader').innerText = H.professionalHeader;
-      document.getElementById('crisisHeader').innerText = H.crisisHeader;
-      document.getElementById('humanHeader').innerText = H.humanHeader;
-      document.getElementById('sectorHeader').innerText = H.sectorHeader;
-      document.getElementById('freeHeader').innerText = H.freeHeader;
-
-      const F = FORM_TEXTS.fields;
-      const map = [
-        ['lbl_biggest_crisis','biggest_crisis'],
-        ['lbl_deadline_crisis','deadline_crisis'],
-        ['lbl_budget_crisis','budget_crisis'],
-        ['lbl_tech_change','tech_change'],
-        ['lbl_demo_crisis','demo_crisis'],
-        ['lbl_key_person_left','key_person_left'],
-        ['lbl_team_conflict','team_conflict'],
-        ['lbl_management_pressure','management_pressure'],
-        ['lbl_remote_issues','remote_issues'],
-        ['lbl_client_issues','client_issues'],
-        ['lbl_sector_challenge','sector_challenge'],
-        ['lbl_compliance_issues','compliance_issues'],
-        ['lbl_security_impact','security_impact'],
-        ['lbl_market_changes','market_changes'],
-        ['lbl_success_story','success_story'],
-      ];
-      map.forEach(([lbl, key])=>{
-        document.getElementById(lbl).innerText = F[key].label;
-        const ta = document.getElementById(key);
-        if (ta) ta.placeholder = F[key].placeholder;
-      });
+      document.getElementById('personalHeader').innerText   = FORM_TEXTS.headers.personalHeader;
+      document.getElementById('professionalHeader').innerText= FORM_TEXTS.headers.professionalHeader;
+      document.getElementById('crisisHeader').innerText      = FORM_TEXTS.headers.crisisHeader;
+      document.getElementById('humanHeader').innerText       = FORM_TEXTS.headers.humanHeader;
+      document.getElementById('sectorHeader').innerText      = FORM_TEXTS.headers.sectorHeader;
+      document.getElementById('freeHeader').innerText        = FORM_TEXTS.headers.freeHeader;
     }
 
     function clearAllFormData(){
       try{ localStorage.clear(); }catch(e){}
       const form = document.getElementById('researchForm');
       form.reset();
-
       document.querySelectorAll('textarea').forEach(t=>{ t.value=''; t.textContent=''; });
       document.querySelectorAll('input').forEach(i=>{
         i.value='';
@@ -622,7 +552,6 @@
         else i.className='form-control';
       });
       document.querySelectorAll('select').forEach(s=>{ s.selectedIndex=0; });
-
       document.querySelectorAll('.char-counter').forEach(c=>{
         if (c.id.includes('_counter')){
           const id=c.id.replace('_counter','');
@@ -633,115 +562,103 @@
           c.className='char-counter';
         }
       });
-
       document.querySelectorAll('.quality-badge').forEach(b=>{
         b.className='quality-badge inactive';
         const rule=b.getAttribute('data-rule');
         const defaults = {
-          'pm-terms':'PM Terimleri',
-          'story-structure':'Hikaye Yapısı',
-          'past-tense':'Geçmiş Zaman',
-          'solution':'Çözüm',
-          'unique-content':'Özgün İçerik',
-          'detailed':'Detaylı',
-          'valuable':'Değerli'
+          'pm-terms':'PM Terimleri','story-structure':'Hikaye Yapısı','past-tense':'Geçmiş Zaman',
+          'solution':'Çözüm','unique-content':'Özgün İçerik','detailed':'Detaylı','valuable':'Değerli'
         };
         b.textContent = defaults[rule] || b.textContent;
       });
-
       document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check, .validation-message')
         .forEach(el=>{ el.style.display='none'; el.classList.remove('show'); });
     }
 
     function formatBudget(input){
-      let value=input.value.replace(/\D/g,'');
-      if (value){ value=parseInt(value,10).toLocaleString('tr-TR'); input.value=value+' TL'; }
+      let v=input.value.replace(/\D/g,''); if (v){ v=parseInt(v,10).toLocaleString('tr-TR'); input.value=v+' TL'; }
     }
     function startWritingTimer(textarea){
-      const field=textarea.name;
-      writingTimers[field]={startTime:Date.now(),initialLength:textarea.value.length};
+      const f=textarea.name; writingTimers[f]={startTime:Date.now(),initialLength:textarea.value.length};
     }
     function checkWritingSpeed(textarea){
-      const field=textarea.name; const t=writingTimers[field]; if (!t) return true;
-      const elapsed=(Date.now()-t.startTime)/1000; const charsAdded=textarea.value.length-t.initialLength;
-      if (elapsed>2 && charsAdded/elapsed>10){
-        const w=document.getElementById(field+'_speed'); if (w){ w.style.display='block'; setTimeout(()=>w.style.display='none',2500); }
-        return false;
-      }
+      const f=textarea.name; const t=writingTimers[f]; if (!t) return true;
+      const elapsed=(Date.now()-t.startTime)/1000; const added=textarea.value.length-t.initialLength;
+      if (elapsed>2 && added/elapsed>10){ const w=document.getElementById(f+'_speed'); if (w){ w.style.display='block'; setTimeout(()=>w.style.display='none',2500); } return false; }
       return true;
     }
-    function checkContentQuality(text, fieldName){
-      const indicators=document.querySelector(`textarea[name="${fieldName}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!indicators) return;
-      const pmTermCount=pmTerms.filter(t=>text.toLowerCase().includes(t)).length;
-      const pmBadge=indicators.querySelector('[data-rule="pm-terms"]');
-      if (pmBadge){ pmBadge.className = pmTermCount>=3?'quality-badge active':'quality-badge inactive'; pmBadge.textContent = pmTermCount>=3?`PM Terimleri ✓ (${pmTermCount})`:`PM Terimleri (${pmTermCount}/3)`; }
-      const storyCount=storyStructureWords.filter(t=>text.toLowerCase().includes(t)).length;
-      const storyBadge=indicators.querySelector('[data-rule="story-structure"]');
-      if (storyBadge){ storyBadge.className = storyCount>=2?'quality-badge active':'quality-badge inactive'; storyBadge.textContent = storyCount>=2?'Hikaye Yapısı ✓':'Hikaye Yapısı'; }
-      const pastCount=pastTenseWords.filter(t=>text.toLowerCase().includes(t)).length;
-      const pastBadge=indicators.querySelector('[data-rule="past-tense"]');
-      if (pastBadge){ pastBadge.className = pastCount>=2?'quality-badge active':'quality-badge inactive'; pastBadge.textContent = pastCount>=2?'Geçmiş Zaman ✓':'Geçmiş Zaman'; }
-      const solutionWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
-      const solCount=solutionWords.filter(w=>text.toLowerCase().includes(w)).length;
-      const solBadge=indicators.querySelector('[data-rule="solution"]');
-      if (solBadge){ solBadge.className = solCount>=1?'quality-badge active':'quality-badge inactive'; solBadge.textContent = solCount>=1?'Çözüm ✓':'Çözüm'; }
+    function checkContentQuality(text, name){
+      const box=document.querySelector(`textarea[name="${name}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!box) return;
+      const pmCnt=pmTerms.filter(t=>text.toLowerCase().includes(t)).length;
+      const storyCnt=storyStructureWords.filter(t=>text.toLowerCase().includes(t)).length;
+      const pastCnt=pastTenseWords.filter(t=>text.toLowerCase().includes(t)).length;
+      const solWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
+      const solCnt=solWords.filter(w=>text.toLowerCase().includes(w)).length;
+      const pmBadge=box.querySelector('[data-rule="pm-terms"]');
+      const stBadge=box.querySelector('[data-rule="story-structure"]');
+      const ptBadge=box.querySelector('[data-rule="past-tense"]');
+      const soBadge=box.querySelector('[data-rule="solution"]');
+      if (pmBadge){ pmBadge.className=pmCnt>=3?'quality-badge active':'quality-badge inactive'; pmBadge.textContent=pmCnt>=3?`PM Terimleri ✓ (${pmCnt})`:`PM Terimleri (${pmCnt}/3)`; }
+      if (stBadge){ stBadge.className=storyCnt>=2?'quality-badge active':'quality-badge inactive'; stBadge.textContent=storyCnt>=2?'Hikaye Yapısı ✓':'Hikaye Yapısı'; }
+      if (ptBadge){ ptBadge.className=pastCnt>=2?'quality-badge active':'quality-badge inactive'; ptBadge.textContent=pastCnt>=2?'Geçmiş Zaman ✓':'Geçmiş Zaman'; }
+      if (soBadge){ soBadge.className=solCnt>=1?'quality-badge active':'quality-badge inactive'; soBadge.textContent=solCnt>=1?'Çözüm ✓':'Çözüm'; }
     }
-    function checkFreeTextQuality(text, fieldName){
-      const indicators=document.querySelector(`textarea[name="${fieldName}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!indicators) return;
+    function checkFreeTextQuality(text, name){
+      const box=document.querySelector(`textarea[name="${name}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!box) return;
       const uniqueWords=['covid','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim'];
-      const uniqueBadge=indicators.querySelector('[data-rule="unique-content"]');
-      if (uniqueBadge){ const ok=uniqueWords.some(w=>text.toLowerCase().includes(w)); uniqueBadge.className=ok?'quality-badge active':'quality-badge inactive'; uniqueBadge.textContent=ok?'Özgün İçerik ✓':'Özgün İçerik'; }
-      const detailed=indicators.querySelector('[data-rule="detailed"]');
-      if (detailed){ const ok=text.length>=200; detailed.className=ok?'quality-badge active':'quality-badge inactive'; detailed.textContent=ok?'Detaylı ✓':'Detaylı'; }
-      const valuableWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
-      const valBadge=indicators.querySelector('[data-rule="valuable"]');
-      if (valBadge){ const ok=valuableWords.some(w=>text.toLowerCase().includes(w)); valBadge.className=ok?'quality-badge active':'quality-badge inactive'; valBadge.textContent=ok?'Değerli ✓':'Değerli'; }
+      const valWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
+      const u=box.querySelector('[data-rule="unique-content"]');
+      const d=box.querySelector('[data-rule="detailed"]');
+      const v=box.querySelector('[data-rule="valuable"]');
+      if (u){ const ok=uniqueWords.some(w=>text.toLowerCase().includes(w)); u.className=ok?'quality-badge active':'quality-badge inactive'; u.textContent=ok?'Özgün İçerik ✓':'Özgün İçerik'; }
+      if (d){ const ok=text.length>=200; d.className=ok?'quality-badge active':'quality-badge inactive'; d.textContent=ok?'Detaylı ✓':'Detaylı'; }
+      if (v){ const ok=valWords.some(w=>text.toLowerCase().includes(w)); v.className=ok?'quality-badge active':'quality-badge inactive'; v.textContent=ok?'Değerli ✓':'Değerli'; }
     }
-    function updateCharCount(textarea,minChars){
-      const len=textarea.value.length; const counter=document.getElementById(textarea.name+'_counter');
-      if (counter){
-        counter.textContent = `${len}/${minChars} karakter (minimum)`;
-        if (len<minChars*0.3){ counter.className='char-counter error'; textarea.className='form-control story-required invalid'; }
-        else if (len<minChars){ counter.className='char-counter warning'; textarea.className='form-control story-required'; }
-        else { counter.className='char-counter success'; textarea.className='form-control story-required valid'; }
+    function updateCharCount(textarea,min){
+      const len=textarea.value.length; const c=document.getElementById(textarea.name+'_counter');
+      if (c){
+        c.textContent=`${len}/${min} karakter (minimum)`;
+        if (len<min*0.3){ c.className='char-counter error'; textarea.className='form-control story-required invalid'; }
+        else if (len<min){ c.className='char-counter warning'; textarea.className='form-control story-required'; }
+        else { c.className='char-counter success'; textarea.className='form-control story-required valid'; }
       }
       checkWritingSpeed(textarea);
       if (len>100) checkContentQuality(textarea.value, textarea.name);
       updateProgressBasedOnCompletion();
     }
     function updateFreeTextCount(textarea){
-      const len=textarea.value.length; const counter=document.getElementById(textarea.name+'_counter');
-      if (counter){
-        const label = textarea.name==='additional_experiences'?'serbest alan':textarea.name==='book_suggestions'?'önerileriniz':'iletişim';
-        counter.textContent = `${len} karakter (${label})`;
-        counter.className = len===0?'char-counter':(len<100?'char-counter warning':'char-counter success');
+      const len=textarea.value.length; const c=document.getElementById(textarea.name+'_counter');
+      if (c){
+        const label=textarea.name==='additional_experiences'?'serbest alan':textarea.name==='book_suggestions'?'önerileriniz':'iletişim';
+        c.textContent=`${len} karakter (${label})`;
+        c.className=len===0?'char-counter':(len<100?'char-counter warning':'char-counter success');
       }
       if (textarea.name==='additional_experiences' && len>50) checkFreeTextQuality(textarea.value, textarea.name);
       checkWritingSpeed(textarea);
     }
     function validatePrimaryEmail(el){
-      const email=el.value; const warn=document.getElementById('primaryEmailWarning');
-      if (!email){ warn.style.display='none'; return; }
+      const email=el.value; const w=document.getElementById('primaryEmailWarning');
+      if (!email){ w.style.display='none'; return; }
       const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      warn.style.display='block';
-      if (ok){ warn.innerHTML='✅ Email adresiniz kaydedildi - kitap haberleri için kullanılacak'; warn.style.background='#27ae60'; }
-      else { warn.innerHTML='⚠️ Geçerli bir email adresi giriniz'; warn.style.background='#e74c3c'; }
+      w.style.display='block';
+      w.innerHTML = ok ? '✅ Email adresiniz kaydedildi - kitap haberleri için kullanılacak' : '⚠️ Geçerli bir email adresi giriniz';
+      w.style.background = ok ? '#27ae60' : '#e74c3c';
     }
     function validateEmailDomain(el){
-      const email=el.value; const warn=document.getElementById('emailDomainWarning');
-      if (!email){ warn.style.display='none'; return; }
+      const email=el.value; const w=document.getElementById('emailDomainWarning');
+      if (!email){ w.style.display='none'; return; }
       const domain=email.split('@')[1]; const common=['gmail.com','yahoo.com','hotmail.com','outlook.com'];
-      warn.style.display='block';
-      if (common.includes(domain)){ warn.innerHTML='💡 Kurumsal email adresi (@sirket.com) kullanırsanız yanıtlarınız daha güvenilir kabul edilir'; warn.style.background='#f39c12'; }
-      else if (domain){ warn.innerHTML='✅ Kurumsal email adresi tespit edildi - teşekkürler!'; warn.style.background='#27ae60'; }
-      else { warn.style.display='none'; }
+      w.style.display='block';
+      if (common.includes(domain)){ w.innerHTML='💡 Kurumsal email adresi (@sirket.com) kullanırsanız yanıtlarınız daha güvenilir kabul edilir'; w.style.background='#f39c12'; }
+      else if (domain){ w.innerHTML='✅ Kurumsal email adresi tespit edildi - teşekkürler!'; w.style.background='#27ae60'; }
+      else { w.style.display='none'; }
     }
     function validateConsistency(){
       const experience=document.getElementById('experience').value;
       const projectCount=parseInt(document.getElementById('project_count').value);
       const teamSize=document.getElementById('team_size').value||'';
       const budget=document.getElementById('biggest_budget').value||'';
-      const warnDiv=document.getElementById('consistencyWarning');
+      const box=document.getElementById('consistencyWarning');
       const details=document.getElementById('consistencyDetails');
       const warns=[];
       if (experience && projectCount){
@@ -753,30 +670,23 @@
         const large=n>1000000; const small=/^(1-|2-)/.test(teamSize.trim());
         if (large && small) warns.push('Büyük bütçe ama küçük ekip');
       }
-      if (warns.length){ details.textContent=warns.join(', '); warnDiv.style.display='block'; }
-      else { warnDiv.style.display='none'; }
+      if (warns.length){ details.textContent=warns.join(', '); box.style.display='block'; }
+      else { box.style.display='none'; }
     }
     function validateStoryFields(){
-      const storyFields=document.querySelectorAll('.story-required'); const missing=[];
-      storyFields.forEach(f=>{
-        if (f.value.length<500){
-          const label=f.closest('.question-item').querySelector('.question-label').textContent;
-          missing.push(label.split('.')[0]+'.');
-        }
-      });
+      const fields=document.querySelectorAll('.story-required'); const missing=[];
+      fields.forEach(f=>{ if (f.value.length<500){ const label=f.closest('.question-item').querySelector('.question-label').textContent; missing.push(label.split('.')[0]+'.'); }});
       return missing;
     }
-    function showValidationMessage(missing){
-      const v=document.getElementById('validationMessage');
-      const s=document.getElementById('missingFields');
-      if (missing.length){ s.textContent=missing.join(', '); v.classList.add('show'); setTimeout(()=>v.classList.remove('show'),4500); return false; }
+    function showValidationMessage(list){
+      const v=document.getElementById('validationMessage'); const s=document.getElementById('missingFields');
+      if (list.length){ s.textContent=list.join(', '); v.classList.add('show'); setTimeout(()=>v.classList.remove('show'),4500); return false; }
       v.classList.remove('show'); return true;
     }
     function updateProgressBasedOnCompletion(){
       const total=document.querySelectorAll('.story-required').length;
       const done=document.querySelectorAll('.story-required.valid').length;
-      const rate=(done/total)*100;
-      const base=progressSteps[currentSection];
+      const rate=(done/total)*100; const base=progressSteps[currentSection];
       document.getElementById('progressBar').style.width=Math.min(base+(rate*0.2),100)+'%';
     }
     function showSection(id,btn){
@@ -785,12 +695,8 @@
       document.getElementById(id).classList.add('active'); btn.classList.add('active');
       currentSection=sections.indexOf(id); updateProgress(); updateButtons();
     }
-    function nextSection(){
-      if (currentSection<sections.length-1){ currentSection++; showSection(sections[currentSection], document.querySelectorAll('.nav-button')[currentSection]); }
-    }
-    function previousSection(){
-      if (currentSection>0){ currentSection--; showSection(sections[currentSection], document.querySelectorAll('.nav-button')[currentSection]); }
-    }
+    function nextSection(){ if (currentSection<sections.length-1){ currentSection++; showSection(sections[currentSection], document.querySelectorAll('.nav-button')[currentSection]); } }
+    function previousSection(){ if (currentSection>0){ currentSection--; showSection(sections[currentSection], document.querySelectorAll('.nav-button')[currentSection]); } }
     function updateProgress(){ document.getElementById('progressBar').style.width=progressSteps[currentSection]+'%'; }
     function updateButtons(){
       const prevBtn=document.getElementById('prevBtn');
@@ -801,7 +707,7 @@
       submitBtn.style.display=currentSection===sections.length-1?'inline-block':'none';
     }
 
-    /* ====== 3) PUANLAMA & METRİKLER ====== */
+    /* 3) QUALITY SCORE */
     function getConsistencyWarnings(){
       const box = document.getElementById('consistencyWarning');
       if (box && box.style.display === 'block') {
@@ -810,57 +716,42 @@
       return 'Tutarlı';
     }
     function getActiveQualityIndicators(){
-      return Array.from(document.querySelectorAll('.quality-badge.active'))
-        .map(b=>b.textContent).join(', ');
+      return Array.from(document.querySelectorAll('.quality-badge.active')).map(b=>b.textContent).join(', ');
     }
     function calculateTotalCharacters(res){
       return STORY_KEYS.reduce((sum,k)=>sum + ((res[k]||'').length), 0);
     }
     function computeQualityScore(res){
-      let A=0, B=0, C=0, D=0;
-      const perField = {};
-      const solutionWords = ['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
-
+      let A=0,B=0,C=0,D=0;
+      const perField={};
+      const solutionWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
       STORY_KEYS.forEach(k=>{
-        const t = (res[k]||'').toLowerCase();
-        const len = t.length;
-
-        // A) uzunluk
+        const t=(res[k]||'').toLowerCase(); const len=t.length;
         let a=0; if (len>=1000) a=3; else if (len>=750) a=2; else if (len>=500) a=1;
-        A += a;
-
-        // B) içerik rozetleri
-        const pmCnt     = pmTerms.filter(w=>t.includes(w)).length;
-        const storyCnt  = storyStructureWords.filter(w=>t.includes(w)).length;
-        const pastCnt   = pastTenseWords.filter(w=>t.includes(w)).length;
-        const solCnt    = solutionWords.filter(w=>t.includes(w)).length;
-        const b = (pmCnt>=3) + (storyCnt>=2) + (pastCnt>=2) + (solCnt>=1);
-        B += b;
-
-        perField[k] = {len, aScore:a, pmCnt, storyCnt, pastCnt, solCnt, bScore:b, total:a+b};
+        A+=a;
+        const pmCnt=pmTerms.filter(w=>t.includes(w)).length;
+        const storyCnt=storyStructureWords.filter(w=>t.includes(w)).length;
+        const pastCnt=pastTenseWords.filter(w=>t.includes(w)).length;
+        const solCnt=solutionWords.filter(w=>t.includes(w)).length;
+        const b=(pmCnt>=3)+(storyCnt>=2)+(pastCnt>=2)+(solCnt>=1);
+        B+=b;
+        perField[k]={len,aScore:a,pmCnt,storyCnt,pastCnt,solCnt,bScore:b,total:a+b};
       });
-
-      // C) serbest alan bonusu
-      const add = (res['additional_experiences']||'').toLowerCase();
-      const uniqueWords  = ['covid','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim'];
-      const valuableWords= ['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
-      if (uniqueWords.some(w=>add.includes(w))) C += 1;
-      if (add.length >= 200)                   C += 1;
-      if (valuableWords.some(w=>add.includes(w))) C += 1;
-
-      // D) cezalar
-      const cw = getConsistencyWarnings();
-      if (cw !== 'Tutarlı') {
-        const triggers = cw.split(',').filter(s=>s.trim()).length || 1;
-        D -= Math.min(triggers, 2);
-      }
-
-      const raw  = A + B + C + D;
-      const norm = Math.max(0, Math.min(100, Math.round((raw/108)*100)));
-      return { raw, norm, components:{A,B,C,D}, perField };
+      const add=(res['additional_experiences']||'').toLowerCase();
+      const uniqueWords=['covid','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim'];
+      const valuableWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
+      if (uniqueWords.some(w=>add.includes(w))) C+=1;
+      if (add.length>=200) C+=1;
+      if (valuableWords.some(w=>add.includes(w))) C+=1;
+      const cw=getConsistencyWarnings();
+      if (cw!=='Tutarlı'){ const triggers=cw.split(',').filter(s=>s.trim()).length||1; D-=Math.min(triggers,2); }
+      const raw=A+B+C+D;
+      const MAX_RAW=108; // 15*(3+4) + 3
+      const norm=Math.max(0,Math.min(100,Math.round((raw/MAX_RAW)*100)));
+      return {raw,norm,components:{A,B,C,D},perField};
     }
 
-    // Submit -> sade bitiş sayfası, form tamamen gizleniyor
+    /* 4) Submit */
     document.getElementById('researchForm').addEventListener('submit', function(e){
       e.preventDefault();
       const missing=validateStoryFields();
@@ -871,43 +762,34 @@
       for (let [k,v] of formData.entries()){ responses[k]=v; }
       responses.submission_date=new Date().toLocaleString('tr-TR');
 
-      // >>> PUAN & METRİKLERİ EKLE <<<
+      // QUALITY SCORE → payload
       responses.total_chars = calculateTotalCharacters(responses);
       const q = computeQualityScore(responses);
-      responses.quality_ckp  = q.norm;        // 0–100
-      responses.quality_raw  = q.raw;
-      responses.quality_A    = q.components.A;
-      responses.quality_B    = q.components.B;
-      responses.quality_C    = q.components.C;
-      responses.quality_D    = q.components.D;
-      responses.quality_per_field = JSON.stringify(q.perField);
+      responses.quality_score      = q.norm;     // 0–100
+      responses.quality_score_raw  = q.raw;
+      responses.quality_A          = q.components.A;
+      responses.quality_B          = q.components.B;
+      responses.quality_C          = q.components.C;
+      responses.quality_D          = q.components.D;
+      responses.quality_per_field  = JSON.stringify(q.perField);
       responses.consistency_warnings = getConsistencyWarnings();
-      responses.quality_indicators  = getActiveQualityIndicators();
+      responses.quality_indicators   = getActiveQualityIndicators();
+
+      console.log('QUALITY:', q); // debug için
 
       const submitBtn=document.getElementById('submitBtn');
       submitBtn.textContent='📤 Gönderiliyor...'; submitBtn.disabled=true;
 
       try{ localStorage.setItem('researchResponses', JSON.stringify(responses)); }catch(e){}
 
-      // (Opsiyonel) Google Apps Script
       const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
       fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(responses)}).catch(()=>{});
 
-      // Görünürlük değişimi
       setTimeout(()=>{
         clearAllFormData();
-
-        // *** TÜM FORM KABINI GİZLE ***
-        const formContainer = document.getElementById('formContainer');
-        formContainer.style.display='none';
-
-        // *** SADE BİTİŞ EKRANINI GÖSTER ***
-        const wrap=document.getElementById('completionWrapper');
-        const card=document.getElementById('completionMessage');
-        wrap.style.display='block';
-        card.style.display='block';
-        if (card.focus) card.focus();
-
+        document.getElementById('formContainer').style.display='none';
+        const wrap=document.getElementById('completionWrapper'); const card=document.getElementById('completionMessage');
+        wrap.style.display='block'; card.style.display='block'; if (card.focus) card.focus();
         submitBtn.textContent='📚 Hikayelerimi Gönder'; submitBtn.disabled=false;
         window.scrollTo(0,0);
       }, 400);
@@ -915,23 +797,13 @@
 
     function startNewResponse(){
       clearAllFormData();
-
-      // Bitiş sayfasını gizle
       document.getElementById('completionWrapper').style.display='none';
       document.getElementById('completionMessage').style.display='none';
-
-      // Tüm form kabını geri getir
-      const formContainer = document.getElementById('formContainer');
-      formContainer.style.display='block';
-
-      // İlk sekmeye dön ve UI güncelle
-      currentSection=0;
-      showSection('personal', document.querySelectorAll('.nav-button')[0]);
-      updateButtons(); updateProgress();
-      window.scrollTo(0,0);
+      document.getElementById('formContainer').style.display='block';
+      currentSection=0; showSection('personal', document.querySelectorAll('.nav-button')[0]);
+      updateButtons(); updateProgress(); window.scrollTo(0,0);
     }
 
-    // Kısayollar & başlangıç
     document.addEventListener('keydown', function(e){
       if (e.altKey && e.key==='ArrowRight'){ e.preventDefault(); nextSection(); }
       else if (e.altKey && e.key==='ArrowLeft'){ e.preventDefault(); previousSection(); }
@@ -946,11 +818,10 @@
     });
 
     document.addEventListener('DOMContentLoaded', function(){
-      applyFormTexts();           // << soruları/başlıkları tek yerden uygula
+      applyFormTexts();
       clearAllFormData();
       updateButtons(); updateProgress();
     });
   </script>
 </body>
 </html>
-```
