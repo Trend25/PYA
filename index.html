@@ -53,6 +53,8 @@
     .quality-badge.active{background:#27ae60;color:#fff}
     .quality-badge.excellent{background:#8e44ad;color:#fff}
     .quality-badge.inactive{background:#ecf0f1;color:#95a5a6}
+    .quality-score-display{background:linear-gradient(45deg,#3498db,#8e44ad);color:#fff;padding:8px 12px;border-radius:8px;margin-top:10px;font-size:12px;font-weight:bold;text-align:center;display:none}
+    .quality-score-display.show{display:block}
     .keyword-checker{background:#f8f9fa;border-radius:8px;padding:10px;margin-top:10px;font-size:12px;border-left:4px solid #3498db;color:#3498db}
     .writing-speed-warning{background:#e74c3c;color:#fff;padding:8px 12px;border-radius:6px;margin-top:10px;font-size:12px;display:none}
     .consistency-check{background:#3498db;color:#fff;padding:10px 15px;border-radius:8px;margin:15px 0;display:none}
@@ -235,6 +237,8 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="deadline_crisis_score">📊 Kalite Puanı: 0/100</div>
+            <div class="quality-score-display" id="biggest_crisis_score">📊 Kalite Puanı: 0/100</div>
           </div>
 
           <div class="question-item">
@@ -265,6 +269,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="budget_crisis_score">📊 Kalite Puanı: 0/100</div>
           </div>
 
           <div class="question-item">
@@ -280,6 +285,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="tech_change_score">📊 Kalite Puanı: 0/100</div>
           </div>
 
           <div class="question-item">
@@ -295,6 +301,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="demo_crisis_score">📊 Kalite Puanı: 0/100</div>
           </div>
         </div>
       </div>
@@ -316,6 +323,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="key_person_left_score">📊 Kalite Puanı: 0/100</div>
           </div>
 
           <div class="question-item">
@@ -331,6 +339,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="team_conflict_score">📊 Kalite Puanı: 0/100</div>
           </div>
 
           <div class="question-item">
@@ -346,6 +355,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="management_pressure_score">📊 Kalite Puanı: 0/100</div>
           </div>
 
           <div class="question-item">
@@ -361,6 +371,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="remote_issues_score">📊 Kalite Puanı: 0/100</div>
           </div>
 
           <div class="question-item">
@@ -376,6 +387,7 @@
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
               <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
+            <div class="quality-score-display" id="client_issues_score">📊 Kalite Puanı: 0/100</div>
           </div>
         </div>
       </div>
@@ -590,7 +602,7 @@
         };
         b.textContent = defaults[rule] || b.textContent;
       });
-      document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check, .validation-message')
+      document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check, .validation-message, .quality-score-display')
         .forEach(el=>{ el.style.display='none'; el.classList.remove('show'); });
     }
 
@@ -661,6 +673,9 @@
           lenBadge.textContent='Uzunluk';
         }
       }
+      
+      // Real-time kalite puanı hesaplama
+      calculateFieldQuality(name, len, pmCnt, storyCnt, pastCnt, solCnt);
     }
     function checkFreeTextQuality(text, name){
       const box=document.querySelector(`textarea[name="${name}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!box) return;
@@ -684,6 +699,62 @@
         }
       }
       if (v){ const ok=valWords.some(w=>text.toLowerCase().includes(w)); v.className=ok?'quality-badge active':'quality-badge inactive'; v.textContent=ok?'Değerli ✓':'Değerli'; }
+    }
+    
+    function calculateFieldQuality(fieldName, len, pmCnt, storyCnt, pastCnt, solCnt) {
+      // Alan için kalite puanı hesaplama (tek alan için maksimum 12 puan)
+      let score = 0;
+      
+      // Uzunluk puanı (0-4)
+      if (len >= 600) score += 4;
+      else if (len >= 400) score += 3;
+      else if (len >= 250) score += 2;
+      else if (len >= 100) score += 1;
+      
+      // PM terimleri (0-2)
+      if (pmCnt >= 5) score += 2;
+      else if (pmCnt >= 2) score += 1;
+      
+      // Hikaye yapısı (0-2)
+      if (storyCnt >= 3) score += 2;
+      else if (storyCnt >= 1) score += 1;
+      
+      // Geçmiş zaman (0-2)
+      if (pastCnt >= 3) score += 2;
+      else if (pastCnt >= 1) score += 1;
+      
+      // Çözüm (0-2)
+      if (solCnt >= 2) score += 2;
+      else if (solCnt >= 1) score += 1;
+      
+      // Yüzdelik hesaplama
+      const percentage = Math.round((score / 12) * 100);
+      
+      // Kalite puanını göster
+      const scoreDisplay = document.getElementById(fieldName + '_score');
+      if (scoreDisplay && len > 50) {
+        scoreDisplay.style.display = 'block';
+        scoreDisplay.classList.add('show');
+        
+        if (percentage >= 80) {
+          scoreDisplay.innerHTML = `📊 Kalite Puanı: ${percentage}/100 ⭐⭐ Mükemmel!`;
+          scoreDisplay.style.background = 'linear-gradient(45deg,#8e44ad,#9b59b6)';
+        } else if (percentage >= 60) {
+          scoreDisplay.innerHTML = `📊 Kalite Puanı: ${percentage}/100 ⭐ Çok İyi!`;
+          scoreDisplay.style.background = 'linear-gradient(45deg,#27ae60,#2ecc71)';
+        } else if (percentage >= 40) {
+          scoreDisplay.innerHTML = `📊 Kalite Puanı: ${percentage}/100 ✓ İyi`;
+          scoreDisplay.style.background = 'linear-gradient(45deg,#3498db,#5dade2)';
+        } else {
+          scoreDisplay.innerHTML = `📊 Kalite Puanı: ${percentage}/100 💡 Geliştirilebilir`;
+          scoreDisplay.style.background = 'linear-gradient(45deg,#f39c12,#f7dc6f)';
+        }
+      } else if (scoreDisplay) {
+        scoreDisplay.style.display = 'none';
+        scoreDisplay.classList.remove('show');
+      }
+      
+      return percentage;
     }
     function updateCharCount(textarea,min){
       const len=textarea.value.length; const c=document.getElementById(textarea.name+'_counter');
