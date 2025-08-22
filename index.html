@@ -37,6 +37,7 @@
     .form-control:focus{outline:none;border-color:#3498db;box-shadow:0 0 0 3px rgba(52,152,219,.1)}
     .form-control.invalid{border-color:#e74c3c;box-shadow:0 0 0 3px rgba(231,76,60,.08)}
     .form-control.valid{border-color:#27ae60;box-shadow:0 0 0 3px rgba(39,174,96,.08)}
+    .form-control.excellent{border-color:#8e44ad;box-shadow:0 0 0 3px rgba(142,68,173,.08)}
     textarea.form-control{min-height:120px;max-height:300px}
     .free-text{min-height:150px;background:#f8f9fa;border:2px dashed #bdc3c7}
     .free-text:focus{background:#fff;border-style:solid;border-color:#3498db}
@@ -44,11 +45,13 @@
     .char-counter.warning{color:#f39c12}
     .char-counter.error{color:#e74c3c}
     .char-counter.success{color:#27ae60}
+    .char-counter.excellent{color:#8e44ad;font-weight:bold}
     .validation-message{background:#e74c3c;color:#fff;padding:10px 15px;border-radius:8px;margin:10px 0;display:none}
     .validation-message.show{display:block}
     .quality-indicator{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
     .quality-badge{padding:4px 8px;border-radius:12px;font-size:11px;font-weight:bold}
     .quality-badge.active{background:#27ae60;color:#fff}
+    .quality-badge.excellent{background:#8e44ad;color:#fff}
     .quality-badge.inactive{background:#ecf0f1;color:#95a5a6}
     .keyword-checker{background:#f8f9fa;border-radius:8px;padding:10px;margin-top:10px;font-size:12px;border-left:4px solid #3498db;color:#3498db}
     .writing-speed-warning{background:#e74c3c;color:#fff;padding:8px 12px;border-radius:6px;margin-top:10px;font-size:12px;display:none}
@@ -221,71 +224,76 @@
 
           <div class="question-item">
             <label class="question-label" id="lbl_biggest_crisis">1. En büyük kriziniz neydi?</label>
-            <textarea class="form-control story-required" name="biggest_crisis" id="biggest_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="biggest_crisis_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="biggest_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="biggest_crisis" id="biggest_crisis" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="biggest_crisis_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="biggest_crisis_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_deadline_crisis">2. Deadline krizi yaşadığınız bir an?</label>
-            <textarea class="form-control story-required" name="deadline_crisis" id="deadline_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="deadline_crisis_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="deadline_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="deadline_crisis" id="deadline_crisis" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="deadline_crisis_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="deadline_crisis_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_budget_crisis">3. Bütçe bittiğinde ne oldu?</label>
-            <textarea class="form-control story-required" name="budget_crisis" id="budget_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="budget_crisis_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="budget_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="budget_crisis" id="budget_crisis" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="budget_crisis_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="budget_crisis_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_tech_change">4. Teknoloji değişimi etkisi?</label>
-            <textarea class="form-control story-required" name="tech_change" id="tech_change" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="tech_change_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="tech_change_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="tech_change" id="tech_change" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="tech_change_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="tech_change_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_demo_crisis">5. Demo/sunum öncesi kriz?</label>
-            <textarea class="form-control story-required" name="demo_crisis" id="demo_crisis" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="demo_crisis_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="demo_crisis_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="demo_crisis" id="demo_crisis" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="demo_crisis_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="demo_crisis_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
         </div>
@@ -297,71 +305,76 @@
           <h3 id="humanHeader">👥 İnsan Dinamikleri ve İlişkiler</h3>
           <div class="question-item">
             <label class="question-label" id="lbl_key_person_left">1. Kilit ekip üyesi ayrıldığında?</label>
-            <textarea class="form-control story-required" name="key_person_left" id="key_person_left" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="key_person_left_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="key_person_left_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="key_person_left" id="key_person_left" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="key_person_left_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="key_person_left_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_team_conflict">2. Ekip içi çatışma?</label>
-            <textarea class="form-control story-required" name="team_conflict" id="team_conflict" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="team_conflict_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="team_conflict_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="team_conflict" id="team_conflict" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="team_conflict_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="team_conflict_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_management_pressure">3. Üst yönetim baskısını ekibe yansıtma?</label>
-            <textarea class="form-control story-required" name="management_pressure" id="management_pressure" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="management_pressure_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="management_pressure_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="management_pressure" id="management_pressure" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="management_pressure_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="management_pressure_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_remote_issues">4. Uzaktan ekip sorunları?</label>
-            <textarea class="form-control story-required" name="remote_issues" id="remote_issues" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="remote_issues_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="remote_issues_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="remote_issues" id="remote_issues" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="remote_issues_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="remote_issues_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_client_issues">5. Müşteri temsilcisiyle zor an?</label>
-            <textarea class="form-control story-required" name="client_issues" id="client_issues" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="client_issues_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="client_issues_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="client_issues" id="client_issues" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="client_issues_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="client_issues_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
         </div>
@@ -374,71 +387,76 @@
 
           <div class="question-item">
             <label class="question-label" id="lbl_sector_challenge">1. Sektöre özgü zorluk?</label>
-            <textarea class="form-control story-required" name="sector_challenge" id="sector_challenge" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="sector_challenge_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="sector_challenge_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="sector_challenge" id="sector_challenge" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="sector_challenge_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="sector_challenge_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_compliance_issues">2. Regulasyon/compliance zorlukları?</label>
-            <textarea class="form-control story-required" name="compliance_issues" id="compliance_issues" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="compliance_issues_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="compliance_issues_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="compliance_issues" id="compliance_issues" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="compliance_issues_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="compliance_issues_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_security_impact">3. Güvenlik/gizlilik etkisi?</label>
-            <textarea class="form-control story-required" name="security_impact" id="security_impact" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="security_impact_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="security_impact_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="security_impact" id="security_impact" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="security_impact_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="security_impact_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_market_changes">4. Pazar/teknoloji değişimleri?</label>
-            <textarea class="form-control story-required" name="market_changes" id="market_changes" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="market_changes_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="market_changes_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="market_changes" id="market_changes" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="market_changes_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="market_changes_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Çözüm</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_success_story">5. Başarı hikayeniz?</label>
-            <textarea class="form-control story-required" name="success_story" id="success_story" placeholder="Detaylı anlatın... (Minimum 500 karakter)" oninput="updateCharCount(this,500)" onfocus="startWritingTimer(this)" required></textarea>
-            <div class="char-counter" id="success_story_counter">0/500 karakter (minimum)</div>
-            <div class="keyword-checker">💡 problem, çözüm, sonuç, ekip, zaman</div>
-            <div class="writing-speed-warning" id="success_story_speed">⚠️ Çok hızlı yazıyorsunuz.</div>
+            <textarea class="form-control story-required" name="success_story" id="success_story" placeholder="Detaylı anlatın... (Minimum 100 karakter - daha fazla yazmak kaliteyi artırır)" oninput="updateCharCount(this,100)" onfocus="startWritingTimer(this)" required></textarea>
+            <div class="char-counter" id="success_story_counter">0/100 karakter (minimum)</div>
+            <div class="keyword-checker">💡 İyi hikaye için: problem, çözüm, sonuç, ekip, zaman, duygular</div>
+            <div class="writing-speed-warning" id="success_story_speed">⚠️ Çok hızlı yazıyorsunuz. Düşünerek yazmanız kaliteyi artırır.</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="pm-terms">PM Terimleri</span>
               <span class="quality-badge inactive" data-rule="story-structure">Hikaye Yapısı</span>
               <span class="quality-badge inactive" data-rule="past-tense">Geçmiş Zaman</span>
               <span class="quality-badge inactive" data-rule="solution">Sonuç</span>
+              <span class="quality-badge inactive" data-rule="length">Uzunluk</span>
             </div>
           </div>
         </div>
@@ -447,7 +465,7 @@
           <h3 id="freeHeader">🎨 Serbest Alan - Ek Deneyimleriniz</h3>
           <div class="question-item">
             <label class="question-label" id="lbl_additional">💭 Eklemek istedikleriniz?</label>
-            <textarea class="form-control free-text" name="additional_experiences" id="additional_experiences" placeholder="(Opsiyonel)" oninput="updateFreeTextCount(this)" onfocus="startWritingTimer(this)"></textarea>
+            <textarea class="form-control free-text" name="additional_experiences" id="additional_experiences" placeholder="(Opsiyonel) Diğer deneyimlerinizi paylaşın..." oninput="updateFreeTextCount(this)" onfocus="startWritingTimer(this)"></textarea>
             <div class="char-counter" id="additional_experiences_counter">0 karakter (serbest alan)</div>
             <div class="quality-indicator">
               <span class="quality-badge inactive" data-rule="unique-content">Özgün İçerik</span>
@@ -458,13 +476,13 @@
 
           <div class="question-item">
             <label class="question-label" id="lbl_book_suggestions">🎯 Kitap odak önerileri?</label>
-            <textarea class="form-control free-text" name="book_suggestions" id="book_suggestions" placeholder="(Opsiyonel)" oninput="updateFreeTextCount(this)"></textarea>
+            <textarea class="form-control free-text" name="book_suggestions" id="book_suggestions" placeholder="(Opsiyonel) Hangi konulara odaklanılmalı?" oninput="updateFreeTextCount(this)"></textarea>
             <div class="char-counter" id="book_suggestions_counter">0 karakter (önerileriniz)</div>
           </div>
 
           <div class="question-item">
             <label class="question-label" id="lbl_contact_info">📧 Yayın haberi için iletişim?</label>
-            <textarea class="form-control free-text" name="contact_info" id="contact_info" placeholder="(Opsiyonel)" oninput="updateFreeTextCount(this)"></textarea>
+            <textarea class="form-control free-text" name="contact_info" id="contact_info" placeholder="(Opsiyonel) Kitap çıktığında nasıl haber verelim?" oninput="updateFreeTextCount(this)"></textarea>
             <div class="char-counter" id="contact_info_counter">0 karakter (iletişim)</div>
           </div>
         </div>
@@ -472,7 +490,7 @@
 
       <div class="form-actions">
         <div class="validation-message" id="validationMessage">
-          ⚠️ Lütfen tüm hikaye sorularını minimum 500 karakter ile doldurun. Eksik/yetersiz alanlar: <span id="missingFields"></span>
+          ⚠️ Lütfen tüm hikaye sorularını minimum 100 karakter ile doldurun. Eksik/yetersiz alanlar: <span id="missingFields"></span>
         </div>
         <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousSection()">← Önceki</button>
         <button type="button" class="btn btn-primary"  id="nextBtn" onclick="nextSection()">Sonraki →</button>
@@ -515,9 +533,9 @@
     const progressSteps = [25,50,75,100];
     let writingTimers = {};
 
-    const pmTerms = ['proje','ekip','takım','deadline','sprint','stakeholder','bütçe','planlama','koordinasyon','yönetim','çözüm','problem','risk','kaynak','timeline','milestone','deliverable','scope','requirement'];
-    const storyStructureWords = ['önce','sonra','ardından','daha sonra','o zaman','bu durumda','sonuç','çözüm','karar'];
-    const pastTenseWords = ['yaptım','yaşadım','gördüm','düşündüm','karar verdim','çözdüm','başladım','tamamladım','karşılaştım'];
+    const pmTerms = ['proje','ekip','takım','deadline','sprint','stakeholder','bütçe','planlama','koordinasyon','yönetim','çözüm','problem','risk','kaynak','timeline','milestone','deliverable','scope','requirement','analiz','toplantı','rapor'];
+    const storyStructureWords = ['önce','sonra','ardından','daha sonra','o zaman','bu durumda','sonuç','çözüm','karar','başlangıçta','nihayet','böylece','ancak','fakat'];
+    const pastTenseWords = ['yaptım','yaşadım','gördüm','düşündüm','karar verdim','çözdüm','başladım','tamamladım','karşılaştım','organize ettim','koordine ettim','yönettim'];
 
     const STORY_KEYS = [
       'biggest_crisis','deadline_crisis','budget_crisis','tech_change','demo_crisis',
@@ -558,7 +576,7 @@
           if (id.includes('additional_experiences')) c.textContent='0 karakter (serbest alan)';
           else if (id.includes('book_suggestions')) c.textContent='0 karakter (önerileriniz)';
           else if (id.includes('contact_info')) c.textContent='0 karakter (iletişim)';
-          else c.textContent='0/500 karakter (minimum)';
+          else c.textContent='0/100 karakter (minimum)';
           c.className='char-counter';
         }
       });
@@ -567,7 +585,8 @@
         const rule=b.getAttribute('data-rule');
         const defaults = {
           'pm-terms':'PM Terimleri','story-structure':'Hikaye Yapısı','past-tense':'Geçmiş Zaman',
-          'solution':'Çözüm','unique-content':'Özgün İçerik','detailed':'Detaylı','valuable':'Değerli'
+          'solution':'Çözüm','unique-content':'Özgün İçerik','detailed':'Detaylı','valuable':'Değerli',
+          'length':'Uzunluk'
         };
         b.textContent = defaults[rule] || b.textContent;
       });
@@ -584,7 +603,7 @@
     function checkWritingSpeed(textarea){
       const f=textarea.name; const t=writingTimers[f]; if (!t) return true;
       const elapsed=(Date.now()-t.startTime)/1000; const added=textarea.value.length-t.initialLength;
-      if (elapsed>2 && added/elapsed>10){ const w=document.getElementById(f+'_speed'); if (w){ w.style.display='block'; setTimeout(()=>w.style.display='none',2500); } return false; }
+      if (elapsed>2 && added/elapsed>15){ const w=document.getElementById(f+'_speed'); if (w){ w.style.display='block'; setTimeout(()=>w.style.display='none',3000); } return false; }
       return true;
     }
     function checkContentQuality(text, name){
@@ -592,38 +611,100 @@
       const pmCnt=pmTerms.filter(t=>text.toLowerCase().includes(t)).length;
       const storyCnt=storyStructureWords.filter(t=>text.toLowerCase().includes(t)).length;
       const pastCnt=pastTenseWords.filter(t=>text.toLowerCase().includes(t)).length;
-      const solWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
+      const solWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda','başardım','organize ettim','yönettim'];
       const solCnt=solWords.filter(w=>text.toLowerCase().includes(w)).length;
+      const len = text.length;
+      
       const pmBadge=box.querySelector('[data-rule="pm-terms"]');
       const stBadge=box.querySelector('[data-rule="story-structure"]');
       const ptBadge=box.querySelector('[data-rule="past-tense"]');
       const soBadge=box.querySelector('[data-rule="solution"]');
-      if (pmBadge){ pmBadge.className=pmCnt>=3?'quality-badge active':'quality-badge inactive'; pmBadge.textContent=pmCnt>=3?`PM Terimleri ✓ (${pmCnt})`:`PM Terimleri (${pmCnt}/3)`; }
-      if (stBadge){ stBadge.className=storyCnt>=2?'quality-badge active':'quality-badge inactive'; stBadge.textContent=storyCnt>=2?'Hikaye Yapısı ✓':'Hikaye Yapısı'; }
-      if (ptBadge){ ptBadge.className=pastCnt>=2?'quality-badge active':'quality-badge inactive'; ptBadge.textContent=pastCnt>=2?'Geçmiş Zaman ✓':'Geçmiş Zaman'; }
-      if (soBadge){ soBadge.className=solCnt>=1?'quality-badge active':'quality-badge inactive'; soBadge.textContent=solCnt>=1?'Çözüm ✓':'Çözüm'; }
+      const lenBadge=box.querySelector('[data-rule="length"]');
+      
+      if (pmBadge){ 
+        if (pmCnt >= 5) {
+          pmBadge.className='quality-badge excellent'; 
+          pmBadge.textContent=`PM Terimleri ⭐ (${pmCnt})`;
+        } else if (pmCnt >= 2) {
+          pmBadge.className='quality-badge active'; 
+          pmBadge.textContent=`PM Terimleri ✓ (${pmCnt})`;
+        } else {
+          pmBadge.className='quality-badge inactive';
+          pmBadge.textContent=`PM Terimleri (${pmCnt}/2)`;
+        }
+      }
+      
+      if (stBadge){ 
+        stBadge.className=storyCnt>=2?'quality-badge active':'quality-badge inactive'; 
+        stBadge.textContent=storyCnt>=2?'Hikaye Yapısı ✓':'Hikaye Yapısı'; 
+      }
+      
+      if (ptBadge){ 
+        ptBadge.className=pastCnt>=2?'quality-badge active':'quality-badge inactive'; 
+        ptBadge.textContent=pastCnt>=2?'Geçmiş Zaman ✓':'Geçmiş Zaman'; 
+      }
+      
+      if (soBadge){ 
+        soBadge.className=solCnt>=1?'quality-badge active':'quality-badge inactive'; 
+        soBadge.textContent=solCnt>=1?'Çözüm ✓':'Çözüm'; 
+      }
+      
+      if (lenBadge){
+        if (len >= 500) {
+          lenBadge.className='quality-badge excellent';
+          lenBadge.textContent='Uzunluk ⭐⭐';
+        } else if (len >= 250) {
+          lenBadge.className='quality-badge active';
+          lenBadge.textContent='Uzunluk ✓';
+        } else {
+          lenBadge.className='quality-badge inactive';
+          lenBadge.textContent='Uzunluk';
+        }
+      }
     }
     function checkFreeTextQuality(text, name){
       const box=document.querySelector(`textarea[name="${name}"]`)?.parentElement?.querySelector('.quality-indicator'); if(!box) return;
-      const uniqueWords=['covid','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim'];
-      const valWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
+      const uniqueWords=['covid','pandemic','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim','yapay','zeka','agile','scrum'];
+      const valWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders','deneyim','paylaşmak'];
       const u=box.querySelector('[data-rule="unique-content"]');
       const d=box.querySelector('[data-rule="detailed"]');
       const v=box.querySelector('[data-rule="valuable"]');
       if (u){ const ok=uniqueWords.some(w=>text.toLowerCase().includes(w)); u.className=ok?'quality-badge active':'quality-badge inactive'; u.textContent=ok?'Özgün İçerik ✓':'Özgün İçerik'; }
-      if (d){ const ok=text.length>=200; d.className=ok?'quality-badge active':'quality-badge inactive'; d.textContent=ok?'Detaylı ✓':'Detaylı'; }
+      if (d){ 
+        const len = text.length;
+        if (len >= 300) {
+          d.className='quality-badge excellent';
+          d.textContent='Detaylı ⭐';
+        } else if (len >= 150) {
+          d.className='quality-badge active';
+          d.textContent='Detaylı ✓';
+        } else {
+          d.className='quality-badge inactive';
+          d.textContent='Detaylı';
+        }
+      }
       if (v){ const ok=valWords.some(w=>text.toLowerCase().includes(w)); v.className=ok?'quality-badge active':'quality-badge inactive'; v.textContent=ok?'Değerli ✓':'Değerli'; }
     }
     function updateCharCount(textarea,min){
       const len=textarea.value.length; const c=document.getElementById(textarea.name+'_counter');
       if (c){
         c.textContent=`${len}/${min} karakter (minimum)`;
-        if (len<min*0.3){ c.className='char-counter error'; textarea.className='form-control story-required invalid'; }
-        else if (len<min){ c.className='char-counter warning'; textarea.className='form-control story-required'; }
-        else { c.className='char-counter success'; textarea.className='form-control story-required valid'; }
+        if (len < min*0.5) { 
+          c.className='char-counter error'; 
+          textarea.className='form-control story-required invalid'; 
+        } else if (len < min) { 
+          c.className='char-counter warning'; 
+          textarea.className='form-control story-required'; 
+        } else if (len >= 300) {
+          c.className='char-counter excellent'; 
+          textarea.className='form-control story-required excellent';
+        } else { 
+          c.className='char-counter success'; 
+          textarea.className='form-control story-required valid'; 
+        }
       }
       checkWritingSpeed(textarea);
-      if (len>100) checkContentQuality(textarea.value, textarea.name);
+      if (len>50) checkContentQuality(textarea.value, textarea.name);
       updateProgressBasedOnCompletion();
     }
     function updateFreeTextCount(textarea){
@@ -631,7 +712,15 @@
       if (c){
         const label=textarea.name==='additional_experiences'?'serbest alan':textarea.name==='book_suggestions'?'önerileriniz':'iletişim';
         c.textContent=`${len} karakter (${label})`;
-        c.className=len===0?'char-counter':(len<100?'char-counter warning':'char-counter success');
+        if (len === 0) {
+          c.className='char-counter';
+        } else if (len < 100) {
+          c.className='char-counter warning';
+        } else if (len >= 250) {
+          c.className='char-counter excellent';
+        } else { 
+          c.className='char-counter success';
+        }
       }
       if (textarea.name==='additional_experiences' && len>50) checkFreeTextQuality(textarea.value, textarea.name);
       checkWritingSpeed(textarea);
@@ -662,7 +751,7 @@
       const details=document.getElementById('consistencyDetails');
       const warns=[];
       if (experience && projectCount){
-        if (experience==='0-2' && projectCount>10) warns.push('2 yıl deneyim ama 10+ proje');
+        if (experience==='0-2' && projectCount>15) warns.push('2 yıl deneyim ama çok fazla proje');
         if (experience==='10+' && projectCount<5) warns.push('10+ yıl deneyim ama az proje');
       }
       if (teamSize && budget){
@@ -675,19 +764,19 @@
     }
     function validateStoryFields(){
       const fields=document.querySelectorAll('.story-required'); const missing=[];
-      fields.forEach(f=>{ if (f.value.length<500){ const label=f.closest('.question-item').querySelector('.question-label').textContent; missing.push(label.split('.')[0]+'.'); }});
+      fields.forEach(f=>{ if (f.value.length<100){ const label=f.closest('.question-item').querySelector('.question-label').textContent; missing.push(label.split('.')[0]+'.'); }});
       return missing;
     }
     function showValidationMessage(list){
       const v=document.getElementById('validationMessage'); const s=document.getElementById('missingFields');
-      if (list.length){ s.textContent=list.join(', '); v.classList.add('show'); setTimeout(()=>v.classList.remove('show'),4500); return false; }
+      if (list.length){ s.textContent=list.join(', '); v.classList.add('show'); setTimeout(()=>v.classList.remove('show'),5000); return false; }
       v.classList.remove('show'); return true;
     }
     function updateProgressBasedOnCompletion(){
       const total=document.querySelectorAll('.story-required').length;
-      const done=document.querySelectorAll('.story-required.valid').length;
+      const done=document.querySelectorAll('.story-required.valid, .story-required.excellent').length;
       const rate=(done/total)*100; const base=progressSteps[currentSection];
-      document.getElementById('progressBar').style.width=Math.min(base+(rate*0.2),100)+'%';
+      document.getElementById('progressBar').style.width=Math.min(base+(rate*0.25),100)+'%';
     }
     function showSection(id,btn){
       document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));
@@ -707,7 +796,7 @@
       submitBtn.style.display=currentSection===sections.length-1?'inline-block':'none';
     }
 
-    /* 3) QUALITY SCORE */
+    /* 3) GELIŞTIRILMIŞ QUALITY SCORE */
     function getConsistencyWarnings(){
       const box = document.getElementById('consistencyWarning');
       if (box && box.style.display === 'block') {
@@ -716,7 +805,7 @@
       return 'Tutarlı';
     }
     function getActiveQualityIndicators(){
-      return Array.from(document.querySelectorAll('.quality-badge.active')).map(b=>b.textContent).join(', ');
+      return Array.from(document.querySelectorAll('.quality-badge.active, .quality-badge.excellent')).map(b=>b.textContent).join(', ');
     }
     function calculateTotalCharacters(res){
       return STORY_KEYS.reduce((sum,k)=>sum + ((res[k]||'').length), 0);
@@ -724,30 +813,55 @@
     function computeQualityScore(res){
       let A=0,B=0,C=0,D=0;
       const perField={};
-      const solutionWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda'];
+      const solutionWords=['çözdüm','çözdük','çözüm','karar','yöntem','strateji','sonunda','başardım','organize ettim','yönettim'];
+      
       STORY_KEYS.forEach(k=>{
         const t=(res[k]||'').toLowerCase(); const len=t.length;
-        let a=0; if (len>=1000) a=3; else if (len>=750) a=2; else if (len>=500) a=1;
+        
+        // A: Uzunluk puanı (100=1, 250=2, 400=3, 600=4)
+        let a=0; 
+        if (len>=600) a=4; 
+        else if (len>=400) a=3; 
+        else if (len>=250) a=2; 
+        else if (len>=100) a=1;
         A+=a;
+        
         const pmCnt=pmTerms.filter(w=>t.includes(w)).length;
         const storyCnt=storyStructureWords.filter(w=>t.includes(w)).length;
         const pastCnt=pastTenseWords.filter(w=>t.includes(w)).length;
         const solCnt=solutionWords.filter(w=>t.includes(w)).length;
-        const b=(pmCnt>=3)+(storyCnt>=2)+(pastCnt>=2)+(solCnt>=1);
+        
+        // B: Kalite puanı (her kriter için 0-2 puan)
+        let b = 0;
+        if (pmCnt >= 5) b += 2; else if (pmCnt >= 2) b += 1;      // PM terimleri
+        if (storyCnt >= 3) b += 2; else if (storyCnt >= 1) b += 1; // Hikaye yapısı
+        if (pastCnt >= 3) b += 2; else if (pastCnt >= 1) b += 1;   // Geçmiş zaman
+        if (solCnt >= 2) b += 2; else if (solCnt >= 1) b += 1;     // Çözüm
         B+=b;
+        
         perField[k]={len,aScore:a,pmCnt,storyCnt,pastCnt,solCnt,bScore:b,total:a+b};
       });
+      
+      // C: Ek içerik puanı
       const add=(res['additional_experiences']||'').toLowerCase();
-      const uniqueWords=['covid','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim'];
-      const valuableWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders'];
-      if (uniqueWords.some(w=>add.includes(w))) C+=1;
-      if (add.length>=200) C+=1;
-      if (valuableWords.some(w=>add.includes(w))) C+=1;
+      const uniqueWords=['covid','pandemic','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim','yapay','zeka','agile','scrum'];
+      const valuableWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders','deneyim','paylaşmak'];
+      
+      if (uniqueWords.some(w=>add.includes(w))) C+=2;
+      if (add.length>=300) C+=3; else if (add.length>=150) C+=1;
+      if (valuableWords.some(w=>add.includes(w))) C+=2;
+      
+      // D: Tutarlılık kontrolü
       const cw=getConsistencyWarnings();
-      if (cw!=='Tutarlı'){ const triggers=cw.split(',').filter(s=>s.trim()).length||1; D-=Math.min(triggers,2); }
+      if (cw!=='Tutarlı'){ 
+        const triggers=cw.split(',').filter(s=>s.trim()).length||1; 
+        D-=Math.min(triggers*2,5); 
+      }
+      
       const raw=A+B+C+D;
-      const MAX_RAW=108; // 15*(3+4) + 3
+      const MAX_RAW = 15*4 + 15*8 + 7 + 0; // 60 + 120 + 7 = 187
       const norm=Math.max(0,Math.min(100,Math.round((raw/MAX_RAW)*100)));
+      
       return {raw,norm,components:{A,B,C,D},perField};
     }
 
@@ -762,7 +876,7 @@
       for (let [k,v] of formData.entries()){ responses[k]=v; }
       responses.submission_date=new Date().toLocaleString('tr-TR');
 
-      // QUALITY SCORE → payload
+      // GELIŞTIRILMIŞ QUALITY SCORE → payload
       responses.total_chars = calculateTotalCharacters(responses);
       const q = computeQualityScore(responses);
       responses.quality_score      = q.norm;     // 0–100
@@ -775,7 +889,7 @@
       responses.consistency_warnings = getConsistencyWarnings();
       responses.quality_indicators   = getActiveQualityIndicators();
 
-      console.log('QUALITY:', q); // debug için
+      console.log('GELIŞTIRILMIŞ QUALITY:', q); // debug için
 
       const submitBtn=document.getElementById('submitBtn');
       submitBtn.textContent='📤 Gönderiliyor...'; submitBtn.disabled=true;
