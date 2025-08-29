@@ -85,6 +85,16 @@
       .completion-card{margin:28px 12px;padding:20px}
       .completion-card h2{font-size:1.35em}
     }
+
+    /* Modal (native <dialog>) stilleri */
+    dialog::backdrop { background: rgba(0,0,0,.4); }
+    dialog { max-width: 800px; width: 96vw; border: none; border-radius: 12px; padding: 0; }
+    .dlg-head { padding: 16px 20px; border-bottom: 1px solid #eee; font-weight: 700; }
+    .dlg-body { padding: 16px 20px; max-height: 65vh; overflow: auto; }
+    .dlg-foot { padding: 12px 20px; border-top: 1px solid #eee; display: flex; gap: 8px; justify-content: flex-end; }
+    .consent-row{display:flex;gap:10px;align-items:flex-start;background:#f8f9fa;border:1px dashed #cfd8dc;padding:12px;border-radius:10px}
+    .consent-row small a{font-weight:600}
+    button[disabled]{opacity:.6;cursor:not-allowed}
   </style>
 </head>
 <body>
@@ -473,29 +483,20 @@
           </div>
         </div>
 
-        <div class="question-group">
-          <h3 id="freeHeader">🎨 Serbest Alan - Ek Deneyimleriniz</h3>
+        <!-- 🔒 KVKK ve Açık Rıza: Link + onay kutusu (zorunlu) -->
+        <div class="question-group" aria-live="polite">
+          <h3>🔒 KVKK ve Açık Rıza</h3>
           <div class="question-item">
-            <label class="question-label" id="lbl_additional">💭 Eklemek istedikleriniz?</label>
-            <textarea class="form-control free-text" name="additional_experiences" id="additional_experiences" placeholder="(Opsiyonel) Diğer deneyimlerinizi paylaşın..." oninput="updateFreeTextCount(this)" onfocus="startWritingTimer(this)"></textarea>
-            <div class="char-counter" id="additional_experiences_counter">0 karakter (serbest alan)</div>
-            <div class="quality-indicator">
-              <span class="quality-badge inactive" data-rule="unique-content">Özgün İçerik</span>
-              <span class="quality-badge inactive" data-rule="detailed">Detaylı</span>
-              <span class="quality-badge inactive" data-rule="valuable">Değerli</span>
+            <div class="consent-row">
+              <input type="checkbox" id="kvkkConsent" name="kvkkConsent" required style="margin-top:3px;">
+              <div>
+                <label for="kvkkConsent" class="question-label" style="margin:0 0 6px 0;">
+                  KVKK Aydınlatma Metni ve Açık Rıza beyanını <a href="#" id="openKvkk">okudum</a> ve <strong>kabul ediyorum</strong>.
+                </label>
+                <small>Metni okuyup onay vermeden form gönderilemez. <a href="#" id="openKvkk2">Metni aç</a></small>
+              </div>
             </div>
-          </div>
-
-          <div class="question-item">
-            <label class="question-label" id="lbl_book_suggestions">🎯 Kitap odak önerileri?</label>
-            <textarea class="form-control free-text" name="book_suggestions" id="book_suggestions" placeholder="(Opsiyonel) Hangi konulara odaklanılmalı?" oninput="updateFreeTextCount(this)"></textarea>
-            <div class="char-counter" id="book_suggestions_counter">0 karakter (önerileriniz)</div>
-          </div>
-
-          <div class="question-item">
-            <label class="question-label" id="lbl_contact_info">📧 Yayın haberi için iletişim?</label>
-            <textarea class="form-control free-text" name="contact_info" id="contact_info" placeholder="(Opsiyonel) Kitap çıktığında nasıl haber verelim?" oninput="updateFreeTextCount(this)"></textarea>
-            <div class="char-counter" id="contact_info_counter">0 karakter (iletişim)</div>
+            <div id="consentHint" class="email-domain-warning" style="display:none;margin-top:8px;background:#27ae60">✅ Onay verildi</div>
           </div>
         </div>
       </div>
@@ -506,7 +507,7 @@
         </div>
         <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousSection()">← Önceki</button>
         <button type="button" class="btn btn-primary"  id="nextBtn" onclick="nextSection()">Sonraki →</button>
-        <button type="submit" class="btn btn-success"  id="submitBtn" style="display:none;">📚 Hikayelerimi Gönder</button>
+        <button type="submit" class="btn btn-success"  id="submitBtn" style="display:none;" disabled>📚 Hikayelerimi Gönder</button>
       </div>
     </form>
   </div>
@@ -522,6 +523,19 @@
       <p class="foot">🚀 Proje yönetimi deneyimleriniz literatüre katkı sağlayacak! 📧 Verileriniz güvenli şekilde kaydedildi.</p>
     </div>
   </div>
+
+  <!-- 📄 KVKK Modal -->
+  <dialog id="kvkkDialog" aria-labelledby="kvkkTitle">
+    <div class="dlg-head" id="kvkkTitle">KVKK Aydınlatma Metni ve Açık Rıza <span style="opacity:.6;font-weight:500">— v1.0 (29.08.2025)</span></div>
+    <div class="dlg-body" id="kvkkContent">
+      <p><strong>Aydınlatma:</strong> 6698 sayılı KVK Kanunu uyarınca; ad-soyad, iletişim bilgileri ve anket yanıtlarınız, veri sorumlusu <em>Proje Gerçeği</em> tarafından; kitabın hazırlanması, katılımcı iletişimi, istatistiksel analiz, geri bildirim süreçleri ve hukuki yükümlülüklerin yerine getirilmesi amaçlarıyla işlenecektir. Verileriniz; mevzuat gereği yetkili kurumlarla ve yalnızca amaçla sınırlı olarak hizmet sağlayıcılarımızla paylaşılabilir. Kişisel verilerinize ilişkin haklarınız için aydınlatma metninin tam halini inceleyiniz.</p>
+      <p><strong>Açık Rıza:</strong> Aydınlatma metnini okudum; anket yanıtlarımın kitap çalışması kapsamında işlenmesine ve (seçersem) adımın kitapta yer almasına açık rıza veriyorum.</p>
+      <p style="font-size:.95em;opacity:.8">Not: Metni güncellerseniz versiyonu başlıktaki tarih ile artırın.</p>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" id="closeKvkk" class="btn btn-secondary" style="text-transform:none">Kapat</button>
+    </div>
+  </dialog>
 
   <script>
     /* 1) Metin yapılandırması */
@@ -555,6 +569,9 @@
       'sector_challenge','compliance_issues','security_impact','market_changes','success_story'
     ];
 
+    /* 🔒 KVKK: modal ve onay alanları */
+    const CONSENT_VERSION = 'v1.0 - 2025-08-29';
+
     function applyFormTexts(){
       document.getElementById('title').innerText = FORM_TEXTS.title;
       document.getElementById('subtitle').innerText = FORM_TEXTS.subtitle;
@@ -567,7 +584,7 @@
       document.getElementById('crisisHeader').innerText      = FORM_TEXTS.headers.crisisHeader;
       document.getElementById('humanHeader').innerText       = FORM_TEXTS.headers.humanHeader;
       document.getElementById('sectorHeader').innerText      = FORM_TEXTS.headers.sectorHeader;
-      document.getElementById('freeHeader').innerText        = FORM_TEXTS.headers.freeHeader;
+      const fh = document.getElementById('freeHeader'); if (fh) fh.innerText = FORM_TEXTS.headers.freeHeader;
     }
 
     function clearAllFormData(){
@@ -576,7 +593,7 @@
       form.reset();
       document.querySelectorAll('textarea').forEach(t=>{ t.value=''; t.textContent=''; });
       document.querySelectorAll('input').forEach(i=>{
-        i.value='';
+        if (i.type!=='checkbox') i.value='';
         if (i.classList.contains('story-required')) i.className='form-control story-required';
         else if (i.classList.contains('free-text')) i.className='form-control free-text';
         else i.className='form-control';
@@ -604,6 +621,13 @@
       });
       document.querySelectorAll('.writing-speed-warning, .email-domain-warning, .consistency-check, .validation-message, .quality-score-display')
         .forEach(el=>{ el.style.display='none'; el.classList.remove('show'); });
+      // KVKK reset
+      const submitBtn=document.getElementById('submitBtn');
+      const consent = document.getElementById('kvkkConsent');
+      const hint = document.getElementById('consentHint');
+      if (consent) consent.checked=false;
+      if (hint) hint.style.display='none';
+      if (submitBtn) submitBtn.disabled=true;
     }
 
     function formatBudget(input){
@@ -702,40 +726,24 @@
     }
     
     function calculateFieldQuality(fieldName, len, pmCnt, storyCnt, pastCnt, solCnt) {
-      // Alan için kalite puanı hesaplama (tek alan için maksimum 12 puan)
       let score = 0;
-      
-      // Uzunluk puanı (0-4)
       if (len >= 600) score += 4;
       else if (len >= 400) score += 3;
       else if (len >= 250) score += 2;
       else if (len >= 100) score += 1;
-      
-      // PM terimleri (0-2)
       if (pmCnt >= 5) score += 2;
       else if (pmCnt >= 2) score += 1;
-      
-      // Hikaye yapısı (0-2)
       if (storyCnt >= 3) score += 2;
       else if (storyCnt >= 1) score += 1;
-      
-      // Geçmiş zaman (0-2)
       if (pastCnt >= 3) score += 2;
       else if (pastCnt >= 1) score += 1;
-      
-      // Çözüm (0-2)
       if (solCnt >= 2) score += 2;
       else if (solCnt >= 1) score += 1;
-      
-      // Yüzdelik hesaplama
       const percentage = Math.round((score / 12) * 100);
-      
-      // Kalite puanını göster
       const scoreDisplay = document.getElementById(fieldName + '_score');
       if (scoreDisplay && len > 50) {
         scoreDisplay.style.display = 'block';
         scoreDisplay.classList.add('show');
-        
         if (percentage >= 80) {
           scoreDisplay.innerHTML = `📊 Kalite Puanı: ${percentage}/100 ⭐⭐ Mükemmel!`;
           scoreDisplay.style.background = 'linear-gradient(45deg,#8e44ad,#9b59b6)';
@@ -753,7 +761,6 @@
         scoreDisplay.style.display = 'none';
         scoreDisplay.classList.remove('show');
       }
-      
       return percentage;
     }
     function updateCharCount(textarea,min){
@@ -888,8 +895,6 @@
       
       STORY_KEYS.forEach(k=>{
         const t=(res[k]||'').toLowerCase(); const len=t.length;
-        
-        // A: Uzunluk puanı (100=1, 250=2, 400=3, 600=4)
         let a=0; 
         if (len>=600) a=4; 
         else if (len>=400) a=3; 
@@ -902,18 +907,16 @@
         const pastCnt=pastTenseWords.filter(w=>t.includes(w)).length;
         const solCnt=solutionWords.filter(w=>t.includes(w)).length;
         
-        // B: Kalite puanı (her kriter için 0-2 puan)
         let b = 0;
-        if (pmCnt >= 5) b += 2; else if (pmCnt >= 2) b += 1;      // PM terimleri
-        if (storyCnt >= 3) b += 2; else if (storyCnt >= 1) b += 1; // Hikaye yapısı
-        if (pastCnt >= 3) b += 2; else if (pastCnt >= 1) b += 1;   // Geçmiş zaman
-        if (solCnt >= 2) b += 2; else if (solCnt >= 1) b += 1;     // Çözüm
+        if (pmCnt >= 5) b += 2; else if (pmCnt >= 2) b += 1;
+        if (storyCnt >= 3) b += 2; else if (storyCnt >= 1) b += 1;
+        if (pastCnt >= 3) b += 2; else if (pastCnt >= 1) b += 1;
+        if (solCnt >= 2) b += 2; else if (solCnt >= 1) b += 1;
         B+=b;
         
         perField[k]={len,aScore:a,pmCnt,storyCnt,pastCnt,solCnt,bScore:b,total:a+b};
       });
       
-      // C: Ek içerik puanı
       const add=(res['additional_experiences']||'').toLowerCase();
       const uniqueWords=['covid','pandemic','uluslararası','kültür','dijital','dönüşüm','gelecek','tavsiye','ders','deneyim','yapay','zeka','agile','scrum'];
       const valuableWords=['öğrendim','tavsiye','öneririm','dikkat','önemli','keşfettim','anladım','ders','deneyim','paylaşmak'];
@@ -922,7 +925,6 @@
       if (add.length>=300) C+=3; else if (add.length>=150) C+=1;
       if (valuableWords.some(w=>add.includes(w))) C+=2;
       
-      // D: Tutarlılık kontrolü
       const cw=getConsistencyWarnings();
       if (cw!=='Tutarlı'){ 
         const triggers=cw.split(',').filter(s=>s.trim()).length||1; 
@@ -930,15 +932,53 @@
       }
       
       const raw=A+B+C+D;
-      const MAX_RAW = 15*4 + 15*8 + 7 + 0; // 60 + 120 + 7 = 187
+      const MAX_RAW = 60 + 120 + 7 + 0;
       const norm=Math.max(0,Math.min(100,Math.round((raw/MAX_RAW)*100)));
       
       return {raw,norm,components:{A,B,C,D},perField};
     }
 
+    /* 🔒 KVKK yardımcıları */
+    function bindConsentUI(){
+      const dialog = document.getElementById('kvkkDialog');
+      const open1 = document.getElementById('openKvkk');
+      const open2 = document.getElementById('openKvkk2');
+      const closeBtn = document.getElementById('closeKvkk');
+      const consent = document.getElementById('kvkkConsent');
+      const submitBtn = document.getElementById('submitBtn');
+      const hint = document.getElementById('consentHint');
+
+      function setSubmitState(){
+        if (!submitBtn) return;
+        submitBtn.disabled = !consent.checked;
+        hint.style.display = consent.checked ? 'block' : 'none';
+      }
+
+      if (open1) open1.addEventListener('click', (e)=>{ e.preventDefault(); dialog.showModal(); });
+      if (open2) open2.addEventListener('click', (e)=>{ e.preventDefault(); dialog.showModal(); });
+      if (closeBtn) closeBtn.addEventListener('click', ()=> dialog.close());
+      if (consent) consent.addEventListener('change', setSubmitState);
+
+      // Son sekmeye gelindiğinde de durum kontrolü
+      setSubmitState();
+    }
+
+    async function sha256(text){
+      const enc = new TextEncoder().encode(text);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+
     /* 4) Submit */
-    document.getElementById('researchForm').addEventListener('submit', function(e){
+    document.getElementById('researchForm').addEventListener('submit', async function(e){
       e.preventDefault();
+
+      const consent = document.getElementById('kvkkConsent');
+      if (!consent || !consent.checked){
+        alert('Lütfen KVKK ve Açık Rıza onayını veriniz.');
+        return;
+      }
+
       const missing=validateStoryFields();
       if (missing.length){ showValidationMessage(missing); return; }
 
@@ -947,10 +987,10 @@
       for (let [k,v] of formData.entries()){ responses[k]=v; }
       responses.submission_date=new Date().toLocaleString('tr-TR');
 
-      // GELIŞTIRILMIŞ QUALITY SCORE → payload
+      // QUALITY SCORE
       responses.total_chars = calculateTotalCharacters(responses);
       const q = computeQualityScore(responses);
-      responses.quality_score      = q.norm;     // 0–100
+      responses.quality_score      = q.norm;
       responses.quality_score_raw  = q.raw;
       responses.quality_A          = q.components.A;
       responses.quality_B          = q.components.B;
@@ -960,7 +1000,11 @@
       responses.consistency_warnings = getConsistencyWarnings();
       responses.quality_indicators   = getActiveQualityIndicators();
 
-      console.log('GELIŞTIRILMIŞ QUALITY:', q); // debug için
+      // 🔒 KVKK meta
+      const consentText = document.getElementById('kvkkContent')?.innerText || '';
+      responses.consentAcceptedAt = new Date().toISOString();
+      responses.consentVersion    = CONSENT_VERSION;
+      responses.consentTextHash   = consentText ? await sha256(consentText) : '';
 
       const submitBtn=document.getElementById('submitBtn');
       submitBtn.textContent='📤 Gönderiliyor...'; submitBtn.disabled=true;
@@ -1006,6 +1050,7 @@
       applyFormTexts();
       clearAllFormData();
       updateButtons(); updateProgress();
+      bindConsentUI();
     });
   </script>
 </body>
