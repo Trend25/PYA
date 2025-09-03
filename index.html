@@ -905,10 +905,12 @@
         responses[key] = value.trim();
       }
       
+      console.log('📤 Form verileri:', responses);
+      
       // Gamification data
       const totalScore = Object.values(achievementScores).reduce((sum, score) => sum + score, 0);
       responses.submission_date = new Date().toLocaleString('tr-TR');
-      responses.version = 'gamified_v3.0';
+      responses.version = 'gamified_v3.0_fixed';
       responses.total_quality_score = totalScore;
       responses.section_scores = JSON.stringify(achievementScores);
       responses.completion_percentage = currentProgress;
@@ -916,21 +918,52 @@
       responses.user_agent = navigator.userAgent;
       responses.form_language = 'turkish';
       
-      // Eksik alanları boş string olarak ekle (eski sistem uyumluluğu için)
-      const missingFields = [
-        'company_name', 'job_title', 'linkedin_profile', 'privacy_preference',
-        'team_size', 'project_count', 'biggest_budget', 'work_email',
-        'deadline_crisis', 'budget_crisis', 'tech_change', 'demo_crisis',
-        'key_person_left', 'team_conflict', 'management_pressure', 'remote_issues', 'client_issues',
-        'sector_challenge', 'compliance_issues', 'security_impact', 'market_changes',
-        'additional_experiences', 'book_suggestions', 'contact_info'
-      ];
+      // Google Sheets için tüm gerekli alanları ekle
+      const requiredFields = {
+        // Ana form alanları
+        'full_name': responses.full_name || responses.name || '',
+        'email_address': responses.email_address || responses.email || '',
+        'company_name': responses.company_name || '',
+        'job_title': responses.job_title || '',
+        'linkedin_profile': responses.linkedin_profile || '',
+        'privacy_preference': responses.privacy_preference || '',
+        'sector': responses.sector || '',
+        'experience': responses.experience || '',
+        'team_size': responses.team_size || '',
+        'project_count': responses.project_count || '',
+        'biggest_budget': responses.biggest_budget || '',
+        'work_email': responses.work_email || '',
+        
+        // Hikaye alanları
+        'biggest_crisis': responses.biggest_crisis || '',
+        'success_story': responses.success_story || '',
+        'human_challenge': responses.human_challenge || '',
+        'operational_challenge': responses.operational_challenge || '',
+        
+        // Eksik alanları boş string olarak ekle
+        'deadline_crisis': '',
+        'budget_crisis': '',
+        'tech_change': '',
+        'demo_crisis': '',
+        'key_person_left': '',
+        'team_conflict': '',
+        'management_pressure': '',
+        'remote_issues': '',
+        'client_issues': '',
+        'sector_challenge': '',
+        'compliance_issues': '',
+        'security_impact': '',
+        'market_changes': '',
+        'additional_experiences': '',
+        'book_suggestions': '',
+        'contact_info': '',
+        
+        // Proje ismi
+        'project_name': responses.project_name || ''
+      };
       
-      missingFields.forEach(field => {
-        if (!responses[field]) {
-          responses[field] = '';
-        }
-      });
+      // Responses'a gerekli alanları ekle
+      Object.assign(responses, requiredFields);
       
       // Kalite hesaplamaları
       responses.total_chars = (responses.success_story || '').length + 
@@ -940,6 +973,8 @@
       responses.quality_score = totalScore;
       responses.quality_indicators = Array.from(document.querySelectorAll('.badge.earned')).map(b => b.textContent).join(', ');
       responses.consistency_warnings = '';
+      
+      console.log('📋 Gönderilen tam veri:', responses);
       
       // Google Sheets'e gönder
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
