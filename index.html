@@ -756,13 +756,40 @@
     function showEncouragement(level) {
       const encouragementElement = document.getElementById('encouragementMsg');
       if (level < encouragementMessages.length) {
-        encouragementElement.textContent = encouragementMessages[level];
+        encouragementElement.innerHTML = encouragementMessages[level]; // innerHTML for emojis
         encouragementElement.style.display = 'block';
         
         setTimeout(() => {
           encouragementElement.style.display = 'none';
         }, 3000);
       }
+    }
+
+    function showScoreBasedEncouragement(totalScore) {
+      const encouragementElement = document.getElementById('encouragementMsg');
+      let messages, bgColor;
+      
+      if (totalScore >= 80) {
+        messages = scoreBasedMessages.high;
+        bgColor = 'linear-gradient(45deg, #f39c12, #f1c40f)'; // Gold
+      } else if (totalScore >= 60) {
+        messages = scoreBasedMessages.medium; 
+        bgColor = 'linear-gradient(45deg, #9b59b6, #8e44ad)'; // Purple
+      } else if (totalScore >= 30) {
+        messages = scoreBasedMessages.low;
+        bgColor = 'linear-gradient(45deg, #3498db, #5dade2)'; // Blue
+      } else {
+        return; // Don't show message for very low scores
+      }
+      
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      encouragementElement.innerHTML = randomMessage; // innerHTML for emojis
+      encouragementElement.style.background = bgColor;
+      encouragementElement.style.display = 'block';
+      
+      setTimeout(() => {
+        encouragementElement.style.display = 'none';
+      }, 4000);
     }
 
     // Form geçerliliği kontrolü (enhanced)
