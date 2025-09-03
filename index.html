@@ -572,7 +572,7 @@
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJS-muCjXuDKIjfRuO-ss3BLSQO6eWy2HpKQ-B7lweljeIZki8B0dC4Ftt3Nfk3m1t/exec';
 
       // --- ✅ GÜNCEL: JSON yerine URL-encoded gönderim (Apps Script ile en uyumlusu)
-      
+      // responses objesini hazırladıktan sonra:
       const params = new URLSearchParams();
       Object.entries(responses).forEach(([k, v]) => params.append(k, String(v ?? '')));
 
@@ -581,9 +581,7 @@
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: params.toString()
-      });
-
-      
+       });      
 
       // 7) Başarı ekranını göster
       setTimeout(() => {
