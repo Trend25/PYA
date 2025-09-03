@@ -713,20 +713,43 @@
     function earnBadge(badgeType) {
       const badgeMap = {
         'Profile': 'badgeProfile',
-        'Success': 'badgeSuccess',
+        'Success': 'badgeSuccess', 
         'Human': 'badgeHuman',
         'Ops': 'badgeOps',
         'Crisis': 'badgeCrisis'
       };
 
       const badgeElement = document.getElementById(badgeMap[badgeType]);
+      console.log('Rozet kazanma denemesi:', badgeType, badgeElement);
+      
       if (badgeElement && !badgeElement.classList.contains('earned')) {
         badgeElement.classList.add('earned');
+        console.log('✅ Rozet kazanıldı:', badgeType);
         
-        // Add sparkle effect
+        // Kullanıcıya görsel geri bildirim
+        badgeElement.style.background = 'rgba(255,255,255,0.95) !important';
+        badgeElement.style.color = '#2c3e50 !important';
+        badgeElement.style.borderColor = '#f39c12 !important';
+        badgeElement.style.transform = 'scale(1.1)';
+        
+        // Geçici mesaj göster
+        const encouragementElement = document.getElementById('encouragementMsg');
+        const messages = {
+          'Profile': '✅ Bilgiler tamamlandı!',
+          'Success': '🎯 Başarı hikayesi rozetini kazandınız!',
+          'Human': '👥 İnsan dinamikleri rozetini kazandınız!',
+          'Ops': '⚡ Operasyon rozetini kazandınız!',
+          'Crisis': '🔥 Kriz rozetini kazandınız!'
+        };
+        
+        encouragementElement.textContent = messages[badgeType] || 'Rozet kazandınız!';
+        encouragementElement.style.display = 'block';
+        encouragementElement.style.background = 'linear-gradient(45deg, #27ae60, #2ecc71)';
+        
         setTimeout(() => {
+          encouragementElement.style.display = 'none';
           badgeElement.style.animation = 'none';
-        }, 600);
+        }, 3000);
       }
     }
 
