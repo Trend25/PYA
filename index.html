@@ -783,8 +783,17 @@
 
     // Event listeners
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize progress
-      updateProgress();
+      // Initialize progress - başlangıçta profil aktif olsun
+      currentProgress = 20; // Başlangıç %20 
+      document.getElementById('progressBar').style.width = '20%';
+      document.getElementById('step0').className = 'progress-step active';
+      
+      // Force show elements
+      document.getElementById('achievementPanel').style.display = 'block';
+      document.querySelector('.progress-container').style.display = 'block';
+      
+      // Test için initial badges
+      console.log('Form loaded, elements visible');
       
       // Tüm required alanlara event listener ekle
       const requiredFields = document.querySelectorAll('[required]');
@@ -792,10 +801,12 @@
         field.addEventListener('input', () => {
           checkFormValidity();
           updateProgress();
+          console.log('Field updated:', field.name);
         });
         field.addEventListener('change', () => {
           checkFormValidity();
           updateProgress();
+          console.log('Field changed:', field.name);
         });
       });
       
@@ -806,6 +817,7 @@
           // Auto-resize
           this.style.height = 'auto';
           this.style.height = this.scrollHeight + 'px';
+          console.log('Textarea updated:', this.name);
         });
       });
 
@@ -820,6 +832,12 @@
       achievementPanel.addEventListener('mouseleave', () => {
         achievementPanel.style.transform = 'scale(1)';
       });
+      
+      // İlk yüklemede profil rozetini test et
+      setTimeout(() => {
+        earnBadge('Profile');
+        updateProgress();
+      }, 1000);
     });
 
     // Form submit (enhanced with gamification data)
@@ -847,6 +865,31 @@
       responses.earned_badges = Array.from(document.querySelectorAll('.badge.earned')).length;
       responses.user_agent = navigator.userAgent;
       responses.form_language = 'turkish';
+      
+      // Eksik alanları boş string olarak ekle (eski sistem uyumluluğu için)
+      const missingFields = [
+        'company_name', 'job_title', 'linkedin_profile', 'privacy_preference',
+        'team_size', 'project_count', 'biggest_budget', 'work_email',
+        'deadline_crisis', 'budget_crisis', 'tech_change', 'demo_crisis',
+        'key_person_left', 'team_conflict', 'management_pressure', 'remote_issues', 'client_issues',
+        'sector_challenge', 'compliance_issues', 'security_impact', 'market_changes',
+        'additional_experiences', 'book_suggestions', 'contact_info'
+      ];
+      
+      missingFields.forEach(field => {
+        if (!responses[field]) {
+          responses[field] = '';
+        }
+      });
+      
+      // Kalite hesaplamaları
+      responses.total_chars = (responses.success_story || '').length + 
+                              (responses.human_challenge || '').length + 
+                              (responses.operational_challenge || '').length + 
+                              (responses.biggest_crisis || '').length;
+      responses.quality_score = totalScore;
+      responses.quality_indicators = Array.from(document.querySelectorAll('.badge.earned')).map(b => b.textContent).join(', ');
+      responses.consistency_warnings = '';
       
       // Google Sheets'e gönder
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6SJZqR3EF2Bu6Xhf3h-AySzLpRFTTOcX4bMTnfmD3HXXA9_5ch1yGL-54SfsMmVB2/exec';
